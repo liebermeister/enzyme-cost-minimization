@@ -1,0 +1,50 @@
+!!Sbtab					
+!CompoundName	!Concentration	!ConcentrationMin	!ConcentrationMax	!Compound MiriamID::urn:miriam:kegg.compound	!Organism
+ADP		320	1300	C00008	S.cerevisiae
+AMP		170	300	C00020	S.cerevisiae
+ATP		1100	1900	C00002	S.cerevisiae
+L-Alanine		7000	25000	C00041	S.cerevisiae
+L-Arginine	18000			C00062	S.cerevisiae
+L-Asparagine		3000	13000	C00152	S.cerevisiae
+Citrate	700			C00158	S.cerevisiae
+L-Citrulline	5000			C00327	S.cerevisiae
+Dihydroxyacetone phosphate	330			C00111	S.cerevisiae
+D-Fructose 6-phosphate	650			C00085	S.cerevisiae
+D-Fructose 1,6-bisphosphate		1700	4500	C00354	S.cerevisiae
+D-Glucose 1-phosphate	<100			C00103	S.cerevisiae
+D-Glucose 6-phosphate	2300			C00092	S.cerevisiae
+L-Glutamine		15000	35000	C00064	S.cerevisiae
+L-Glutamic acid		15000	35000	C00025	S.cerevisiae
+Glyceraldehyde 3-phosphate		400	1200	C00661	S.cerevisiae
+alpha-Ketoglutaric acid		200	5000	C00026	S.cerevisiae
+NAD		1000	1600	C00003	S.cerevisiae
+NADP		20	150	C00006	S.cerevisiae
+NADPH		50	150	C00005	S.cerevisiae
+NH3	30000			C00014	S.cerevisiae
+Oxaloacetate	<50			C00036	S.cerevisiae
+L-Ornithine	7000			C00077	S.cerevisiae
+Phosphate	22000			C00009	S.cerevisiae
+Phosphoenolpyruvate	<30			C00074	S.cerevisiae
+6-Phospho-D-gluconate		100	300	C00345	S.cerevisiae
+2-Phospho-D-glycerate		420	1100	C00631	S.cerevisiae
+3-Phospho-D-glycerate		100	260	C00197	S.cerevisiae
+Pyruvate	1600			C00022	S.cerevisiae
+Uridine diophosphate glucose	300			C00029	S.cerevisiae
+Acetyl-CoA	350			C00024	E.Coli
+ADP	823			C00008	E.Coli
+AMP	151			C00020	E.Coli
+ATP	2641			C00002	E.Coli
+L-Asparagine		431	1400	C00152	E.Coli
+Citrate	12990			C00158	E.Coli
+Dihydroxyacetone phosphate	203			C00111	E.Coli
+D-Fructose 1,6-bisphosphate	1900			C00354	E.Coli
+GTP	700			C00044	E.Coli
+D-Glucose 6-phosphate	801			C00092	E.Coli
+L-Glutamic acid	17363			C00025	E.Coli
+Glycerol-3-phosphate	195			C00093	E.Coli
+alpha-Ketoglutaric acid	476			C00026	E.Coli
+Malate		900	1559	C00711	E.Coli
+NAD		1256	2078	C00003	E.Coli
+Phosphoenolpyruvate		91	300	C00074	E.Coli
+Pyruvate	390			C00022	E.Coli
+Uridine diophosphate glucose	1299			C00029	E.Coli

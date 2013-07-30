@@ -1,0 +1,229 @@
+!!SBtab
+!Organism	!CompoundName	!ConcentrationMin	!ConcentrationMax	!Compound MiriamID::urn:miriam:kegg.compound !LowerCaseName
+S.cerevisiae	ADP	320	1300	C00008	adp
+S.cerevisiae	AMP	170	300	C00020	amp
+S.cerevisiae	ATP	1100	1900	C00002	atp
+S.cerevisiae	L-Alanine	7000	25000	C00041	l-alanine
+S.cerevisiae	L-Arginine	18000	nan	C00062	l-arginine
+S.cerevisiae	L-Asparagine	3000	13000	C00152	l-asparagine
+S.cerevisiae	Citrate	700	nan	C00158	citrate
+S.cerevisiae	L-Citrulline	5000	nan	C00327	l-citrulline
+S.cerevisiae	Dihydroxyacetone phosphate	330	nan	C00111	dihydroxyacetone phosphate
+S.cerevisiae	D-Fructose 6-phosphate	650	nan	C00085	d-fructose 6-phosphate
+S.cerevisiae	D-Fructose 1,6-bisphosphate	1700	4500	C00354	d-fructose 1,6-bisphosphate
+S.cerevisiae	D-Glucose 1-phosphate	<100	nan	C00103	d-glucose 1-phosphate
+S.cerevisiae	D-Glucose 6-phosphate	2300	nan	C00092	d-glucose 6-phosphate
+S.cerevisiae	L-Glutamine	15000	35000	C00064	l-glutamine
+S.cerevisiae	L-Glutamic acid	15000	35000	C00025	l-glutamic acid
+S.cerevisiae	Glyceraldehyde 3-phosphate	400	1200	C00661	glyceraldehyde 3-phosphate
+S.cerevisiae	alpha-Ketoglutaric acid	200	5000	C00026	alpha-ketoglutaric acid
+S.cerevisiae	NAD	1000	1600	C00003	nad
+S.cerevisiae	NADP	20	150	C00006	nadp
+S.cerevisiae	NADPH	50	150	C00005	nadph
+S.cerevisiae	NH3	30000	nan	C00014	nh3
+S.cerevisiae	Oxaloacetate	<50	nan	C00036	oxaloacetate
+S.cerevisiae	L-Ornithine	7000	nan	C00077	l-ornithine
+S.cerevisiae	Phosphate	22000	nan	C00009	phosphate
+S.cerevisiae	Phosphoenolpyruvate	<30	nan	C00074	phosphoenolpyruvate
+S.cerevisiae	6-Phospho-D-gluconate	100	300	C00345	6-phospho-d-gluconate
+S.cerevisiae	2-Phospho-D-glycerate	420	1100	C00631	2-phospho-d-glycerate
+S.cerevisiae	3-Phospho-D-glycerate	100	260	C00197	3-phospho-d-glycerate
+S.cerevisiae	Pyruvate	1600	nan	C00022	pyruvate
+S.cerevisiae	Uridine diophosphate glucose	300	nan	C00029	uridine diphosphate glucose
+E.Coli	Acetyl-CoA	350	nan	C00024	acetyl-coa
+E.Coli	ADP	823	nan	C00008	adp
+E.Coli	AMP	151	nan	C00020	amp
+E.Coli	ATP	2641	nan	C00002	atp
+E.Coli	L-Asparagine	431	1400	C00152	l-asparagine
+E.Coli	Citrate	12990	nan	C00158	citrate
+E.Coli	Dihydroxyacetone phosphate	203	nan	C00111	dihydroxyacetone phosphate
+E.Coli	D-Fructose 1,6-bisphosphate	1900	nan	C00354	d-fructose 1,6-bisphosphate
+E.Coli	GTP	   700	nan	C00044	gtp
+E.Coli	D-Glucose 6-phosphate	801	nan	C00092	d-glucose 6-phosphate
+E.Coli	L-Glutamic acid	17363	nan	C00025	l-glutamic acid
+E.Coli	Glycerol-3-phosphate	195	nan	C00093	glycerol-3-phosphate
+E.Coli	alpha-Ketoglutaric acid	476	nan	C00026	alpha-ketoglutaric acid
+E.Coli	Malate	900	   1559	C00711	malate
+E.Coli	NAD	1256	   2078	C00003	nad
+E.Coli	Phosphoenolpyruvate	91	300	C00074	phosphoenolpyruvate
+E.Coli	Pyruvate	390	nan	C00022	pyruvate
+E.Coli	Uridine diophosphate glucose	1299	nan	C00029	uridine diphosphate glucose
+D.discoideum	Acetyl-CoA	12	nan	C00024	acetyl-coa
+D.discoideum	ADP	200	nan	C00008	adp
+D.discoideum	ATP	700	nan	C00002	atp
+D.discoideum	L-Alanine	970	nan	C00041	l-alanine
+D.discoideum	L-Asparagine	370	nan	C00152	l-asparagine
+D.discoideum	Citrate	60	nan	C00158	citrate
+D.discoideum	Dihydroxyacetone phosphate	100	nan	C00111	dihydroxyacetone phosphate
+D.discoideum	D-Fructose 6-phosphate	71	nan	C00085	d-fructose 6-phosphate
+D.discoideum	D-Fructose 1,6-bisphosphate	50	nan	C00354	d-fructose 1,6-bisphosphate
+D.discoideum	Fumarate	30	nan	C00122	fumarate
+D.discoideum	D-Glucose	500	nan	C00031	d-glucose
+D.discoideum	D-Glucose 1-phosphate	20	nan	C00103	d-glucose 1-phosphate
+D.discoideum	D-Glucose 6-phosphate	216	nan	C00092	d-glucose 6-phosphate
+D.discoideum	L-Glutamic acid	1200	nan	C00025	l-glutamic acid
+D.discoideum	Glyceraldehyde 3-phosphate	10	nan	C00661	glyceraldehyde 3-phosphate
+D.discoideum	Glycogen	3420	nan	C00182	glycogen
+D.discoideum	alpha-Ketoglutaric acid	10	nan	C00026	alpha-ketoglutaric acid
+D.discoideum	Malate	208	nan	C00711	malate
+D.discoideum	NAD	25	nan	C00003	nad
+D.discoideum	NADP	25	nan	C00006	nadp
+D.discoideum	NADPH	30	nan	C00005	nadph
+D.discoideum	Oxaloacetate	1	nan	C00036	oxaloacetate
+D.discoideum	Phosphate	3000	30000	C00009	phosphate
+D.discoideum	6-Phospho-D-gluconate	18	nan	C00345	6-phospho-d-gluconate
+D.discoideum	Pyruvate	60	nan	C00022	pyruvate
+D.discoideum	D-Ribose 5-phosphate	26	nan	C00117	d-ribose 5-phosphate
+D.discoideum	D-Ribulose 5-phosphate	24	nan	C00199	d-ribulose 5-phosphate
+D.discoideum	Succinate	1670	nan	C00042	succinate
+D.discoideum	Uridine diophosphate glucose	330	nan	C00029	uridine diphosphate glucose
+D.discoideum	D-Xylulose 5-phosphate	14	nan	C00231	d-xylulose 5-phosphate
+Rat liver	Acetyl-CoA	39	nan	C00024	acetyl-coa
+Rat muscle	Acetyl-CoA	1.3	nan	C00024	acetyl-coa
+Rat heart	Acetyl-CoA	9.6	nan	C00024	acetyl-coa
+Rat liver	ADP	1700	nan	C00008	adp
+Rat muscle	ADP	1059	nan	C00008	adp
+Human RBC	ADP	126	nan	C00008	adp
+Rat heart	ADP	876	1292	C00008	adp
+Rabbit RBC	ADP	500	nan	C00008	adp
+Mung bean seed	ADPglucose	200	nan	C00498	adpglucose
+Human RBC	AMP	50	nan	C00020	amp
+Mung bean seed	AMP	10.9	nan	C00020	amp
+Rat heart	AMP	123	nan	C00020	amp
+Rabbit RBC	AMP	60	 nan	C00020	amp
+Rat liver	ATP	3535	 nan	C00002	atp
+Rat muscle	ATP	3075	 nan	C00002	atp
+Human RBC	ATP	1130	 nan	C00002	atp
+Mung bean seed	ATP	 10.9	nan	C00002	atp
+Rat heart	ATP	1000	 5600	C00002	atp
+Rabbit RBC	ATP	1700	 nan	C00002	atp
+Rat liver	L-Alanine	 1255	1717	C00041	l-alanine
+Rat heart	L-Alanine	996	2453	C00041	l-alanine
+Rat heart	L-Arginine	394	nan	C00062	l-arginine
+Rat liver	L-Asparagine	1068	1717	C00152	l-asparagine
+Rat heart	L-Asparagine	1340	3504	C00152	l-asparagine
+Rat liver	CoA	180	195	C00010	coa
+Rat muscle	CoA	1.7	nan	C00010	coa
+Rat heart	CoA	43	80	C00010	coa
+Rat liver	Citrate	375	nan	C00158	citrate
+Rat heart	Citrate	70	387	C00158	citrate
+Rabbit RBC	Citrate	138	nan	C00158	citrate
+Rat liver	Dihydroxyacetone phosphate	40	50	C00111	dihydroxyacetone phosphate
+Rat muscle	Dihydroxyacetone phosphate	40	46	C00111	dihydroxyacetone phosphate
+Human RBC	Dihydroxyacetone phosphate	12	nan	C00111	dihydroxyacetone phosphate
+Mung bean seed	Dihydroxyacetone phosphate	0.7	nan	C00111	dihydroxyacetone phosphate
+Rat heart	Dihydroxyacetone phosphate	 12	nan	C00111	dihydroxyacetone phosphate
+Rabbit RBC	Dihydroxyacetone phosphate	10	nan	C00111	dihydroxyacetone phosphate
+Mung bean seed	D-Erythrose 4-phosphate	1.8	nan	C00279	d-erythrose 4-phosphate
+Rat liver	D-Fructose 6-phosphate	75	100	C00085	d-fructose 6-phosphate
+Rat muscle	D-Fructose 6-phosphate	362	nan	C00085	d-fructose 6-phosphate
+Human RBC	D-Fructose 6-phosphate	11	nan	C00085	d-fructose 6-phosphate
+Mung bean seed	D-Fructose 6-phosphate	8.4	nan	C00085	d-fructose 6-phosphate
+Rat heart	D-Fructose 6-phosphate	19	nan	C00085	d-fructose 6-phosphate
+Rabbit RBC	D-Fructose 6-phosphate	11	nan	C00085	d-fructose 6-phosphate
+Rat liver	D-Fructose 1,6-bisphosphate	23	39	C00354	d-fructose 1,6-bisphosphate
+Rat muscle	D-Fructose 1,6-bisphosphate	46	nan	C00354	d-fructose 1,6-bisphosphate
+Human RBC	D-Fructose 1,6-bisphosphate	5	nan	C00354	d-fructose 1,6-bisphosphate
+Mung bean seed	D-Fructose 1,6-bisphosphate	1	nan	C00354	d-fructose 1,6-bisphosphate
+Rat heart	D-Fructose 1,6-bisphosphate	    8.5	nan	C00354	d-fructose 1,6-bisphosphate
+Rabbit RBC	D-Fructose 1,6-bisphosphate	7	nan	C00354	d-fructose 1,6-bisphosphate
+Rat liver	Fumarate	108	nan	C00122	fumarate
+Rat heart	Fumarate	105	nan	C00122	fumarate
+Rabbit RBC	GTP	230	nan	C00044	gtp
+Rat liver	D-Glucose	9860	10200	C00031	d-glucose
+Rat muscle	D-Glucose	2377	nan	C00031	d-glucose
+Rat heart	D-Glucose	762	nan	C00031	d-glucose
+Rabbit RBC	D-Glucose	6170	nan	C00031	d-glucose
+Rat liver	D-Glucose 1-phosphate	16	nan	C00103	d-glucose 1-phosphate
+Rat muscle	D-Glucose 1-phosphate	65	nan	C00103	d-glucose 1-phosphate
+Rat heart	D-Glucose 1-phosphate	36	nan	C00103	d-glucose 1-phosphate
+Rabbit RBC	D-Glucose 1-phosphate	6	nan	C00103	d-glucose 1-phosphate
+Rat liver	D-Glucose 6-phosphate	231	284	C00092	d-glucose 6-phosphate
+Rat muscle	D-Glucose 6-phosphate	1033	nan	C00092	d-glucose 6-phosphate
+Human RBC	D-Glucose 6-phosphate	27	nan	C00092	d-glucose 6-phosphate
+Mung bean seed	D-Glucose 6-phosphate	36	nan	C00092	d-glucose 6-phosphate
+Rat heart	D-Glucose 6-phosphate	  136	nan	C00092	d-glucose 6-phosphate
+Rabbit RBC	D-Glucose 6-phosphate	62	nan	C00092	d-glucose 6-phosphate
+Rat liver	L-Glutamic acid	3480	nan	C00025	l-glutamic acid
+Rat muscle	L-Glutamic acid	2067	nan	C00025	l-glutamic acid
+Rat heart	L-Glutamic acid	4525	6132	C00025	l-glutamic acid
+Rat liver	L-Glutamine	5110	7260	C00064	l-glutamine
+Rat heart	L-Glutamine	4786	nan	C00064	l-glutamine
+Rat liver	Glyceraldehyde 3-phosphate	16	nan	C00661	glyceraldehyde 3-phosphate
+Rat muscle	Glyceraldehyde 3-phosphate	21	nan	C00661	glyceraldehyde 3-phosphate
+Human RBC	Glyceraldehyde 3-phosphate	4	nan	C00661	glyceraldehyde 3-phosphate
+Mung bean seed	Glyceraldehyde 3-phosphate	0.6	nan	C00661	glyceraldehyde 3-phosphate
+Rat heart	Glyceraldehyde 3-phosphate	3	nan	C00661	glyceraldehyde 3-phosphate
+Rabbit RBC	Glyceraldehyde 3-phosphate	3	nan	C00661	glyceraldehyde 3-phosphate
+Rat liver	Glycerol-3-phosphate	202	1010	C00093	glycerol-3-phosphate
+Rat muscle	Glycerol-3-phosphate	168	nan	C00093	glycerol-3-phosphate
+Rat heart	Glycerol-3-phosphate	78	nan	C00093	glycerol-3-phosphate
+Rat liver	Glycogen	36700	nan	C00182	glycogen
+Rat muscle	Glycogen	1500	nan	C00182	glycogen
+Rat heart	Glycogen	633	nan	C00182	glycogen
+Rat liver	Isocitrate	29	nan	C00311	isocitrate
+Rat heart	Isocitrate	34	nan	C00311	isocitrate
+Rat liver	alpha-Ketoglutaric acid	   202	nan	C00026	alpha-ketoglutaric acid
+Rat muscle	alpha-Ketoglutaric acid	78	nan	C00026	alpha-ketoglutaric acid
+Rat heart	alpha-Ketoglutaric acid	70	143	C00026	alpha-ketoglutaric acid
+Rat liver	L-Lactate	2340	nan	C00186	l-lactate
+Rat muscle	L-Lactate	2660	6700	C00186	l-lactate
+Rat heart	L-Lactate	4790	nan	C00186	l-lactate
+Rabbit RBC	L-Lactate	3810	nan	C00186	l-lactate
+Rat heart	L-Lysine	721	nan	C00047	l-lysine
+Rat liver	Malate	491	nan	C00711	malate
+Rat muscle	Malate	   129	nan	C00711	malate
+Rat heart	Malate	180	400	C00711	malate
+Rat liver	NAD	1097	nan	C00003	nad
+Rat muscle	NAD	310	nan	C00003	nad
+Rat heart	NAD	426	nan	C00003	nad
+Rat liver	NADP	97	nan	C00006	nadp
+Rat heart	NADP	5.8	nan	C00006	nadp
+Rabbit RBC	NADP	22	nan	C00006	nadp
+Rat liver	NADPH	433	nan	C00005	nadph
+Rat heart	NADPH	120	nan	C00005	nadph
+Rat liver	NH3	678	nan	C00014	nh3
+Rat muscle	NH3	349	nan	C00014	nh3
+Rat liver	NH3	678	nan	C00014	nh3
+Rat muscle	NH3	349	nan	C00014	nh3
+Rat liver	Oxaloacetate	10	nan	C00036	oxaloacetate
+Rat muscle	Oxaloacetate	   26	nan	C00036	oxaloacetate
+Rat liver	Phosphate	4863	5671	C00009	phosphate
+Rat muscle	Phosphate	  5500	nan	C00009	phosphate
+Rat heart	Phosphate	  4250	nan	C00009	phosphate
+Rabbit RBC	Phosphate	50	nan	C00009	phosphate
+Rat liver	Phosphoenolpyruvate	143	nan	C00074	phosphoenolpyruvate
+Rat muscle	Phosphoenolpyruvate	   8	nan	C00074	phosphoenolpyruvate
+Human RBC	Phosphoenolpyruvate	12	nan	C00074	phosphoenolpyruvate
+Rat heart	Phosphoenolpyruvate	4	nan	C00074	phosphoenolpyruvate
+Rabbit RBC	Phosphoenolpyruvate	10	nan	C00074	phosphoenolpyruvate
+Rat liver	6-Phospho-D-gluconate	27	nan	C00345	6-phospho-d-gluconate
+Mung bean seed	6-Phospho-D-gluconate	0.4	nan	C00345	6-phospho-d-gluconate
+Rabbit RBC	6-Phospho-D-gluconate	7.5	nan	C00345	6-phospho-d-gluconate
+Rat liver	2-Phospho-D-glycerate	49	nan	C00631	2-phospho-d-glycerate
+Rat muscle	2-Phospho-D-glycerate	   5	nan	C00631	2-phospho-d-glycerate
+Human RBC	2-Phospho-D-glycerate	7	nan	C00631	2-phospho-d-glycerate
+Rat heart	2-Phospho-D-glycerate	49	3	C00631	2-phospho-d-glycerate
+Rabbit RBC	2-Phospho-D-glycerate	5	nan	C00631	2-phospho-d-glycerate
+Rat liver	3-Phospho-D-glycerate	410	nan	C00197	3-phospho-d-glycerate
+Rat muscle	3-Phospho-D-glycerate	   40	48	C00197	3-phospho-d-glycerate
+Human RBC	3-Phospho-D-glycerate	48	nan	C00197	3-phospho-d-glycerate
+Rat heart	3-Phospho-D-glycerate	26	nan	C00197	3-phospho-d-glycerate
+Rabbit RBC	3-Phospho-D-glycerate	46	nan	C00197	3-phospho-d-glycerate
+Rat liver	Pyrophosphate	14	22	C00013	pyrophosphate
+Rat liver	Pyruvate	187	nan	C00022	pyruvate
+Rat muscle	Pyruvate	56	nan	C00022	pyruvate
+Rat heart	Pyruvate	39	260	C00022	pyruvate
+Rabbit RBC	Pyruvate	90	nan	C00022	pyruvate
+Mung bean seed	D-Ribose 5-phosphate	4.4	nan	C00117	d-ribose 5-phosphate
+Mung bean seed	D-Ribulose 5-phosphate	0.7	nan	C00199	d-ribulose 5-phosphate
+Rabbit RBC	D-Ribulose 5-phosphate	120	nan	C00199	d-ribulose 5-phosphate
+Rat liver	L-Serine	3708	nan	C00065	l-serine
+Rat heart	L-Serine	344	nan	C00065	l-serine
+Rat liver	Succinate	1068	nan	C00042	succinate
+Rat heart	Succinate	496	nan	C00042	succinate
+Rat liver	Uridine diophosphate glucose	330	nan	C00029	uridine diphosphate glucose
+Rat muscle	Uridine diophosphate glucose	   43	nan	C00029	uridine diphosphate glucose
+Rabbit RBC	Uridine diophosphate glucose	50	nan	C00029	uridine diphosphate glucose
+notFound: 0
+exact hits 219 of 225

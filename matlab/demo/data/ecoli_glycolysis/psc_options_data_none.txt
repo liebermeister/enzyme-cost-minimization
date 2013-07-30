@@ -1,0 +1,2 @@
+options.quantity_files      =  {'~/projekte/pathway_modelling/data/GFEformation_flamholz_2011_millimolar.tsv', '~/projekte/pathway_modelling/data/concentration_ecoli_glucose.tsv', '~/projekte/pathway_modelling/data/kinetic_constants_brenda.tsv'};
+options.flag_use_kinetic_data = 'none';

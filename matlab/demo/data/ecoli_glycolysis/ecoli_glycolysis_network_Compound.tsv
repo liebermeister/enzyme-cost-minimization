@@ -1,0 +1,23 @@
+!!SBtab Document="ecoli_glycolysis" TableName="Compound" TableType="Compound"
+!Compound	!MiriamID::urn:miriam:kegg.compound	!External
+2_Phospho_D_glycerate	C00631	0
+3_Phospho_D_glycerate	C00197	0
+3_Phospho_D_glyceroyl_phosphate	C00236	0
+ADP	C00008	0
+ATP	C00002	0
+Acetyl_CoA	C00024	1
+CO2	C00011	1
+CoA	C00010	1
+D_Glyceraldehyde_3_phosphate	C00661	0
+Glycerone_phosphate	C00111	0
+H+	C00080	1
+H2O	C00001	1
+NAD+	C00003	0
+NADH	C00004	0
+Orthophosphate	C00009	1
+Phosphoenolpyruvate	C00074	0
+Pyruvate	C00022	0
+D_Fructose_1_6_bisphosphate	C00354	0
+D_Fructose_6_phosphate	C00085	0
+D_Glucose	C00031	1
+D_Glucose_6_phosphate	C00092	0

@@ -1,0 +1,15 @@
+!!SBtab Document="ecoli_glycolysis" TableName="Reaction" TableType="Reaction"
+!Reaction	!Enzyme	!Gene	!MiriamID::urn:miriam:kegg.reaction	!SumFormula
+PTS	PTS system		R00299	Phosphoenolpyruvate + D_Glucose <=> Pyruvate + D_Glucose_6_phosphate
+PGI	Phosphoglucose isomerase	pgi	R00771	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate
+PFK	Phosphofructokinase	pfkA	R00756	ATP + D_Fructose_6_phosphate <=> ADP + D_Fructose_1_6_bisphosphate
+FBA	Fructose bisphosphate aldolase	fba	R01070	D_Fructose_1_6_bisphosphate <=> D_Glyceraldehyde_3_phosphate + Glycerone_phosphate
+TIM	Triose phosphate isomerase	tpiA	R01015	D_Glyceraldehyde_3_phosphate <=> Glycerone_phosphate
+GAP	Glyceraldehyde phosphate dehydrogenase	gapA	R01061	Orthophosphate + NAD+ + D_Glyceraldehyde_3_phosphate <=> NADH + H+ + 3_Phospho_D_glyceroyl_phosphate
+PGK	Phosphoglycerate kinase	pgk	R01512	ATP + 3_Phospho_D_glycerate <=> ADP + 3_Phospho_D_glyceroyl_phosphate
+PGM	Phosphoglycerate mutase	pgm	R01518	2_Phospho_D_glycerate <=> 3_Phospho_D_glycerate
+ENO	Enolase	eno	R00658	2_Phospho_D_glycerate <=> H2O + Phosphoenolpyruvate
+PYK	Pyruvate kinase	pykA|pykF	R00200	Pyruvate + ATP <=> Phosphoenolpyruvate + ADP
+PDC	Pyruvate decarboxylase		R00014_R03270_R02569	Pyruvate + CoA + NAD+ <=> Acetyl_CoA + CO2 + NADH
+ATPase	ATP consumption		R00086	ATP + H2O <=> ADP + Orthophosphate
+NADHcons	NADH consumption		X2	NADH <=> NAD+

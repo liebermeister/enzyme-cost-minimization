@@ -1,0 +1,2 @@
+options.model_name = 'ecoli_glycolysis';
+options.psfile_dir = '/home/wolfram/projekte/flux_specific_cost/fsc/models/ecoli_glycolysis/ps-files/';
