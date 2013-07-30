@@ -1,6 +1,8 @@
-==============================================
-Flux-Specific Enzyme Cost functions for Matlab
-==============================================
+Code for Flux-Specific Enzyme Cost calculations
+===============================================
+
+The matlab code depends on the toolboxes mnt and sbtab-matlab
+(also here on github)
 
 Wolfram Liebermeister (2013)
 
