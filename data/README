@@ -1,0 +1,13 @@
+==========================================
+Data for FSC calculations and other models
+==========================================
+
+o Different sorts of data are stored in different subdirectories
+
+o All data are eventually stored in Sbtab table format (see www.sbtab.org)
+
+o If you add data files, please adhere to this format 
+  and leave a note in the README file of the respective directory
+
+o matlab scripts for data file conversion -> see subdirectory 'matlab'
+

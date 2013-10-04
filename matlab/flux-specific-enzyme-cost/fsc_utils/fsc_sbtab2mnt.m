@@ -14,7 +14,7 @@ options = join_struct(options_default,options);
 network            = sbtab_to_network([filenames.sbtab_dir '/' model_name], struct('load_quantity_table',0));
 v                  = cell_string2num(network.Flux);
 network.external   = [network.N * v ~= 0];
-network.metabolite_names = kegg_compound_id_to_name(network.metabolite_KEGGID,filenames.kegg_conversion_file);
+network.metabolite_names = fsc_kegg_compound_id_to_name(network.metabolite_KEGGID,filenames.kegg_conversion_file);
 
 
 % -----------------------------------------------------------

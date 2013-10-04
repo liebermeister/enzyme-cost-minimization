@@ -1,4 +1,4 @@
-function cs_display_distribution_errorbar(fignum,mmatrix,names,ttitle,m_lower,m_upper,m_mean,options)
+function concentration_sampling_display_distribution_errorbar(fignum,mmatrix,names,ttitle,m_lower,m_upper,m_mean,options)
 
 eval(default('options','struct'));
 options_default = struct('flag_logarithmic',0,'shift',0);

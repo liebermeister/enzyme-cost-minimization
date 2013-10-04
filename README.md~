@@ -1,10 +1,10 @@
-Code and data for Flux-Specific Enzyme Cost calculations
---------------------------------------------------------
+Code for Flux-Specific Enzyme Cost calculations
+-----------------------------------------------
 
 Wolfram Liebermeister (2013)
 
-Dependencies: For some of the MATLAB functions, 
-              the following MATLAB toolboxes must be installed
+Dependencies: For some of the MATLAB functionality, the following 
+              MATLAB toolboxes may be necessary
 
  o Metabolic Network Toolbox (https://github.com/wolframliebermeister/mnt)
  o SBMLtoolbox               (http://sbml.org/Software/SBMLToolbox)

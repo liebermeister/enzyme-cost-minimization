@@ -8,7 +8,6 @@
 % fuer hefe: lieber glycerol/ethanol als lactate, daten in jozsefs paper fig 4
 % ist laktat realistisch?
 
-
 organism   = 'eco';  
 model_name = 'EMP-GLYCOLYSIS-PTS-TCA-OVERFLOW';
 run_id     = 'r1_ferm_resp_eco_brenda'; 
@@ -21,7 +20,9 @@ data_id    = 'd1_eco';
 
 kcat_usage = 'use';
 model_dir  = '/home/wolfram/projekte/flux_specific_enzyme_cost/models/elad/obd_pathways/';
-fsc_scores = {'obdw', 'fsc2', 'fsc2sub', 'fsc3', 'fsc3prod', 'fsc4smr', 'fsc4cmr'}; 
+fsc_scores = {'obdw', 'fsc2', 'fsc2sub', 'fsc3', 'fsc3prod', 'fsc4cmr'}; 
+
+%% 'fsc4smr' nicht realistisch
 
 
 % --------------------------------------------------------------------------------------
@@ -97,7 +98,8 @@ fsc_options.conc_max           = conc_max;
 fsc_options.lambda_regularisation = 10^-5;
 fsc_options.kinetic_data       = kinetic_data;
 fsc_options.kcat_usage         = kcat_usage;
-fsc_options.kcat_standard      = 500; % median of Brenda values in EMP-GLYCOLYSIS
+fsc_options.kcat_prior_median  = 200; % similar to median in glycolysis+tca
+fsc_options.kcat_prior_log10_std = 0.5;
 fsc_options.c_data             = c_data;
 fsc_options.u_data             = u_data;  
 fsc_options.ind_scored_enzymes = 1:length(network.actions);
@@ -147,5 +149,3 @@ end
 
 
 save('~/dummi', 'alpha_list', 'my_c', 'my_u', 'fsc_options', 'organism', 'model_name', 'run_id', 'data_id', 'kcat_usage', 'model_dir', 'fsc_scores');
-
-

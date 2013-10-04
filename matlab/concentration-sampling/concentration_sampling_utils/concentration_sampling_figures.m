@@ -20,14 +20,14 @@ mu_matrix(ind_rel,:) =   mu0_matrix(ind_rel,:) + RT * log_c_matrix;
 A_matrix  = - network.N' * mu_matrix;
 
 figure(options.fig_offset+1); clf 
-cs_display_cumulative_distribution(options.fig_offset+1,exp(log_c_matrix),standardise_metabolite_names(network.metabolites(ind_rel)),'Concentrations (cumulative distribution)',options.conc_min, options.conc_max,struct('flag_logarithmic',1));
+concentration_sampling_display_cumulative_distribution(options.fig_offset+1,exp(log_c_matrix),standardise_metabolite_names(network.metabolites(ind_rel)),'Concentrations (cumulative distribution)',options.conc_min, options.conc_max,struct('flag_logarithmic',1));
 
 my_A_matrix = diag(sign(options.v)) * A_matrix;
 figure(options.fig_offset+2); clf 
-cs_display_cumulative_distribution(options.fig_offset+2,my_A_matrix,network.actions,'Reaction affinities along flux (cumulative distribution)',0,60,options);
+concentration_sampling_display_cumulative_distribution(options.fig_offset+2,my_A_matrix,network.actions,'Reaction affinities along flux (cumulative distribution)',0,60,options);
 
 figure(options.fig_offset+3); clf 
-cs_display_distribution_errorbar(options.fig_offset+3,exp(log_c_matrix),standardise_metabolite_names(network.metabolites(ind_rel)),'Concentrations (median and 5% quantiles)',options.conc_min, options.conc_max, kinetic_data.c.median(ind_rel),struct('flag_logarithmic',1));
+concentration_sampling_display_distribution_errorbar(options.fig_offset+3,exp(log_c_matrix),standardise_metabolite_names(network.metabolites(ind_rel)),'Concentrations (median and 5% quantiles)',options.conc_min, options.conc_max, kinetic_data.c.median(ind_rel),struct('flag_logarithmic',1));
 
 log_c_median = median(log_c_matrix')';
 figure(options.fig_offset+4); clf; 

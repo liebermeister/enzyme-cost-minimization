@@ -1,0 +1,11 @@
+------------------------
+Data directory data-flux
+------------------------
+
+eco_fluxes.csv            from Chen et al (2010), Fig. 1  (duplicated some rows)
+eco_fluxes_aerobic.csv   
+eco_fluxes_anaerobic.csv
+
+sce_fluxes_aerobic.csv    from Christen & Sauer 2011, Fig. 1 (with some guesswork, duplicated rows)
+bsu_fluxes_glucose.csv    from Kleijn & al 2011, Fig. 1 (duplicated rows)
+

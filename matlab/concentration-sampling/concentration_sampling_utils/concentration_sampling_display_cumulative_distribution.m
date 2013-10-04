@@ -1,4 +1,4 @@
-function cs_display_cumulative_distribution(fignum,mmatrix,names,ttitle,mmin,mmax,options)
+function concentration_sampling_display_cumulative_distribution(fignum,mmatrix,names,ttitle,mmin,mmax,options)
 
 eval(default('options','struct'));
 options_default = struct('flag_logarithmic',0);

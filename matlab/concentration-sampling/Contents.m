@@ -1,6 +1,6 @@
 % Functions for sampling of feasible concentration vectors, given 
-%   (ii) predefined flux directions
-%   (i)  bounds on the metabolite concentrations 
+%   o predefined flux directions
+%   o bounds on the metabolite concentrations 
 %
 % Main functions:
 %   concentration_sampling.m

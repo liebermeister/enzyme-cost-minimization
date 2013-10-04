@@ -1,0 +1,21 @@
+---------------------------
+Data directory data-kinetic
+---------------------------
+
+kinetic_constants_brenda.tsv        from ~/projekte/pathway_modelling/data 
+
+ORGANISM-SPECIFIC DATA:                                 
+ bsu_kinetic_constants_brenda.tsv    matlab script brenda_to_organism.m
+ eco_kinetic_constants_brenda.tsv    matlab script brenda_to_organism.m
+ sce_kinetic_constants_brenda.tsv    matlab script brenda_to_organism.m
+
+MEAN DATA (AVERAGE OVER ORGANISMS):
+ average_kinetic_constants_brenda.tsv   matlab script brenda_average_over_organisms.m
+
+quantity_info.tsv                  Information for parameter balancing, from ~/matlab/wolf_packages/mnt/mnt/mnt_data_integration/
+
+
+EXTRA DATA FILE FROM ARREN 
+kinetic_constants_Ecoli_Scerevisiae.csv  from /home/wolfram/projekte/pathway_modelling/data
+                                         original file SuppTable1_KineticParams.xlsx from Arren,
+                                         email 2013-09-26

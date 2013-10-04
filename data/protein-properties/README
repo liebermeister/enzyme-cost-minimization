@@ -1,0 +1,7 @@
+----------------------------
+Directory protein-properties
+----------------------------
+
+bsu_protein_lengths.tsv          from ~/projekte/protein_abundance/protein_lengths/processed_data/ adjusted to SBtab
+eco_protein_lengths.tsv          from ~/projekte/protein_abundance/protein_lengths/processed_data/ adjusted to SBtab
+sce_protein_lengths.tsv          from ~/projekte/protein_abundance/protein_lengths/processed_data/ adjusted to SBtab

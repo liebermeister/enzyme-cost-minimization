@@ -48,7 +48,7 @@ MTD	-
 MTR	-
 ODC	-
 PCK	pck1
-PDH	-
+PDH	pda1|pdb1|
 PFK	pfk1|pfk2
 PFL	-
 PGD	-

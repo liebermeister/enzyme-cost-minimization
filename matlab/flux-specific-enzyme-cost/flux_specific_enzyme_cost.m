@@ -1,8 +1,8 @@
-function [c, u, u_tot, up, A_forward, r, r_orig, fsc_options] = flux_specific_cost(network,v,fsc_options)
+function [c, u, u_cost, up, A_forward, r, r_orig, fsc_options] = flux_specific_cost(network,v,fsc_options)
 
 % PATHWAY_SPECIFIC_COST - Compute optimal flux-specific costs for given flux distribution
 %
-% [c, u, u_tot, up, A_forward, r, r_orig] = flux_specific_cost(network, v, fsc_options)
+% [c, u, u_cost, up, A_forward, r, r_orig] = flux_specific_cost(network, v, fsc_options)
 %
 % Input 
 %   network       metabolic network structure (as in Metabolic Network Toolbox)
@@ -14,23 +14,28 @@ function [c, u, u_tot, up, A_forward, r, r_orig, fsc_options] = flux_specific_co
 %   c.data            data vector (if provided)
 %   c.fix             fixed concentration vector
 %   c.init            initial solution vector 
-%   c.[SCORE]         result from optimising the score [SCORE]
+%   c.[SCORE]         1st column: result from optimising the score [SCORE]
+%                     other columns: possible sampled solutions
 %                     
 %   u                 enzyme levels (all enzymes)
 %   u.data            data vector
-%   u.[SCORE]         result from optimising the score [SCORE]
+%   u.[SCORE]         1st column: result from optimising the score [SCORE]
+%                     other columns: possible sampled solutions
 %
 %   up                enzyme levels (only scored enzymes as defined by 
 %                                    fsc_scores.ind_scored_enzymes)
-%   up.[SCORE]        result from optimising the score [SCORE]
+%   up.[SCORE]        1st column: result from optimising the score [SCORE]
+%                     other columns: possible sampled solutions
 %
-%   u_tot             sum of scored enzyme levels 
-%   u_tot.data        data value
-%   u_tot.[SCORE]     result from optimising the score [SCORE]
+%   u_cost            sum of scored enzyme levels 
+%   u_cost.data       data value
+%   u_cost.[SCORE]    1st column: result from optimising the score [SCORE]
+%                     other columns: possible sampled solutions
 %
 %   A_forward         reaction affinity (in flux direction)
 %   A_forward.init    initial solution vector 
-%   A_forward.[SCORE] result from optimising the score [SCORE]
+%   A_forward.[SCORE] 1st column: result from optimising the score [SCORE]
+%                     other columns: possible sampled solutions
 %
 %   r                 Kinetic constants (from parameter balancing)
 %   r_orig            Original kinetic constants (used as input in parameter balancing)
@@ -43,7 +48,7 @@ function [c, u, u_tot, up, A_forward, r, r_orig, fsc_options] = flux_specific_co
 
 [nm,nr] = size(network.N);
 
-fsc_options_default = struct('model_name', 'model','run_id','run','network_CoHid',network,'conc_min_default',10^-6,'conc_max_default',10^2,'conc_min',nan*ones(nm,1),'conc_max',nan*ones(nm,1),'c_data',[],'u_data',[],'kinetic_data',[],'print_graphics',0,'show_graphics',1,'flag_given_kinetics',0,'enzyme_cost_weights',[],'kcat_usage','use','kcat_standard',[], 'lambda_regularisation', 10^-10, 'initial_choice','obd','quantity_info_file',[]);
+fsc_options_default = struct('model_name', 'model','run_id','run','network_CoHid',network,'conc_min_default',10^-6,'conc_max_default',10^2,'conc_min',nan*ones(nm,1),'conc_max',nan*ones(nm,1),'c_data',[],'u_data',[],'kinetic_data',[],'print_graphics',0,'show_graphics',1,'flag_given_kinetics',0,'enzyme_cost_weights',[],'kcat_usage','use','kcat_prior_median',[], 'kcat_prior_log10_std',[],'lambda_regularisation', 10^-10, 'initial_choice','obd','quantity_info_file',[]);
 
 fsc_options_default.ind_scored_enzymes = 1:length(network.actions);
 fsc_options_default.show_metabolites   = network.metabolites;
@@ -76,6 +81,7 @@ u_data             = fsc_options.u_data             ;
 kinetic_data       = fsc_options.kinetic_data       ;
 print_graphics     = fsc_options.print_graphics     ;  
 show_graphics      = fsc_options.show_graphics      ;  
+
 if show_graphics == 0, print_graphics = 0; end
 
 ind_conc_fix = find(fsc_options.conc_min == fsc_options.conc_max);
@@ -112,7 +118,7 @@ ind_not_scored     = setdiff(1:nr,ind_scored_enzymes);
 
 c.data = c_data;
 u.data = u_data;
-u_tot.data = nansum(u.data);
+u_cost.data = nansum(u.data);
 
 
 % --------------------------------------------------------------------------------------
@@ -158,8 +164,8 @@ else
       emp   = ones(size(ind_p));
       emm   = ones(size(ind_m));
       
-      if isempty(fsc_options.kcat_standard), error('Kcat standard value missing'); end
-      kcat_forward_value      = fsc_options.kcat_standard; % unit: 1/s
+      if isempty(fsc_options.kcat_prior_median), error('Kcat standard value missing'); end
+      kcat_forward_value      = fsc_options.kcat_prior_median; % unit: 1/s
       kk                      = kinetic_data;
       kk.Kcatf.median(ind_p)  =     kcat_forward_value  * emp; 
       kk.Kcatr.median(ind_m)  =     kcat_forward_value  * emm; 
@@ -176,7 +182,7 @@ else
       kinetic_data         = kk;
   end
     
-  [r,r_orig,kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],struct('kcat_median',fsc_options.kcat_standard,'GFE_fixed',1,'quantity_info_file',fsc_options.quantity_info_file));
+  [r,r_orig,kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],struct('kcat_prior_median',fsc_options.kcat_prior_median,'kcat_prior_log10_std',fsc_options.kcat_prior_log10_std,'GFE_fixed',1,'quantity_info_file',fsc_options.quantity_info_file));
 
   %print_matrix([r_orig.Kcatf, r_orig.Kcatr, r.Kcatf,  r.Kcatr, r.Keq],network.actions);
   network.kinetics = set_kinetics(network,'cs',r);
@@ -225,116 +231,96 @@ kmprod_forward(ind_neg,1)   = KMf(ind_neg);
 % --------------------------------------------------------------------------------------
 % find feasible initial solution
 
-epsilon = 10^-10;
+%epsilon = 10^-10;   % flux directions must be possible at least
+epsilon = 1 * 1/RT; % minimal reaction GFE of 1 kJ/mol is required  
 
 try
-  x_init = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max);
+  [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max,0*x_min);
 catch
   error('*** The concentration constraints seem to be infeasible ***');
-  c = [];  u = [];  u_tot = [];  up = [];  A_forward = [];  r = [];  r_orig = [];
+  c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];  r = [];  r_orig = [];
   return
 end
 
+X_extreme = [x1 x2]; % matrix with extreme concentration vectors
+
+% --------------------------------------------------------------------------
+
 switch fsc_options.initial_choice,
-  case 'interval_center',
-  display(' Choosing initial concentrations close to centers of allowed intervals'); 
-  x_init = fmincon(@(xx) fsc_regularisation(xx,x_min,x_max,1), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-  case 'obd',
-    x_init = fmincon(@(xx) obd(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    display(' Choosing OBD solution as initial concentrations'); 
   case 'polytope_center',
-  display(' Choosing initial concentrations at polytope center'); 
+    display('  Choosing polytope center as starting point'); 
+  case 'interval_center',
+    display('  Choosing point close to center of allowed intervals as starting point'); 
+    x_start = fmincon(@(xx) fsc_regularisation(xx,x_min,x_max,1), x_start,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
+  case 'obd',
+    x_start = fmincon(@(xx) obd(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
+    display('  Choosing OBD solution as starting point'); 
 end
 
-c_init = exp(x_init);
+% --------------------------------------------------------------------------------------
+% run optimisations starting from x_start
+
+x_init = x_start;
+
+c_init         = exp(x_init);
 A_forward_init = RT * [log_Keq_forward  - N_forward' * log(c_init)]; 
 A_forward_init(ind_not_scored) = nan;
-
 c.fix          = exp(x_fix);
 c.init         = c_init;
 A_forward.init = A_forward_init;
 
+for it_method = 1:length(fsc_scores),
+
+  fsc_score = fsc_scores{it_method};
+  
+  [my_c, my_u, my_up, my_u_cost, my_A_forward] = fsc_one_run(fsc_score,v,M_forward,Mprod_forward,kmprod_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,ind_not_scored,enzyme_cost_weights,x_min,x_max,x_init,network,fsc_options,opt);
+  c.(fsc_score)         = my_c;
+  u.(fsc_score)         = my_u;
+  up.(fsc_score)        = my_up;
+  u_cost.(fsc_score)     = my_u_cost;
+  A_forward.(fsc_score) = my_A_forward;
+
+end
+
 
 % --------------------------------------------------------------------------------------
-% run optimisations
+% run more optimisations starting from extreme points
 
-% gp  = struct('arrowsize',0.05,'actstyle','none','showsign',0,'actprintnames',0,'flag_edges',1);
+display(sprintf('  Running optimisation from %d extreme starting points',size(X_extreme,2)));
 
 for it_method = 1:length(fsc_scores),
 
   fsc_score = fsc_scores{it_method};
+  display(sprintf('   %s',fsc_score));
 
-  %% compute optimal log concentration profile
-  
-  switch fsc_score,
-    case 'obd',
-      my_x = fmincon(@(xx) obd(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'obdw',
-      my_x = fmincon(@(xx) obdw(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'mfsc2sub',
-      my_x = fmincon(@(xx) mfsc2sub(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights)  + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc1',
-      my_x = fmincon(@(xx) fsc1(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc2sub',
-      my_x = fmincon(@(xx) fsc2sub(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights)  + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc2',
-      my_x = fmincon(@(xx) fsc2(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'mfsc2',
-      my_x = fmincon(@(xx) mfsc2(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc3',
-      my_x = fmincon(@(xx) fsc3(xx,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights)  + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc3prod',
-      my_x = fmincon(@(xx) fsc3prod(xx,v,M_forward,Mprod_forward,N_forward,log_Keq_forward,kc_forward,km_forward,kmprod_forward,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc4dmr',
-      my_x = fmincon(@(xx) fsc4dmr(xx,v,network,ind_scored_enzymes,enzyme_cost_weights), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc4smr',
-      my_x = fmincon(@(xx) fsc4smr(xx,v,network,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    case 'fsc4cmr',
-      my_x = fmincon(@(xx) fsc4cmr(xx,v,network,ind_scored_enzymes,enzyme_cost_weights) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-  end
+  for itt = 1:size(X_extreme,2),
+    x_init         = X_extreme(:,itt);
 
-  my_c = exp(my_x);
-
-  my_A_forward = RT * [log_Keq_forward  - N_forward' * log(my_c)]; my_A_forward(ind_not_scored) = nan;
-  
-  %% compute resulting necessary enzyme profile
-  
-  switch fsc_score,
+    %% same as above
+    c_init         = exp(x_init);
+    A_forward_init = RT * [log_Keq_forward  - N_forward' * log(c_init)]; 
+    A_forward_init(ind_not_scored) = nan;
+    c.fix                   = exp(x_fix);
+    c.init(:,1+itt)         = c_init;
+    A_forward.init(:,1+itt) = A_forward_init;
+    [my_c, my_u, my_up, my_u_cost, my_A_forward] = fsc_one_run(fsc_score,v,M_forward,Mprod_forward,kmprod_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,ind_not_scored,enzyme_cost_weights,x_min,x_max,x_init,network,fsc_options,opt);
+    c.(fsc_score)(:,1+itt)         = my_c;
+    u.(fsc_score)(:,1+itt)         = my_u;
+    up.(fsc_score)(:,1+itt)        = my_up;
+    u_cost.(fsc_score)(:,1+itt)    = my_u_cost;
+    A_forward.(fsc_score)(:,1+itt) = my_A_forward;
     
-    case {'obd'},
-      [my_u_tot, my_u] = obd(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'obdw'},
-      [my_u_tot, my_u] = obdw(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'mfsc2sub'},
-      [my_u_tot, my_u] = mfsc2sub(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc1'},
-      [my_u_tot, my_u] = fsc1(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc2sub'},
-      [my_u_tot, my_u] = fsc2sub(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc2'},
-      [my_u_tot, my_u] = fsc2(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'mfsc2'},
-      [my_u_tot, my_u] = mfsc2(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc3'},
-      [my_u_tot, my_u] = fsc3(my_x,v,M_forward,N_forward,log_Keq_forward,kc_forward,km_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc3prod'},
-      [my_u_tot, my_u] = fsc3prod(my_x,v,M_forward,Mprod_forward,N_forward,log_Keq_forward,kc_forward,km_forward,kmprod_forward,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc4dmr'},
-      [my_u_tot, my_u] = fsc4dmr(my_x,v,network,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc4smr'},
-      [my_u_tot, my_u] = fsc4smr(my_x,v,network,ind_scored_enzymes,enzyme_cost_weights);
-    case {'fsc4cmr'},
-      [my_u_tot, my_u] = fsc4cmr(my_x,v,network,ind_scored_enzymes,enzyme_cost_weights);
-    otherwise,
-      my_u_tot = nan; my_u= nan * ones(nr,1); my_up = nan * ones(nr,1);
   end
+  
+  %% copy the best result to the first position
+  [dum,ind_opt] = min(u_cost.(fsc_score));
 
-  my_up = my_u; my_up(ind_not_scored) = nan;
-
-  c.(fsc_score)     = my_c;
-  u.(fsc_score)     = my_u;
-  up.(fsc_score)    = my_up;
-  u_tot.(fsc_score) = my_u_tot;
-  A_forward.(fsc_score) = my_A_forward;
-
+  c.init                = [ c.init(:,ind_opt)         c.init        ];  
+  c.(fsc_score)         = [ c.(fsc_score)(:,ind_opt)         c.(fsc_score)        ];  
+  u.(fsc_score)         = [ u.(fsc_score)(:,ind_opt)         u.(fsc_score)        ];  
+  up.(fsc_score)        = [ up.(fsc_score)(:,ind_opt)        up.(fsc_score)       ];  
+  u_cost.(fsc_score)    = [ u_cost.(fsc_score)(ind_opt)      u_cost.(fsc_score)   ];  
+  A_forward.(fsc_score) = [ A_forward.(fsc_score)(:,ind_opt) A_forward.(fsc_score)];
+  A_forward.init = [ A_forward.init(:,ind_opt) A_forward.init];
+  
 end

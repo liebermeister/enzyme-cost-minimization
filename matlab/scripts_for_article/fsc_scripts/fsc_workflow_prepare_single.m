@@ -1,29 +1,48 @@
 % --------------------------------------------------------------------------------------
-% obd_pathways_sbtab2matlab
+% Before running this script: run fsc_workflow_prepare_all
 %
-% (after creating the SBtab files for Elad's models by pathway2sbtab.py:)
-%
-% o convert Elad's OBD pathway models and kinetic data from SBtab to matlab format
+% What the script does:
+% o convert the pathway models (and kinetic data from SBtab) to matlab format
 % o compute GFE of formation
-% o save files -> ../models/elad/obd_pathways/matlab/
+% o save files -> ../models/elad/[PATHWAY_COLLECTION]/matlab/
 
-% SBtab files created by ~/projekte/flux_specific_cost/matlab_flux_specific_cost/models/elad/pathway2sbtab.py
+% Variables to be set: 
+%  data_id            = [STRING] (identifier to be used in filenames)
+%  pathway_collection = {'obd_pathways'|'kegg_modules'} 
+%  organism           = {'eco'|'bsu'|'sce'}
 
 if 0,
-  data_id  = 'd1_eco'; organism = 'eco'; prepare_obd_pathways_single;
-  data_id  = 'd2_bsu'; organism = 'bsu'; prepare_obd_pathways_single;
-  data_id  = 'd3_sce'; organism = 'sce'; prepare_obd_pathways_single;
+  data_id  = 'd1_eco'; pathway_collection = 'obd_pathways'; organism = 'eco'; fsc_workflow_prepare_single;
+  data_id  = 'd2_bsu'; pathway_collection = 'obd_pathways'; organism = 'bsu'; fsc_workflow_prepare_single;
+  data_id  = 'd3_sce'; pathway_collection = 'obd_pathways'; organism = 'sce'; fsc_workflow_prepare_single;
+  data_id  = 'd0_eco'; pathway_collection = 'kegg_modules'; organism = 'eco'; fsc_workflow_prepare_single;
 end
 
-model_names = {'EMP-GLYCOLYSIS', 'EMP-GLYCOLYSIS-PTS', 'ED-GLYCOLYSIS', 'TCA', 'EMP-GLYCOLYSIS-TCA', 'EMP-GLYCOLYSIS-PTS-TCA', 'EMP-GLYCOLYSIS-TCA-OVERFLOW', 'EMP-GLYCOLYSIS-PTS-TCA-OVERFLOW'};%, 'ED-GLYCOLYSIS-HIGHWAY', 'ED-SEMI-PHOSPHORYLATIVE-HIGHWAY', 'PEP-GLX-MQO', 'TCA-CHANNEL'};
+switch pathway_collection,
+  
+  case 'obd_pathways', 
+    model_dir  = '/home/wolfram/projekte/flux_specific_enzyme_cost/models/elad/obd_pathways/';
 
-% GEHT NICHT (singulaere matrix in enz-optimierung)
-% 'EMP-GLYCOLYSIS-MIXED-FERMENTATION', 'PEP-GLX', 'rPPP','rTCA', 'TCA-P_fluorescens' 
+    switch organism,
+      case {'eco','bsu'},
+        model_names = {'EMP-GLYCOLYSIS-PTS-oxPPP-TCA'}; %'EMP-GLYCOLYSIS-PTS', 'ED-GLYCOLYSIS', 'TCA', 'EMP-GLYCOLYSIS-PTS-TCA',  'EMP-GLYCOLYSIS-PTS-TCA-OVERFLOW'};
+      case 'sce',
+        model_names = {'EMP-GLYCOLYSIS', 'ED-GLYCOLYSIS', 'TCA', 'EMP-GLYCOLYSIS-TCA', 'EMP-GLYCOLYSIS-PTS-TCA', 'EMP-GLYCOLYSIS-PTS-oxPPP-TCA', 'EMP-GLYCOLYSIS-TCA-OVERFLOW'};
+    end
+        
+    %%, 'ED-GLYCOLYSIS-HIGHWAY', 'ED-SEMI-PHOSPHORYLATIVE-HIGHWAY', 'PEP-GLX-MQO', 'TCA-CHANNEL'};
 
-% GEHT NICHT (too restrictive constraints?)
-%'ED-SEMI-PHOSPHORYLATIVE', 'METHYLGLYOXAL', 'oxPPP', 'PPP-PHOSPHOKETOLASE', 'rPPP-Heterotrophs',  'TCA-MQO', 'ED-NON-PHOSPHORYLATIVE', 'TCA-OA100nm', 'TCA-OA10nm', '3HP-4HB', '3HP', 'ACETY_COA-CHANNEL', 'DC-4HB', 'EMP-GLYCOLYSIS-HIGHWAY', 'MOP'
+    %% GEHT NICHT (singulaere matrix in enz-optimierung)
+    %% 'EMP-GLYCOLYSIS-MIXED-FERMENTATION', 'PEP-GLX', 'rPPP','rTCA', 'TCA-P_fluorescens' 
 
-model_dir  = '/home/wolfram/projekte/flux_specific_enzyme_cost/models/elad/obd_pathways/';
+    %% GEHT NICHT (too restrictive constraints?)
+    %%'ED-SEMI-PHOSPHORYLATIVE', 'METHYLGLYOXAL', 'oxPPP', 'PPP-PHOSPHOKETOLASE', 'rPPP-Heterotrophs',  'TCA-MQO', 'ED-NON-PHOSPHORYLATIVE', 'TCA-OA100nm', 'TCA-OA10nm', '3HP-4HB', '3HP', 'ACETY_COA-CHANNEL', 'DC-4HB', 'EMP-GLYCOLYSIS-HIGHWAY', 'MOP'
+    
+  case 'kegg_modules', 
+    model_dir  = '/home/wolfram/projekte/flux_specific_enzyme_cost/models/elad/kegg_modules/';
+    model_names = {'M00001','M00002','M00003','M00004','M00005','M00006','M00007','M00008','M00009','M00010','M00011','M00012','M00013','M00014','M00015','M00016','M00017','M00018','M00019','M00020','M00021','M00022','M00023','M00024','M00025','M00026','M00027','M00028','M00029','M00030','M00031','M00032','M00033','M00034','M00035','M00036','M00037','M00038','M00039','M00040','M00042','M00043','M00044','M00045','M00046','M00047','M00048','M00050','M00051','M00052','M00053','M00055','M00060','M00061','M00063','M00064','M00066','M00067','M00081','M00082','M00083','M00086','M00087','M00088','M00089','M00090','M00091','M00092','M00093','M00094','M00095','M00096','M00097','M00098','M00099','M00100','M00101','M00102','M00103','M00104','M00106','M00107','M00108','M00109','M00110','M00112','M00113','M00114','M00115','M00116','M00117','M00118','M00119','M00120','M00121','M00122','M00123','M00124','M00125','M00126','M00127','M00128','M00129','M00130','M00131','M00132','M00133','M00134','M00135','M00136','M00137','M00138','M00139','M00140','M00141','M00142','M00144','M00145','M00148','M00149','M00150','M00151','M00152','M00165','M00166','M00167','M00168','M00169','M00170','M00171','M00172','M00173','M00174','M00175','M00176','M00307','M00308','M00309','M00310','M00311','M00312','M00313','M00338','M00344','M00346','M00347','M00356','M00357','M00358','M00364','M00365','M00366','M00367','M00368','M00369','M00370','M00371','M00372','M00373','M00374','M00375','M00376','M00377','M00378','M00415','M00416','M00418','M00419','M00422','M00432','M00433','M00525','M00526','M00527','M00528','M00529','M00530','M00531','M00532','M00533','M00534','M00535','M00537','M00538','M00539','M00540','M00541','M00543','M00544','M00545','M00547','M00548','M00551','M00555','M00561','M00562','M00563','M00567','M00568','M00569','M00570','M00572','M00573','M00577','M00579'};
+
+end
 
 
 % ----------------------------------------------------------------
@@ -56,7 +75,7 @@ for it = 1:length(model_names),
 
   [network, v, conc_min, conc_max, kinetic_data] = fsc_sbtab2mnt(model_name, filenames, kinetic_data_file_names);
 
-  network.metabolite_names         = kegg_compound_id_to_name(network.metabolite_KEGGID, kegg_conversion_file);
+  network.metabolite_names         = fsc_kegg_compound_id_to_name(network.metabolite_KEGGID, kegg_conversion_file);
   network.metabolite_KEGGID        = network.metabolites;
   network.metabolites              = network.metabolite_names;
   network.graphics_par.metabolites = network.metabolite_names;
@@ -126,5 +145,6 @@ for it = 1:length(model_names),
   cd(filenames.psfile_dir);
   print(['network_all_' model_name '.eps'],'-depsc',['-f' num2str(it)]);
   print(['network_hid_' model_name '.eps'],'-depsc',['-f' num2str(100+it)]);
+
 end
 

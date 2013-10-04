@@ -30,14 +30,14 @@ clear c_fsc2 c_fsc3 u_fsc2 u_fsc3
 options.show_graphics       = 0;
 options.flag_given_kinetics = 1;
 options.enzyme_cost_weights = ones(4,1);%[1 2 3 4]';
-options.my_methods          = {'fsc2','fsc3'};
+options.fsc_scores          = {'fsc2','fsc3'};
 options.met_fix             = network.metabolites(find(network.external));
 options.conc_fix            = c_init(find(network.external));
 
 for it = 1:n_nodes,
   display(sprintf('Node %d/%d',it,n_nodes))
   v             = V * nodes(:,it);
-  [c_opt,u_opt] = flux_specific_cost(network,v,options);
+  [c_opt,u_opt] = flux_specific_enzyme_cost(network,v,options);
   c_fsc2(:,it)  = c_opt.fsc2;
   c_fsc3(:,it)  = c_opt.fsc3;
   u_fsc2(:,it)  = u_opt.fsc2;
