@@ -1,8 +1,8 @@
-function [c, u, u_cost, up, A_forward, r, r_orig, fsc_options] = flux_specific_cost(network,v,fsc_options)
+function [c, u, u_cost, up, A_forward, r, r_orig, fsc_options] = flux_specific_enzyme_cost(network,v,fsc_options)
 
-% PATHWAY_SPECIFIC_COST - Compute optimal flux-specific costs for given flux distribution
+% FLUX_SPECIFIC_ENZYME_COST - Compute optimal flux-specific enzyme costs for given flux distribution
 %
-% [c, u, u_cost, up, A_forward, r, r_orig] = flux_specific_cost(network, v, fsc_options)
+% [c, u, u_cost, up, A_forward, r, r_orig] = flux_specific_enzyme_cost(network, v, fsc_options)
 %
 % Input 
 %   network       metabolic network structure (as in Metabolic Network Toolbox)
