@@ -47,7 +47,7 @@ if nargout>1,
   clear s
   s.QuantityType = repmat({'standard chemical potential'},nm,1);
   s.Unit         = repmat({'kJ/mol'},nm,1);
-  s.Compound_MiriamID__urn_miriam_kegg_compound = network.metabolite_KEGGID;
+  s.Compound_Identifiers_kegg_compound = network.metabolite_KEGGID;
   s.SBMLSpeciesID = network.metabolite_KEGGID;
   if isfield(network,'metabolite_names'),
     s.CompoundName = network.metabolite_names;
@@ -56,6 +56,6 @@ if nargout>1,
   end
   s.Value        = G0;
   s.Reference    = repmat({'Component contribution method'},nm,1);
-  G0_sbtab = sbtab_table_construct_from_struct(struct,s,{'QuantityType','Unit','Compound MiriamID::urn.miriam.kegg:compound','SBMLSpeciesID','CompoundName','Value','Reference'}');
+  G0_sbtab = sbtab_table_construct_from_struct(struct,s,{'QuantityType','Unit','Compound Identifiers:kegg.compound','SBMLSpeciesID','CompoundName','Value','Reference'}');
   
 end

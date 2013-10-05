@@ -1,4 +1,4 @@
-function [network, v, conc_min, conc_max, kinetic_data] = fsc_sbtab2mnt(model_name, filenames,kinetic_data_file_names,options)
+function [network, v, conc_min, conc_max, kinetic_data] = fsc_sbtab2mnt(model_name, filenames,kinetic_data_file_names,options,organism_long)
 
 % [network, v, conc_fix, kinetic_data] = fsc_sbtab2mnt(model_name, model_dir, matlab_dir,kinetic_data_file_names)
 %
@@ -6,6 +6,8 @@ function [network, v, conc_min, conc_max, kinetic_data] = fsc_sbtab2mnt(model_na
 % and convert them into MNT network format
 
 % I use mM and convert everything from Elad's convention within this script
+
+% if organism_long is given, the kinetic data are filtered for the organism
 
 eval(default('options','struct'));
 options_default = struct();
@@ -35,7 +37,7 @@ for it=1:length(network.actions),
    network.reaction_KEGGID{it,1} = dum{2};
 end
 
-network.MiriamID__urn_miriam_kegg_reaction = network.reaction_KEGGID;
+network.Identifiers_kegg_reaction = network.reaction_KEGGID;
 
 
 % -----------------------------------------------------------
@@ -65,4 +67,4 @@ import_quantity_list = {'standard chemical potential','Michaelis constant',...
                     'equilibrium constant','substrate catalytic rate constant', ...
                     'product catalytic rate constant'};
 
-kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], network, kinetic_data_file_names, 0, 1,1,0);
+kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], network, kinetic_data_file_names, 0, 1,1,0,'Organism',organism_long);

@@ -52,7 +52,7 @@ for line in igot:
     if ll[0:3] == "///":
         ff    = open(outdir + entry + "_Compound.tsv", 'w')
         ff.write('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Compound"\n')
-        ff.write("!Compound\t!MiriamID::urn:miriam:kegg.compound\t!ConcentrationMin\t!ConcentrationMax\n")
+        ff.write("!Compound\t!Identifiers:kegg.compound\t!ConcentrationMin\t!ConcentrationMax\n")
         for mm in collect_metabolites:
             if mm in my_metabolites:
                 ff.write(mm + "\t" + mm + "\t" + my_metabolites_lower[mm] + "\t" + my_metabolites_upper[mm] + "\n")
@@ -62,7 +62,7 @@ for line in igot:
 
         ff    = open(outdir + entry + "_Reaction.tsv", 'w')
         ff.write('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Reaction"\n')
-        ff.write("!Reaction\t!MiriamID::urn.miriam.kegg:reaction\t!Gene\t!SumFormula\t!Flux\n")
+        ff.write("!Reaction\t!Identifiers:kegg.reaction\t!Gene\t!SumFormula\t!Flux\n")
 
         for rr in my_reactions:
             ff.write(my_genes[rr] +  '_' + my_reaction_keggID[rr]  + "\t" + my_reaction_keggID[rr] + '\t' + my_genes[rr] + "\t" + my_reactions[rr] + "\t" + my_fluxes[rr] + "\n")

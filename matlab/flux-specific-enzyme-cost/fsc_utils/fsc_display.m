@@ -149,7 +149,7 @@ title('Comparison: log10 Concentration profiles (mM)');
 figure(38); clf; hold on;
 set(gcf,'Position',[100 300 1000 500])
 xtick = 0:length(ind_show_met)-1;
-fsc_score = 'fsc3';
+fsc_score = 'fsc3prod';
 h    = plot(xtick,c.(fsc_score)(ind_show_met,1),'o','MarkerSize',10);
 plot(xtick,c.fix(ind_show_met),'r.','MarkerSize',30);
 if length(c.data),
@@ -164,7 +164,12 @@ metnames_show = strrep(network.metabolites(ind_show_met),'D-','');
 text(xtick + 0.2,c.(fsc_score)(ind_show_met),metnames_show,'FontSize',10);
 legend(methods,'Location','NorthEastOutside','FontSize',10);
 ylabel('Concentration [mM]');
-axis tight; set(gca,'YScale','Log','XTick',[]); % 'XTick',xtick,'XTickLabel',metnames_show,
+axis tight; set(gca,'YScale','Log','XTick',[]); 
+%'XTick',xtick,'XTickLabel',metnames_show,
+a = axis; hold on
+for it = 1:length(xtick),
+  plot([xtick(it),xtick(it)],[a(3),a(4)],'-');
+end
 %my_xticklabel([],fsc_options.conc_min_default,[],10);
 %title('Comparison: log10 Concentration profiles (mM)');
 
@@ -177,17 +182,18 @@ fsc_score = 'fsc3prod';
 
 figure(16); clf; hold on; set(gcf,'Position',[150 350 600 600])
 ind_finite = find(isfinite(u.data));
-my_colors = sunrise_colors(length(ind_finite));
+my_colors = sunrise_colors(length(u.data));
+my_colors = my_colors(ind_finite,:);
 for itt = 1:length(ind_finite)
   plot(u.data(ind_finite(itt)),u.(fsc_score)(ind_finite(itt),1),'.','Markersize',30,'Color',my_colors(itt,:)); 
 end
 text(1.05*u.data(ind_finite),1.05*u.(fsc_score)(ind_finite,1),network.genes(fsc_options.ind_scored_enzymes(ind_finite)),'FontSize',8);
 axis tight; axis equal; axis square; 
-xlabel('Median experimental enzyme level (a.u.)','Fontsize',18);
-ylabel('Predicted enzyme level (mM)','Fontsize',18);
-set(gca,'XScale','Log','YScale','Log','Fontsize',18);
+xlabel('Enzyme level (a.u.)','Fontsize',14);
+ylabel('Predicted enzyme level (mM)','Fontsize',14);
+set(gca,'XScale','Log','YScale','Log','Fontsize',14);
 [cc, pvalue_one_tailed, pvalue_two_tailed] = my_corrcoef(log(u.data(ind_finite)),log(u.(fsc_score)(ind_finite,1)));
-title(sprintf('%s  Corr. coeff: %2.3f // p-value: %2.3f',fsc_score,cc,pvalue_one_tailed));
+title(sprintf('%s R^2: %2.3f // p-value: %2.3f',fsc_score,cc^2,pvalue_one_tailed));
 
 
 % --------------------------------------
@@ -221,7 +227,7 @@ set(gca,'XScale','Log','YScale','Log','Fontsize',18);
 my_nanmean_c_data   = nanmean(c.data,2);
 ind_finite          = find(isfinite(my_nanmean_c_data));
 [cc, pvalue_one_tailed] = my_corrcoef(log(my_nanmean_c_data(ind_finite)),log(c.(fsc_score)(ind_finite,1)));
-title(sprintf('%s Corr. coeff: %2.3f // p-value: %2.3f',fsc_score,cc,pvalue_one_tailed));
+title(sprintf('%s R^2: %2.3f // p-value: %2.3f',fsc_score,cc^2,pvalue_one_tailed));
 
 
 % --------------------------------------
@@ -256,7 +262,7 @@ my_xticklabel
 %title('log10 c (initial solution) / KM');
 
 figure(21); subplot('Position',[0.15 0.05 0.8 0.7]);
-c_over_KM = repmat(c.fsc3(:,1)',length(network.actions),1)./r.KM;
+c_over_KM = repmat(c.fsc3prod(:,1)',length(network.actions),1)./r.KM;
 c_over_KM(r.KM==0) = nan;
 im(log10(c_over_KM(:,ind_show_met)),[-3,3],network.actions,network.metabolites(ind_show_met)); colormap([0.95 0.95 0.95; value_colors]); colorbar
 my_xticklabel
@@ -300,20 +306,61 @@ gpp.actnames = gene_names;
 netgraph_concentrations(fsc_options.network_CoHid,[],column(mmm),1,gpp); 
 title('Enzymes colour legend');
 
-% barplot for fsc3 only
+% barplot for fsc3prod only
 
-fsc_score = 'fsc3';
+fsc_score = 'fsc3prod';
 ug   = up.(fsc_score)(fsc_options.ind_scored_enzymes,1);
+ud   = u.data(fsc_options.ind_scored_enzymes,1);
 
 figure(43); clf; 
 cmap = sunrise_colors(length(ind_genes_scored));
+subplot(2,1,1);
 for it = 1:length(ind_genes_scored);
  h= bar(it,ug(ind_genes_scored(it))); set(h,'FaceColor',cmap(it,:)); hold on
+end
+subplot(2,1,2);
+for it = 1:length(ind_genes_scored);
+ h= bar(it,ud(ind_genes_scored(it))); set(h,'FaceColor',cmap(it,:)); hold on
 end
 set(gca,'XTick',1:length(ind_genes_scored),'XTickLabel',gene_names(ind_genes_scored)); 
 ylabel('Predicted enzyme level [mM]');
 set(gca,'FontSize',10);
 title(sprintf('Total predicted enzyme level (%s): %f mM',fsc_score, sum(ug(ind_genes_scored))));
+
+% --------------------------------------------------------
+% plot flux (data) versus enzyme level (data)
+
+figure(44); clf; hold on
+ind_finite   = find(isfinite(u.data .* v));
+my_colors = sunrise_colors(length(u.data));
+my_colors = my_colors(ind_finite,:);
+for it = 1:length(ind_finite),
+  plot(u.data(ind_finite(it)),v(ind_finite(it)),'.','Color',my_colors(it,:),'MarkerSize',30);
+end
+text(u.data(ind_finite) * 1.03,v(ind_finite),gene_names(ind_finite));
+set(gca,'XScale','Log','YScale','Log');
+xlabel('Enzyme level (data)','Fontsize',14); ylabel('Flux (data)','Fontsize',14);
+axis equal; axis square; axis tight
+[cc, pvalue_one_tailed, pvalue_two_tailed] = my_corrcoef(log(u.data(ind_finite)),log(v(ind_finite)));
+title(sprintf('R^2: %2.3f // p-value: %2.3f',cc^2,pvalue_one_tailed));
+
+
+% plot flux (data) versus enzyme level * kcat (both data)
+
+figure(45);clf; hold on
+ind_finite = find(isfinite(u.data .* kinetic_data.Kcatf.median .* v));
+my_colors = sunrise_colors(length(u.data));
+my_colors = my_colors(ind_finite,:);
+for it = 1:length(ind_finite),
+  plot(u.data(ind_finite(it)),v(ind_finite(it))/kinetic_data.Kcatf.median(ind_finite(it)),'.','Color',my_colors(it,:),'MarkerSize',30);
+end
+text(u.data(ind_finite) * 1.03,v(ind_finite)  ./ kinetic_data.Kcatf.median(ind_finite),gene_names(ind_finite));
+set(gca,'XScale','Log','YScale','Log');
+xlabel('Enzyme level','Fontsize',14); ylabel('Flux (data) / kcat (data)','Fontsize',14);
+axis equal; axis square; axis tight
+[cc, pvalue_one_tailed, pvalue_two_tailed] = my_corrcoef(log(u.data(ind_finite)),log(v(ind_finite)./kinetic_data.Kcatf.median(ind_finite)));
+title(sprintf('R^2: %2.3f // p-value: %2.3f',cc^2,pvalue_one_tailed));
+
 
 % --------------------------------------------------------
 % save graphics
@@ -336,11 +383,11 @@ if fsc_options.print_graphics,
     print([ model_name '_' fsc_options.run_id '_all_conc_profiles.eps'],'-f18','-depsc');
     print([ model_name '_' fsc_options.run_id '_affinity_profiles.eps'],'-f19','-depsc');
     print([ model_name '_' fsc_options.run_id '_c_by_KM_initial.eps'],'-f20','-depsc');
-    print([ model_name '_' fsc_options.run_id '_c_by_KM_fsc3.eps'],'-f21','-depsc');
-    print([ model_name '_' fsc_options.run_id '_fsc3_conc_prediction.eps'],'-f38','-depsc');
-    print([ model_name '_' fsc_options.run_id '_fsc3_enzyme_prediction.eps'],'-f43','-depsc');
-    pwd 
-    [ model_name '_' fsc_options.run_id '_fsc3_enzyme_prediction.eps']
+    print([ model_name '_' fsc_options.run_id '_c_by_KM_fsc3prod.eps'],'-f21','-depsc');
+    print([ model_name '_' fsc_options.run_id '_fsc3prod_conc_prediction.eps'],'-f38','-depsc');
+    print([ model_name '_' fsc_options.run_id '_fsc3prod_enzyme_prediction.eps'],'-f43','-depsc');
+    print([ model_name '_' fsc_options.run_id '_scatter_enzyme_vs_flux.eps'],'-f44','-depsc');
+    print([ model_name '_' fsc_options.run_id '_scatter_enzyme_kcat_vs_flux.eps'],'-f45','-depsc');
   end
 end
 

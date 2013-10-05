@@ -13,7 +13,7 @@ filenames.psfile_dir    = [model_directory '/ps-files/'];
 filenames.position_file = [filenames.data_dir 'network_all_Position.tsv'];
 filenames.gfe_file      = [filenames.data_dir 'all_models_GFE.csv'];
 
-filenames.resource_dir  = [fsc_root_dir '/data/'];;
+filenames.resource_dir  = fsc_data_dir;
 filenames.kegg_conversion_file  = [filenames.resource_dir '/name-conversion/kegg_compound_names.tsv'];
 
 if length(organism),
@@ -25,14 +25,17 @@ if length(organism),
     case 'bsu',
       filenames.protein_length_file       = [filenames.resource_dir  '/protein-properties/bsu_protein_lengths.tsv'];
       filenames.gene_name_conversion      = [filenames.resource_dir  '/name-conversion/gene_name_conversion_bsu.csv'];
-      filenames.kinetic_constant_files    = {[filenames.resource_dir '/data-kinetic/average_kinetic_constants_brenda.tsv'];[filenames.resource_dir '/data-kinetic/kinetic_constants_brenda_bsu.tsv']};
+      filenames.kinetic_constant_files    = {[filenames.resource_dir '/data-kinetic/average_kinetic_constants_brenda.tsv']; ...
+          [filenames.resource_dir '/data-kinetic/kinetic_constants_brenda_bsu.tsv']};
       filenames.concentration_files       = {[filenames.resource_dir '/data-metabolite/bsu_Metabolites_BigExperiment_GM1_KEGG_first_time_point.csv']};
       filenames.enzyme_concentration_file = [filenames.resource_dir '/data-protein/bsu_protein_abundance_exponential_phase_maass.csv'];
     
     case 'eco',
       filenames.protein_length_file        = [filenames.resource_dir  '/protein-properties/eco_protein_lengths.tsv'];
       filenames.gene_name_conversion       = [filenames.resource_dir  '/name-conversion/gene_name_conversion_eco.csv'];
-      filenames.kinetic_constant_files     = {[filenames.resource_dir '/data-kinetic/average_kinetic_constants_brenda.tsv'];[filenames.resource_dir '/data-kinetic/kinetic_constants_brenda_eco.tsv'];[filenames.resource_dir '/data-kinetic/kinetic_constants_Ecoli_Scerevisiae.csv']};
+      filenames.kinetic_constant_files     = {[filenames.resource_dir '/data-kinetic/average_kinetic_constants_brenda.tsv']; ...
+                          [filenames.resource_dir '/data-kinetic/kinetic_constants_brenda_eco.tsv'];...
+                          [filenames.resource_dir '/data-kinetic/kinetic_constants_Ecoli_Scerevisiae.csv']};
       filenames.concentration_files        = {[filenames.resource_dir '/data-metabolite/concentration_ecoli_glucose.tsv']; ...
                           [filenames.resource_dir '/data-metabolite/E_coli_metabolite_concentrations_Tepper_S2_v2.1_annotated.csv']; ...
                           [filenames.resource_dir '/data-metabolite/concentrations_albe_et_al_eco.csv']};
@@ -43,7 +46,9 @@ if length(organism),
     case 'sce',
       filenames.protein_length_file       = [filenames.resource_dir  '/protein-properties/sce_protein_lengths.tsv'];
       filenames.gene_name_conversion      = [filenames.resource_dir  '/name-conversion/gene_name_conversion_sce.csv'];
-      filenames.kinetic_constant_files    = {[filenames.resource_dir '/data-kinetic/average_kinetic_constants_brenda.tsv']; [filenames.resource_dir '/data-kinetic/kinetic_constants_brenda_sce.tsv']};
+      filenames.kinetic_constant_files    = {[filenames.resource_dir '/data-kinetic/average_kinetic_constants_brenda.tsv']; ...
+                          [filenames.resource_dir '/data-kinetic/kinetic_constants_brenda_sce.tsv'];...
+                          [filenames.resource_dir '/data-kinetic/kinetic_constants_Ecoli_Scerevisiae.csv']};
       filenames.concentration_files       = {...
                           [filenames.resource_dir '/data-metabolite/sce_oxygen_data_wiebe_aerobic_20.88.csv'];...
                           [filenames.resource_dir '/data-metabolite/sce_oxygen_data_wiebe_aerobic_2.85.csv'];...
@@ -58,11 +63,11 @@ if length(organism),
 
   switch organism,
     case 'eco',
-      filenames.flux_data_file = '/home/wolfram/projekte/flux_specific_enzyme_cost/flux-specific-enzyme-cost/data/data-flux/eco_fluxes_aerobic.csv';
+      filenames.flux_data_file = [ fsc_data_dir 'data-flux/eco_fluxes_aerobic.csv'];
     case 'bsu',
-      filenames.flux_data_file = '/home/wolfram/projekte/flux_specific_enzyme_cost/flux-specific-enzyme-cost/data/data-flux/bsu_fluxes_glucose.csv';
+      filenames.flux_data_file = [ fsc_data_dir 'data-flux/bsu_fluxes_glucose.csv'];
     case 'sce',
-      filenames.flux_data_file = '/home/wolfram/projekte/flux_specific_enzyme_cost/flux-specific-enzyme-cost/data/data-flux/sce_fluxes_aerobic.csv';
+      filenames.flux_data_file = [ fsc_data_dir 'data-flux/sce_fluxes_aerobic.csv'];
     otherwise 
       filenames.flux_data_file = [];
   end

@@ -13,7 +13,8 @@ INSTALLATION
       o SBML Toolbox               (http://sbml.org/Software/SBMLToolbox)
       o SBtab toolbox              (https://github.com/wolframliebermeister/sbtab-matlab)
       o efmtool Toolbox            (http://www.csb.ethz.ch/tools/efmtool)
-  4. For a little demo, run 'mnt_demo'
+  4. Set the path of your data directory in the m-file fsc_setup.m (directory flux-specific-enzyme-cost)
+  5. For a little demo, run 'mnt_demo'
 
 
 REQUIREMENTS
