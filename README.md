@@ -1,7 +1,7 @@
-Code and data for Flux-Specific Enzyme Cost calculations
---------------------------------------------------------
+Code and data for Enzyme Cost Minimization
+------------------------------------------
 
-Wolfram Liebermeister (2013)
+Wolfram Liebermeister (2014)
 
 Dependencies: For some of the MATLAB functions, 
               the following MATLAB toolboxes must be installed

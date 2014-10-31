@@ -1,0 +1,50 @@
+---------------------------
+Data directory data-protein
+---------------------------
+
+---------------------------
+E coli protein and mRNA data (Lu et al 2007)
+
+Files
+ protein_mRNA_eco_Lu_2007.csv
+   from ~/projekte/pathway_modelling/data/E_coli_protein_mRNA.tsv
+
+---------------------------
+E coli protein abundance data
+
+Files 
+  protein_eco_Lu_2007.csv
+    from ~/Proteomaps/data_sets/protein_abundances_other/eco_Lu/eco_abundance_table_protein_data_E_coli_Lu_1.csv
+
+  protein_eco_Arike_2012.csv
+    from ~/projekte/protein_abundance/data/protein_abundances_goloubinoff/eco_Arike/eco_abundance_table_Arike_iBAQ_Average.csv
+
+  protein_eco_Valgepea_2013_0.48.csv
+    from ~/projekte/protein_abundance/data/protein_abundances_goloubinoff/eco_Arike/eco_abundance_table_Arike_iBAQ_Average.csv
+
+---------------------------
+S cerevisiae protein abundance data (Nagaraj et al)
+
+Files 
+  protein_sce_Nagaraj_2012.csv   
+    from ~/Proteomaps/data_sets/protein_abundances_paper/sce_Nagaraj/sce_abundance_sce_nagaraj.csv
+    (column headers manually adjusted to sbtab, 
+     inserted column QuantityType "concentration of enzyme",  
+     ppm abundance is used as "Value") 
+
+---------------------------
+B subtilis protein abundance data
+
+Files
+
+  protein_bsu_Maass_exponential.csv
+    from bsu_protein_abundance_exponential_phase_maass.csv,
+         ~/projekte/protein_abundance/protein_data/maass_b_subtilis/original_data/Absolute_Proteindata_Bsub_Sau_Maass_et_al.xlsx
+    (used first time point (exponential phase, column copies/cell)
+     column headers manually adjusted to sbtab, 
+     inserted column QuantityType "concentration of enzyme")
+
+  Proteindata_Bsub.tsv   
+    (Maass protein data set) 
+    from ~/projekte/protein_abundance/protein_data/maass_b_subtilis/processed_data
+    Renamed "SystematicName" -> "GeneSystematic"

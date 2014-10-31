@@ -6,8 +6,8 @@
 #
 # Each of them is stored in two files:
 #
-#  PATHWAY_Compound.tsv
-#  PATHWAY_Reaction.tsv
+#  [PATHWAY]_Compound.csv
+#  [PATHWAY]_Reaction.csv
 
 
 import sys
@@ -50,7 +50,7 @@ for line in igot:
         parse_metabolites = 0
         parse_reactions   = 1
     if ll[0:3] == "///":
-        ff    = open(outdir + entry + "_Compound.tsv", 'w')
+        ff    = open(outdir + entry + "_Compound.csv", 'w')
         ff.write('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Compound"\n')
         ff.write("!Compound\t!Identifiers:kegg.compound\t!ConcentrationMin\t!ConcentrationMax\n")
         for mm in collect_metabolites:
@@ -60,7 +60,7 @@ for line in igot:
                 ff.write(mm + "\t" + mm + "\tnan\tnan\n")
         ff.close
 
-        ff    = open(outdir + entry + "_Reaction.tsv", 'w')
+        ff    = open(outdir + entry + "_Reaction.csv", 'w')
         ff.write('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Reaction"\n')
         ff.write("!Reaction\t!Identifiers:kegg.reaction\t!Gene\t!SumFormula\t!Flux\n")
 

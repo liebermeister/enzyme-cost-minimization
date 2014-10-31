@@ -1,8 +1,0 @@
-options.data_id            = 'brenda';
-options.fsc_scores         = {'mtdf','mtdfw','mfsc2sub','fsc1','fsc2sub','fsc2','fsc3','fsc4cmr'};
-options.ind_scored_enzymes = 1:11; % which reactions are enzyme-optimised?
-options.conc_min           = 0.0001;
-options.conc_max           = 100;
-options.conc_fix           = [17, 0.4, 20, 8, 0.083, 2.4, 0.6, 1.4, 1];
-options.met_fix            = {'D_Glucose','ADP', 'ATP','Orthophosphate', 'NADH', 'NAD+', 'Acetyl_CoA','CoA','H2O'}; 
-options.show_metabolites   = {'D_Glucose', 'D_Glucose_6_phosphate', 'D_Fructose_6_phosphate', 'D_Fructose_1_6_bisphosphate', 'Glycerone_phosphate', 'D_Glyceraldehyde_3_phosphate', '3_Phospho_D_glyceroyl_phosphate', '3_Phospho_D_glycerate', '2_Phospho_D_glycerate', 'Phosphoenolpyruvate', 'Pyruvate', 'Acetyl_CoA'};

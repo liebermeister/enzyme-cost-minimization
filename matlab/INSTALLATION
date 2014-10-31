@@ -1,13 +1,12 @@
-Flux-specific Enzyme Cost Functions for Matlab
+Enzyme Cost Minimization functions for Matlab
 
 Wolfram Liebermeister (2013)
 ---------------------------------------------------------------------
 
-
 INSTALLATION
 
   1. Unpack the files
-  2. Include the subdirectory 'flux_specific_cost' into your Matlab path
+  2. Include the subdirectory 'enzyme-cost-minimization' into your Matlab path
   3. Make sure that the following toolboxes are installed:
       o Metabolic Network Toolbox  (https://github.com/wolframliebermeister/mnt)
       o SBML Toolbox               (http://sbml.org/Software/SBMLToolbox)

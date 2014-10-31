@@ -1,0 +1,50 @@
+!!Sbtab					
+!CompoundName	!Concentration	!ConcentrationMin	!ConcentrationMax	!Compound Identifiers:kegg.compound	!Organism
+ADP		320	1300	C00008	Saccharomyces cerevisiae
+AMP		170	300	C00020	Saccharomyces cerevisiae
+ATP		1100	1900	C00002	Saccharomyces cerevisiae
+L-Alanine		7000	25000	C00041	Saccharomyces cerevisiae
+L-Arginine	18000			C00062	Saccharomyces cerevisiae
+L-Asparagine		3000	13000	C00152	Saccharomyces cerevisiae
+Citrate	700			C00158	Saccharomyces cerevisiae
+L-Citrulline	5000			C00327	Saccharomyces cerevisiae
+Dihydroxyacetone phosphate	330			C00111	Saccharomyces cerevisiae
+D-Fructose 6-phosphate	650			C00085	Saccharomyces cerevisiae
+D-Fructose 1,6-bisphosphate		1700	4500	C00354	Saccharomyces cerevisiae
+D-Glucose 1-phosphate	<100			C00103	Saccharomyces cerevisiae
+D-Glucose 6-phosphate	2300			C00092	Saccharomyces cerevisiae
+L-Glutamine		15000	35000	C00064	Saccharomyces cerevisiae
+L-Glutamic acid		15000	35000	C00025	Saccharomyces cerevisiae
+Glyceraldehyde 3-phosphate		400	1200	C00661	Saccharomyces cerevisiae
+alpha-Ketoglutaric acid		200	5000	C00026	Saccharomyces cerevisiae
+NAD		1000	1600	C00003	Saccharomyces cerevisiae
+NADP		20	150	C00006	Saccharomyces cerevisiae
+NADPH		50	150	C00005	Saccharomyces cerevisiae
+NH3	30000			C00014	Saccharomyces cerevisiae
+Oxaloacetate	<50			C00036	Saccharomyces cerevisiae
+L-Ornithine	7000			C00077	Saccharomyces cerevisiae
+Phosphate	22000			C00009	Saccharomyces cerevisiae
+Phosphoenolpyruvate	<30			C00074	Saccharomyces cerevisiae
+6-Phospho-D-gluconate		100	300	C00345	Saccharomyces cerevisiae
+2-Phospho-D-glycerate		420	1100	C00631	Saccharomyces cerevisiae
+3-Phospho-D-glycerate		100	260	C00197	Saccharomyces cerevisiae
+Pyruvate	1600			C00022	Saccharomyces cerevisiae
+Uridine diophosphate glucose	300			C00029	Saccharomyces cerevisiae
+Acetyl-CoA	350			C00024	Escherichia coli
+ADP	823			C00008	Escherichia coli
+AMP	151			C00020	Escherichia coli
+ATP	2641			C00002	Escherichia coli
+L-Asparagine		431	1400	C00152	Escherichia coli
+Citrate	12990			C00158	Escherichia coli
+Dihydroxyacetone phosphate	203			C00111	Escherichia coli
+D-Fructose 1,6-bisphosphate	1900			C00354	Escherichia coli
+GTP	700			C00044	Escherichia coli
+D-Glucose 6-phosphate	801			C00092	Escherichia coli
+L-Glutamic acid	17363			C00025	Escherichia coli
+Glycerol-3-phosphate	195			C00093	Escherichia coli
+alpha-Ketoglutaric acid	476			C00026	Escherichia coli
+Malate		900	1559	C00711	Escherichia coli
+NAD		1256	2078	C00003	Escherichia coli
+Phosphoenolpyruvate		91	300	C00074	Escherichia coli
+Pyruvate	390			C00022	Escherichia coli
+Uridine diophosphate glucose	1299			C00029	Escherichia coli

@@ -1,0 +1,14 @@
+-------------------
+Pathway collections
+-------------------
+
+This directory contains the original pathway files used in the ECM project.
+
+If you change anything, add the new file version, indicating your initials and the 
+data of change in the file name and add a little description of your changes below.
+
+--------------------------------------------------------------------------
+Files:
+
+obd_pathways_WL_2013-10-04.txt    Original file from Elad, with pathways added by Arren and Wolf
+kegg_modules_WL_2013-10-04.txt    Original file from Elad

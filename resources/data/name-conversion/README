@@ -1,0 +1,20 @@
+-------------------------
+Directory name-conversion
+-------------------------
+
+-------------------------
+KEGG compound names
+
+kegg_compound_names.csv   from ~/projekte/data/
+
+Processing:
+  fixed: C00399 Ubiquinone // C00390  Ubiquinol
+  renamed Nicotinamide adenine dinucleotide -> NADH
+  Converted to SBtab
+
+-------------------------
+Gene name conversion
+
+bsu_gene_name_conversion.csv     manually made (wolf)
+eco_gene_name_conversion.csv     manually made (wolf)
+sce_gene_name_conversion.csv     manually made (wolf)
