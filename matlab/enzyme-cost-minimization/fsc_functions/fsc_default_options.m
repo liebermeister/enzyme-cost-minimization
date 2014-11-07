@@ -1,54 +1,66 @@
-function fsc_options_default = fsc_default_options(network)
+function fsc_options = fsc_default_options(network, model_name)
 
-% fsc_options_default = fsc_default_options(network)
+% fsc_options = fsc_default_options(network, model_name)
+%
+% Argument 'model_name' is optional
 
 [nm,nr] = size(network.N);
 
-fsc_options_default.model_name               = 'model';
-fsc_options_default.run_id                   = 'run';
-fsc_options_default.network_CoHid            = network;
+eval(default('model_name','''model'''));
 
-% list of metabolite names with fixed concentrations (overrides values from input model)
-fsc_options_default.fix_metabolites          = {}; 
-fsc_options_default.fix_metabolite_values    = [];
+% model
+fsc_options.model_name               = model_name         ; 
+fsc_options.run_id                   = 'run';
+fsc_options.network_CoHid            = network;
 
-fsc_options_default.insert_original_equilibrium_constants = 0;
+% metabolite constraints
+fsc_options.fix_metabolites          = {}; % metabolites with fixed concentrations (overrides values from input model)
+fsc_options.fix_metabolite_values    = [];
+fsc_options.conc_min_default         = 0.001              ; % mM
+fsc_options.conc_max_default         = 10                 ; % mM
+fsc_options.conc_min                 = [];% 0.001 * ones(nm,1) ; % mM
+fsc_options.conc_max                 = [];% 10 * ones(nm,1);   ; % mM
+fsc_options.conc_fix                 = [];
+fsc_options.met_fix                  = [];
+fsc_options.replace_cofactors        = {};
 
-fsc_options_default.kcat_usage               = 'use';
-fsc_options_default.kcat_prior_median        = 350;   % similar to median in glycolysis+tca
-fsc_options_default.kcat_prior_log10_std     = 0.1;   % reduce spread of kcat values
-fsc_options_default.kcat_lower               = 50;   % 
-fsc_options_default.kcat_upper               = 2000;  % 
+% given data
+fsc_options.c_data                   = [];
+fsc_options.u_data                   = [];
+fsc_options.kinetic_data             = [];
 
-% promlematic if some concentrations are thermodynamically forced to be very low
-fsc_options_default.KM_lower                 = [];  % mM
-fsc_options_default.Keq_upper                = [];
+% kinetic data
+fsc_options.reaction_column_names    = []; % column names (in data file) for loading of kinetic data
+fsc_options.compound_column_names    = [];
+fsc_options.KM_lower                 = []; % mM
+fsc_options.Keq_upper                = [];
+fsc_options.flag_given_kinetics      = 0;
+fsc_options.kcat_usage               = 'use';
+fsc_options.kcat_prior_median        = 350;   % similar to median in glycolysis+tca
+fsc_options.kcat_prior_log10_std     = 0.1;   % reduce spread of kcat values
+fsc_options.kcat_lower               = 50;    % 1/s
+fsc_options.kcat_upper               = 2000;  % 1/s
+fsc_options.GFE_fixed                = 1;     % flag
+fsc_options.insert_Keq_from_data     = 0;     % flag
 
-fsc_options_default.conc_min_default         = 10^-3; % 0.001 mM
-fsc_options_default.conc_max_default         = 10;  % 10 mM
-fsc_options_default.conc_min                 = nan*ones(nm,1);
-fsc_options_default.conc_max                 = nan*ones(nm,1);
+% specific enzyme costs
+fsc_options.ind_scored_enzymes       = 1:length(network.actions);
+fsc_options.enzyme_cost_weights      = ones(length(fsc_options.ind_scored_enzymes),1);
+fsc_options.use_cost_weights         = 'none';
 
-fsc_options_default.c_data                   = [];
-fsc_options_default.u_data                   = [];
-fsc_options_default.kinetic_data             = [];
+% ecm
+fsc_options.initial_choice           = 'mdf'; 
+fsc_options.multiple_starting_points = 0;
+fsc_options.fsc_scores               = {'ecf3sp'}           ;
+fsc_options.lambda_regularisation    = 10^-3; 
+fsc_options.quantity_info_file       = [];
+fsc_options.compute_hessian          = 0;
+fsc_options.compute_elasticities     = 0;
+fsc_options.compute_tolerance        = 0;
+fsc_options.cost_tolerance_factor    = 1.01; % one percent
+fsc_options.tolerance_from_hessian   = 0;
 
-% column names (in data file) for loading of kinetic data
-fsc_options_default.reaction_column_names = [];
-fsc_options_default.compound_column_names = [];
-
-fsc_options_default.flag_given_kinetics      = 0;
-fsc_options_default.enzyme_cost_weights      = [];
-
-fsc_options_default.lambda_regularisation    =  10^-5; 
-fsc_options_default.fsc_scores               = {'ecf1'};
-fsc_options_default.initial_choice           = 'mdf'; 
-fsc_options_default.quantity_info_file       = [];
-fsc_options_default.ind_scored_enzymes       = 1:length(network.actions);
-
-fsc_options_default.variation_for_relaxed_optimality = 1;
-fsc_options_default.multiple_starting_points = 0;
-
-fsc_options_default.print_graphics           = 0;
-fsc_options_default.show_graphics            = 1;
-fsc_options_default.show_metabolites         = network.metabolites;
+% graphics
+fsc_options.print_graphics           = 0;
+fsc_options.show_graphics            = 1;
+fsc_options.show_metabolites         = network.metabolites;

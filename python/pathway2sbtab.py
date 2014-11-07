@@ -1,28 +1,35 @@
 # Translate pathway models from Elad's format into SBtab format
 #
-# USAGE python pathway2sbtab.py INPUTFILE OUTPUTDIRECTORY
+# USAGE python pathway2sbtab.py [INPUTFILE] [OUTPUTDIRECTORY] [FLAG_ONE_OUTPUT_FILE]
 #
 # The input file can contain several pathway models.
 #
-# Each of them is stored in two files:
-#
+# Depending on [FLAG_ONE_OUTPUT_FILE], each model is stored in one file (default value 1=true):
+#  [PATHWAY].csv
+# or in two files (value 0=false):
 #  [PATHWAY]_Compound.csv
 #  [PATHWAY]_Reaction.csv
-
 
 import sys
 import os
 import glob
 import re
 
+# ------------------------------------------------
+
+flag_one_output = 1
+
 infile = sys.argv[1]
 outdir = sys.argv[2] + '/'
+if len(sys.argv)>3:
+  flag_one_output = int(sys.argv[3])
 
 f    = open(infile, 'r')
 igot = f.readlines()
+f.close
 
 parse_metabolites = 0
-parse_reactions = 0
+parse_reactions   = 0
 my_metabolites  = {}
 my_metabolites_lower  = {}
 my_metabolites_upper  = {}
@@ -50,22 +57,39 @@ for line in igot:
         parse_metabolites = 0
         parse_reactions   = 1
     if ll[0:3] == "///":
-        ff    = open(outdir + entry + "_Compound.csv", 'w')
-        ff.write('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Compound"\n')
-        ff.write("!Compound\t!Identifiers:kegg.compound\t!ConcentrationMin\t!ConcentrationMax\n")
+        compound_table = []
+        compound_table.append('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Compound"')
+        compound_table.append("!Compound\t!Identifiers:kegg.compound\t!ConcentrationMin\t!ConcentrationMax")
         for mm in collect_metabolites:
             if mm in my_metabolites:
-                ff.write(mm + "\t" + mm + "\t" + my_metabolites_lower[mm] + "\t" + my_metabolites_upper[mm] + "\n")
+                compound_table.append(mm + "\t" + mm + "\t" + my_metabolites_lower[mm] + "\t" + my_metabolites_upper[mm])
             else:
-                ff.write(mm + "\t" + mm + "\tnan\tnan\n")
-        ff.close
+                compound_table.append(mm + "\t" + mm + "\tnan\tnan")
 
-        ff    = open(outdir + entry + "_Reaction.csv", 'w')
-        ff.write('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Reaction"\n')
-        ff.write("!Reaction\t!Identifiers:kegg.reaction\t!Gene\t!SumFormula\t!Flux\n")
+        reaction_table = []
+        reaction_table.append('!!SBtab Document="' + entry + '" Pathway="' +  name + '" TableType="Reaction"')
+        reaction_table.append("!Reaction\t!Identifiers:kegg.reaction\t!Gene\t!SumFormula\t!Flux")
 
         for rr in my_reactions:
-            ff.write(my_genes[rr] +  '_' + my_reaction_keggID[rr]  + "\t" + my_reaction_keggID[rr] + '\t' + my_genes[rr] + "\t" + my_reactions[rr] + "\t" + my_fluxes[rr] + "\n")
+            reaction_table.append(my_genes[rr] +  '_' + my_reaction_keggID[rr]  + "\t" + my_reaction_keggID[rr] + '\t' + my_genes[rr] + "\t" + my_reactions[rr] + "\t" + my_fluxes[rr])
+
+        # WRITE OUT FILE(S)
+        if flag_one_output == 1:            
+          ff = open(outdir + entry + ".csv", 'w')
+          for line in compound_table:
+              ff.write(line + '\n')
+          for line in reaction_table:
+              ff.write(line + '\n')
+          ff.close
+        else:
+          ff = open(outdir + entry + "_Compound.csv", 'w')
+          for line in compound_table:
+              ff.write(line + '\n')
+          ff.close
+          ff = open(outdir + entry + "_Reaction.csv", 'w')
+          for line in reaction_table:
+              ff.write(line + '\n')
+          ff.close
 
         parse_reactions = 0;
         my_metabolites  = {};

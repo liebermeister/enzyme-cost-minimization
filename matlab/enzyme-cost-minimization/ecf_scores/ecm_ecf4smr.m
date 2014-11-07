@@ -1,4 +1,4 @@
-function [u_tot, u] = ecm_ecf4cmr(x,pp)
+function [u_tot, u, w] = ecm_ecf4cmr(x,pp)
 
 % [u_tot, u] = ecm_ecf4cmr(x,pp)
 

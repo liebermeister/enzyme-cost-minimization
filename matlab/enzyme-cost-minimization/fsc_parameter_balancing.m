@@ -20,10 +20,10 @@ function [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options
 %  fsc_options.KM_lower
 %  fsc_options.Keq_upper
 %  fsc_options.quantity_info_file
+%  fsc_options.GFE_fixed
 
-
-fsc_options_default = fsc_default_options(network);
-fsc_options         = join_struct(fsc_options_default,fsc_options);
+fsc_options_def = fsc_default_options(network);
+fsc_options     = join_struct(fsc_options_def,fsc_options);
 
 
 % -------------------------------------------------
@@ -96,7 +96,17 @@ else
       kk.Kcatr.std(ind_p)  = nan;
       kinetic_data         = kk;
   end
-    
-  [r, r_orig, kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],struct('kcat_prior_median',fsc_options.kcat_prior_median,'kcat_prior_log10_std',fsc_options.kcat_prior_log10_std,'kcat_lower',fsc_options.kcat_lower,'kcat_upper',fsc_options.kcat_upper,'KM_lower',fsc_options.KM_lower,'Keq_upper',fsc_options.Keq_upper,'GFE_fixed',1,'quantity_info_file',fsc_options.quantity_info_file));
+  
+  
+  options = struct('kcat_prior_median',fsc_options.kcat_prior_median,...
+                   'kcat_prior_log10_std',fsc_options.kcat_prior_log10_std,...
+                   'kcat_lower',fsc_options.kcat_lower,...
+                   'kcat_upper',fsc_options.kcat_upper,...
+                   'KM_lower',fsc_options.KM_lower,...
+                   'Keq_upper',fsc_options.Keq_upper,...
+                   'GFE_fixed',fsc_options.GFE_fixed,...
+                   'quantity_info_file',fsc_options.quantity_info_file);
+  
+  [r, r_orig, kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
 
 end

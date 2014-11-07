@@ -17,11 +17,11 @@ pm(fsc_options.conc_fix,fsc_options.met_fix)
 
 [nm,nr] = size(network.N);
 
-value_colors  = jet; % rb_colors;
+value_colors  = flipud(colormapRGBmatrices); % rb_colors;
 enzyme_colors = sunrise_colors(length(fsc_options.ind_scored_enzymes));
 
-cm            = jet(length(fsc_options.fsc_scores));
-% ca
+%cm            = jet(length(fsc_options.fsc_scores));
+ca
 
 if ~isfield(fsc_options,'psfile_dir'),
   fsc_options.print_graphics = 0;
@@ -483,7 +483,7 @@ end
     plot([nanmin(c.data(it,:)),nanmax(c.data(it,:))],c.(this_fsc_score)(it,1) * [1 1],'-','Color',[.7 .7 .7]);
     if [1-isempty(c_min)],
       if isfield(c_min,this_fsc_score),
-      plot(nanmean(c.data(it,:))* [1 1],[c_min.(this_fsc_score)(it),c_max.(this_fsc_score)(it)],'k','Color',[.5 .5 .5]);
+      plot(nanmean(c.data(it,:))* [1 1],[c_min.(this_fsc_score)(it),c_max.(this_fsc_score)(it)],'k','Color',[.5 0 0]);
       end
     end
     plot(nanmean(c.data(it,:)),c.(this_fsc_score)(it,1),'r.','Markersize',20);

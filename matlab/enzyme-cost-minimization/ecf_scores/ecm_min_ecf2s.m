@@ -1,10 +1,11 @@
-function [f, u] = ecm_ecf2s(x,pp)
+function [f, u, w] = ecm_ecf2s(x,pp)
 
 % [f, u] = ecm_ecf2s(x,pp)
 
 delta_G_by_RT = pp.N_forward' * x - pp.log_Keq_forward;
 
-u = abs(pp.v) ./ [ pp.kc_forward .* [1 - exp(delta_G_by_RT)] ];
+w = [ pp.kc_forward .* [1 - exp(delta_G_by_RT)] ];
+u = abs(pp.v) ./ w;
 
 f = max(pp.enzyme_cost_weights .* u(pp.ind_scored_enzymes));
 

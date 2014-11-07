@@ -1,14 +1,14 @@
-function [c, u, u_cost, up, A_forward, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network,r,v,fsc_options)
+function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network,r,v,fsc_options)
 
 % FSC_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution
 %
-% [c, u, u_cost, up, A_forward] = fsc_enzyme_cost_minimization(network, e, v, fsc_options)
+% [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network, e, v, fsc_options)
 %
 % Input 
 %   network       metabolic network structure (as in Metabolic Network Toolbox)
 %   r             Kinetic constants (from parameter balancing)
 %   v             flux mode
-%   fsc_options   options struct (for fields and defaul values, see 'fsc_options_default')
+%   fsc_options   options struct (for fields and default values, see 'fsc_default_options')
 %
 % Output
 %   c                 metabolite concentrations
@@ -39,7 +39,6 @@ function [c, u, u_cost, up, A_forward, c_min, c_max, u_min, u_max] = fsc_enzyme_
 %                     other columns: possible sampled solutions
 
 
-
 % --------------------------------------------------------------------------------------
 % Enzyme cost minimization
 % --------------------------------------------------------------------------------------
@@ -48,9 +47,9 @@ opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off'
 
 network.kinetics = set_kinetics(network,'cs',r);
 
-% --------------------------------------------------------------------------------------
-% network, v, ind_scored_enzymes, met_fix, conc_fix
 
+% --------------------------------------------------------------------------------------
+% initialise 
 
 [Mplus, Mminus, Wplus, Wminus, nm, nr] = make_structure_matrices(network.N,network.regulation_matrix,find(network.external));
 
@@ -61,13 +60,18 @@ c_data              = fsc_options.c_data             ;
 u_data              = fsc_options.u_data             ;  
 conc_min_default    = fsc_options.conc_min_default   ;
 conc_max_default    = fsc_options.conc_max_default   ;
-fsc_scores          = fsc_options.fsc_scores         ;
 conc_fix            = fsc_options.conc_fix;
+conc_min            = fsc_options.conc_min;
+conc_max            = fsc_options.conc_max;
+conc_min(isnan(conc_min)) = conc_min_default;
+conc_max(isnan(conc_max)) = conc_max_default;
+fsc_scores          = fsc_options.fsc_scores         ;
 ind_met_fix         = fsc_options.ind_met_fix;
 enzyme_cost_weights = fsc_options.enzyme_cost_weights;
 
+
 % --------------------------------------------------------------------------------------
-% true concentrations and protein levels
+% initialise c, u, u_cost; insert true concentrations and protein levels
 
 c.data      = c_data;
 u.data      = u_data;
@@ -75,13 +79,7 @@ u_cost.data = nansum(u.data);
 
 
 % --------------------------------------------------------------------------------------
-% initialise
-
-conc_min   = fsc_options.conc_min   ;
-conc_max   = fsc_options.conc_max   ;
-
-conc_min(isnan(conc_min)) = conc_min_default;
-conc_max(isnan(conc_max)) = conc_max_default;
+% adjust some network- and kinetics-related variables
 
 x_min = log(conc_min);
 x_max = log(conc_max);
@@ -115,25 +113,8 @@ kmprod_forward(ind_pos,1)   = KMr(ind_pos);
 kmprod_forward(ind_neg,1)   = KMf(ind_neg);
 
 
-% --------------------------------------------------------------------------------------
-% find feasible initial solution
-
-%epsilon = 10^-10;   % flux directions must be possible at least
-epsilon = 1 * 1/RT; % minimal reaction GFE of 1 kJ/mol is required  
-
-try
-  [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max, 0*x_min);
-catch
-  error('*** No polytope centre found - maybe the concentration constraints are infeasible? ***');
-  c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
-  return
-end
-
-X_extreme = [x1, x2]; % matrix with extreme concentration vectors
-
-
 % --------------------------------------------------------------------------
-% parameters used in cost score functions
+% struct with parameters used in cost score functions
 
 pp.v                   = v                  ; 
 pp.network             = network            ;
@@ -149,7 +130,25 @@ pp.enzyme_cost_weights = enzyme_cost_weights;
 pp.ind_not_scored      = ind_not_scored     ;
 
 
+% --------------------------------------------------------------------------------------
+% find feasible initial solution (as a test for feasibility) and extreme metabolite profiles
+
+%epsilon = 10^-10;   % flux directions must be possible at least
+epsilon = 1 * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required  
+
+try
+  [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max, 0*x_min);
+catch
+  error(sprintf('*** No polytope centre found (where driving forces > %f RT were required) - maybe the concentration constraints are infeasible? ***',epsilon));
+  c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
+  return
+end
+
+X_extreme = [x1, x2]; % matrix with extreme initial concentration vectors
+
+
 % --------------------------------------------------------------------------
+% choose the starting point
 
 
 switch fsc_options.initial_choice,
@@ -160,7 +159,7 @@ switch fsc_options.initial_choice,
     x_start = fmincon(@(xx) fsc_regularisation(xx,x_min,x_max,1), x_start,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
   case 'mdf',
     x_start = fmincon(@(xx) ecm_mdf(xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
-    display('  Choosing OBD solution as starting point'); 
+    display('  Choosing MDF solution as starting point'); 
 end
 
 
@@ -183,13 +182,29 @@ for it_method = 1:length(fsc_scores),
   fsc_score = fsc_scores{it_method};
   display(sprintf('   %s',fsc_score));
   
-  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x] = ecm_one_run(fsc_score,pp,x_min,x_max,x_init,fsc_options,opt);
+  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(fsc_score,pp,x_min,x_max,x_init,fsc_options,opt);
+
   c.(fsc_score)         = my_c;
   u.(fsc_score)         = my_u;
   up.(fsc_score)        = my_up;
   u_cost.(fsc_score)    = my_u_cost;
   A_forward.(fsc_score) = my_A_forward;
+  mca_info.(fsc_score).x_gradient = my_grad;
+  
+  if fsc_options.compute_hessian, 
+    my_fct = @(xx) ecm_get_score(fsc_score,xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation);
+    my_x = log(c.(fsc_score));
+    mca_info.(fsc_score).x_hessian = hessian(my_fct,my_x);
+    mca_info.(fsc_score).rates     = ecm_get_specific_rates(fsc_score,my_x,pp);
+  end
 
+  if fsc_options.compute_elasticities,
+    %% elasticities between the specific rate (i.e. v/u) and x
+    for it_r = 1:nr,
+      mca_info.(fsc_score).elasticities_rate_x(it_r,:) = gradest(@(xx) ecm_get_specific_rates(fsc_score,xx,pp,it_r),my_x)';
+    end
+  end
+  
 end
 
 
@@ -239,27 +254,26 @@ for it_method = 1:length(fsc_scores),
     %% copy the best result to the first position
     [dum,ind_opt] = min(u_cost.(fsc_score));
     
-    c.initial                = [ c.initial(:,ind_opt)                c.initial               ];  
+    c.initial             = [ c.initial(:,ind_opt)                c.initial               ];  
     c.(fsc_score)         = [ c.(fsc_score)(:,ind_opt)         c.(fsc_score)        ];  
     u.(fsc_score)         = [ u.(fsc_score)(:,ind_opt)         u.(fsc_score)        ];  
     up.(fsc_score)        = [ up.(fsc_score)(:,ind_opt)        up.(fsc_score)       ];  
     u_cost.(fsc_score)    = [ u_cost.(fsc_score)(ind_opt)      u_cost.(fsc_score)   ];  
     A_forward.(fsc_score) = [ A_forward.(fsc_score)(:,ind_opt) A_forward.(fsc_score)];
-    A_forward.initial        = [ A_forward.initial(:,ind_opt) A_forward.initial];
+    A_forward.initial     = [ A_forward.initial(:,ind_opt) A_forward.initial];
 
   end
 
-
   %% -------------------------------------------------------------------------
-  %% compute possible variation in log concentration profile
+  %% compute tolerance in log concentration profile
   %% (at some maximum allowed percentage increase in cost)
 
-  if fsc_options.variation_for_relaxed_optimality,
+  if fsc_options.compute_tolerance,
 
     display('    Computing the effects of relaxed optimality assumptions');
   
     x           = log(c.(fsc_score)(:,1));
-    u_threshold = fsc_options.variability_u_factor * u_cost.(fsc_score)(1);
+    u_threshold = fsc_options.cost_tolerance_factor * u_cost.(fsc_score)(1);
   
     my_x_min = x;
     my_x_max = x;
