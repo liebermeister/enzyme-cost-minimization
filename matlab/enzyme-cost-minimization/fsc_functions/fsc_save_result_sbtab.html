@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fsc_save_result_sbtab</title>
+  <meta name="keywords" content="fsc_save_result_sbtab">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="#">matlab</a> &gt; <a href="#">enzyme-cost-minimization</a> &gt; <a href="#">fsc_functions</a> &gt; fsc_save_result_sbtab.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./matlab/enzyme-cost-minimization/fsc_functions&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>fsc_save_result_sbtab
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function fsc_save_result_sbtab(filename,network,c,u,A_forward,options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function fsc_save_result_sbtab(filename,network,c,u,A_forward,options)</a>
+0002 
+0003 eval(default(<span class="string">'options'</span>,<span class="string">'struct'</span>));
+0004 
+0005 options_default.flag_one_file = 1;
+0006 options = join_struct(options_default, options);
+0007 
+0008 [network.metabolites,network.actions] = network_adjust_names_for_sbml_export(network.metabolites,network.actions);
+0009 
+0010 [nm,nr] = size(network.N);
+0011 
+0012 <span class="keyword">if</span> ~isfield(network,<span class="string">'metabolite_KEGGID'</span>),
+0013   network.metabolite_KEGGID = network.Compound_Identifiers_kegg_compound;
+0014 <span class="keyword">end</span>
+0015 
+0016 <span class="comment">% -----------------------------------------------</span>
+0017 <span class="comment">% predicted concentrations</span>
+0018 
+0019 fn = fieldnames(c); 
+0020 
+0021 c_table = sbtab_table_construct(struct(<span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'mM'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Compound'</span>,<span class="string">'Compound:Identifiers:kegg.compound'</span>},{repmat({<span class="string">'concentration'</span>},nm,1),network.metabolites, network.metabolite_KEGGID});
+0022 
+0023 <span class="keyword">for</span> it = 1:length(fn),
+0024   c_table = sbtab_table_add_column(c_table,fn{it}, c.(fn{it})(:,1), 0);
+0025 <span class="keyword">end</span>
+0026 
+0027 
+0028 <span class="comment">% -----------------------------------------------</span>
+0029 <span class="comment">% predicted enzyme levels</span>
+0030 
+0031 fn = fieldnames(u); 
+0032 
+0033 u_table = sbtab_table_construct(struct(<span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'mM'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Reaction'</span>},{repmat({<span class="string">'concentration of enzyme'</span>},nr,1),network.actions});
+0034 
+0035 <span class="keyword">for</span> it = 1:length(fn),
+0036   u_table = sbtab_table_add_column(u_table,fn{it}, u.(fn{it})(:,1),0);
+0037 <span class="keyword">end</span>
+0038 
+0039 
+0040 <span class="comment">% -----------------------------------------------</span>
+0041 <span class="comment">% predicted reaction driving forces</span>
+0042 
+0043 fn = fieldnames(A_forward); 
+0044 
+0045 A_forward_table = sbtab_table_construct(struct(<span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'kJ/mol'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Reaction'</span>},{repmat({<span class="string">'Gibbs energy of reaction'</span>},nr,1),network.actions});
+0046 
+0047 <span class="keyword">for</span> it = 1:length(fn),
+0048   A_forward_table = sbtab_table_add_column(A_forward_table,fn{it}, A_forward.(fn{it})(:,1),0);
+0049 <span class="keyword">end</span>
+0050 
+0051 
+0052 <span class="comment">% -----------------------------------------------</span>
+0053 <span class="comment">% save tables</span>
+0054 
+0055 <span class="keyword">switch</span> options_default.flag_one_file, 
+0056   
+0057   <span class="keyword">case</span> 0,
+0058     display(sprintf(<span class="string">'Writing model files (SBtab format) with basename\n%s'</span>, filename))
+0059     sbtab_table_save(c_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedConcentrations.csv'</span>]));
+0060     sbtab_table_save(u_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedEnzymeLevels.csv'</span>]));
+0061     sbtab_table_save(A_forward_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedForces.csv'</span>]));
+0062   <span class="keyword">case</span> 1,
+0063     display(sprintf(<span class="string">'Writing model file (SBtab format, one file)\n%s'</span>, filename))
+0064     sbtab_document = sbtab_document_construct;
+0065     sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'Concentration'</span>,c_table);
+0066     sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'EnzymeConcentration'</span>,u_table);
+0067     sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'ReactionAffinity'</span>,A_forward_table);
+0068     sbtab_document_save_to_one(sbtab_document, filename);
+0069 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 07-Nov-2014 11:29:38 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

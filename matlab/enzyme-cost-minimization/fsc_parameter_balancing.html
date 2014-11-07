@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fsc_parameter_balancing</title>
+  <meta name="keywords" content="fsc_parameter_balancing">
+  <meta name="description" content="[r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="#">matlab</a> &gt; <a href="#">enzyme-cost-minimization</a> &gt; fsc_parameter_balancing.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./matlab/enzyme-cost-minimization&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>fsc_parameter_balancing
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);
+
+ FSC_PARAMETER_BALANCING - Prepare and run parameter balancing
+
+ Output
+   r             Kinetic constants (used as input in parameter balancing)
+   r_orig        Original kinetic constants (used as input in parameter balancing)
+ 
+ Uses (potentially) the following options from fsc_options.
+  fsc_options.flag_given_kinetics
+  fsc_options.reaction_column_name
+  fsc_options.compound_column_name
+  fsc_options.kcat_usage
+  fsc_options.kcat_prior_median
+  fsc_options.kcat_prior_log10_std
+  fsc_options.kcat_lower
+  fsc_options.kcat_upper
+  fsc_options.KM_lower
+  fsc_options.Keq_upper
+  fsc_options.quantity_info_file
+  fsc_options.GFE_fixed</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../.././matlab/enzyme-cost-minimization/fsc_functions/fsc_default_options.html" class="code" title="function fsc_options = fsc_default_options(network, model_name)">fsc_default_options</a>	fsc_options = fsc_default_options(network, model_name)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);</a>
+0002 
+0003 <span class="comment">% [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% FSC_PARAMETER_BALANCING - Prepare and run parameter balancing</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Output</span>
+0008 <span class="comment">%   r             Kinetic constants (used as input in parameter balancing)</span>
+0009 <span class="comment">%   r_orig        Original kinetic constants (used as input in parameter balancing)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Uses (potentially) the following options from fsc_options.</span>
+0012 <span class="comment">%  fsc_options.flag_given_kinetics</span>
+0013 <span class="comment">%  fsc_options.reaction_column_name</span>
+0014 <span class="comment">%  fsc_options.compound_column_name</span>
+0015 <span class="comment">%  fsc_options.kcat_usage</span>
+0016 <span class="comment">%  fsc_options.kcat_prior_median</span>
+0017 <span class="comment">%  fsc_options.kcat_prior_log10_std</span>
+0018 <span class="comment">%  fsc_options.kcat_lower</span>
+0019 <span class="comment">%  fsc_options.kcat_upper</span>
+0020 <span class="comment">%  fsc_options.KM_lower</span>
+0021 <span class="comment">%  fsc_options.Keq_upper</span>
+0022 <span class="comment">%  fsc_options.quantity_info_file</span>
+0023 <span class="comment">%  fsc_options.GFE_fixed</span>
+0024 
+0025 fsc_options_def = <a href="../.././matlab/enzyme-cost-minimization/fsc_functions/fsc_default_options.html" class="code" title="function fsc_options = fsc_default_options(network, model_name)">fsc_default_options</a>(network);
+0026 fsc_options     = join_struct(fsc_options_def,fsc_options);
+0027 
+0028 
+0029 <span class="comment">% -------------------------------------------------</span>
+0030 <span class="comment">% fsc_options</span>
+0031 
+0032 <span class="keyword">if</span> fsc_options.flag_given_kinetics == 0,
+0033   <span class="keyword">if</span> isempty(kinetic_data),
+0034     kinetic_data = data_integration_load_kinetic_data({<span class="string">'standard chemical potential'</span>,<span class="string">'standard chemical potential difference'</span>,<span class="string">'Michaelis constant'</span>,<span class="string">'activation constant'</span>,  <span class="string">'inhibitory constant'</span>,<span class="string">'equilibrium constant'</span>,<span class="string">'substrate catalytic rate constant'</span>, <span class="string">'product catalytic rate constant'</span>}, [], network, [], 0, 1, fsc_options.reaction_column_name, fsc_options.compound_column_name);
+0035   <span class="keyword">end</span>
+0036 <span class="keyword">end</span>
+0037 
+0038 
+0039 <span class="comment">% --------------------------------------------------------------------------------------</span>
+0040 <span class="comment">% run parameter balancing for kinetic constants</span>
+0041 
+0042 <span class="keyword">if</span> fsc_options.flag_given_kinetics,
+0043 
+0044   <span class="keyword">switch</span> network.kinetics.type 
+0045     <span class="keyword">case</span> {<span class="string">'cs'</span>,<span class="string">'ms'</span>,<span class="string">'ds'</span>},
+0046       display(<span class="string">'Using kinetic constants found in network.kinetics'</span>);
+0047       r.Keq     = network.kinetics.Keq;
+0048       r.KM      = network.kinetics.KM;
+0049       [r.Kcatf, r.Kcatr] = modular_KV_Keq_to_kcat(network.N,network.kinetics);
+0050     <span class="keyword">otherwise</span> error(<span class="string">'Kinetics cannot be handled'</span>);
+0051   <span class="keyword">end</span>
+0052   
+0053 <span class="keyword">else</span>
+0054   
+0055   <span class="keyword">switch</span> fsc_options.kcat_usage
+0056     <span class="keyword">case</span> <span class="string">'use'</span>,
+0057     
+0058     <span class="keyword">case</span> <span class="string">'none'</span>,
+0059 
+0060       <span class="comment">%% do not use any kcat data</span>
+0061       kk = kinetic_data;
+0062       em = nan * kk.KM.median;
+0063       kk.KM.median = em; kk.KM.mean = em; kk.KM.std = em; kk.KM.mean_ln = em; kk.KM.std_ln = em;
+0064       em = nan * kk.KM.median;
+0065       kk.KA.median = em; kk.KA.mean = em; kk.KA.std = em; kk.KA.mean_ln = em; kk.KA.std_ln = em;
+0066       em = nan * kk.KI.median;
+0067       kk.KI.median = em; kk.KI.mean = em; kk.KI.std = em; kk.KI.mean_ln = em; kk.KI.std_ln = em;
+0068       em = nan * kk.Kcatf.median;
+0069       kk.Kcatf.median = em; kk.Kcatf.mean = em; kk.Kcatf.std = em; kk.Kcatf.mean_ln= em; kk.Kcatf.std_ln = em;
+0070       em = nan * kk.Kcatr.median;
+0071       kk.Kcatr.median = em; kk.Kcatr.mean = em; kk.Kcatr.std = em; kk.Kcatr.mean_ln= em; kk.Kcatr.std_ln = em;
+0072       kinetic_data = kk;
+0073       
+0074     <span class="keyword">case</span> <span class="string">'forward'</span>,
+0075       <span class="comment">%% invent kcat data such that forward values (along flux) ~=</span>
+0076       <span class="comment">%% match the standard value</span>
+0077       ind_p = find([v&gt;=0]+isnan(v));
+0078       ind_m = find(v&lt;0);
+0079       emp   = ones(size(ind_p));
+0080       emm   = ones(size(ind_m));
+0081       
+0082       <span class="keyword">if</span> isempty(fsc_options.kcat_prior_median), error(<span class="string">'Kcat standard value missing'</span>); <span class="keyword">end</span>
+0083       kcat_forward_value      = fsc_options.kcat_prior_median; <span class="comment">% unit: 1/s</span>
+0084       kk                      = kinetic_data;
+0085       kk.Kcatf.median(ind_p)  =     kcat_forward_value  * emp; 
+0086       kk.Kcatr.median(ind_m)  =     kcat_forward_value  * emm; 
+0087       kk.Kcatf.mean_ln(ind_p) = log(kcat_forward_value) * emp; 
+0088       kk.Kcatr.mean_ln(ind_m) = log(kcat_forward_value) * emm; 
+0089       kk.Kcatf.std_ln(ind_p)  = 0.1 * emp;
+0090       kk.Kcatr.std_ln(ind_m)  = 0.1 * emm;
+0091       [kk.Kcatf.mean(ind_p),kk.Kcatf.std(ind_p)] = lognormal_log2normal(kk.Kcatf.mean_ln(ind_p),kk.Kcatf.std_ln(ind_p));
+0092       [kk.Kcatr.mean(ind_m),kk.Kcatr.std(ind_m)] = lognormal_log2normal(kk.Kcatr.mean_ln(ind_m),kk.Kcatr.std_ln(ind_m));
+0093       kk.Kcatf.mean(ind_m) = nan;
+0094       kk.Kcatr.mean(ind_p) = nan;
+0095       kk.Kcatf.std(ind_m)  = nan;
+0096       kk.Kcatr.std(ind_p)  = nan;
+0097       kinetic_data         = kk;
+0098   <span class="keyword">end</span>
+0099   
+0100   
+0101   options = struct(<span class="string">'kcat_prior_median'</span>,fsc_options.kcat_prior_median,<span class="keyword">...</span>
+0102                    <span class="string">'kcat_prior_log10_std'</span>,fsc_options.kcat_prior_log10_std,<span class="keyword">...</span>
+0103                    <span class="string">'kcat_lower'</span>,fsc_options.kcat_lower,<span class="keyword">...</span>
+0104                    <span class="string">'kcat_upper'</span>,fsc_options.kcat_upper,<span class="keyword">...</span>
+0105                    <span class="string">'KM_lower'</span>,fsc_options.KM_lower,<span class="keyword">...</span>
+0106                    <span class="string">'Keq_upper'</span>,fsc_options.Keq_upper,<span class="keyword">...</span>
+0107                    <span class="string">'GFE_fixed'</span>,fsc_options.GFE_fixed,<span class="keyword">...</span>
+0108                    <span class="string">'quantity_info_file'</span>,fsc_options.quantity_info_file);
+0109   
+0110   [r, r_orig, kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
+0111 
+0112 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 07-Nov-2014 11:29:38 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

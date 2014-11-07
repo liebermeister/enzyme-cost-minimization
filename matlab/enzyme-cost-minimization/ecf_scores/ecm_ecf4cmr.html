@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ecm_ecf4cmr</title>
+  <meta name="keywords" content="ecm_ecf4cmr">
+  <meta name="description" content="[u_tot, u] = ecm_ecf4cmr(x,pp)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="#">matlab</a> &gt; <a href="#">enzyme-cost-minimization</a> &gt; <a href="#">ecf_scores</a> &gt; ecm_ecf4cmr.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./matlab/enzyme-cost-minimization/ecf_scores&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ecm_ecf4cmr
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>[u_tot, u] = ecm_ecf4cmr(x,pp)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [u_tot, u, w] = ecm_ecf4cmr(x,pp) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [u_tot, u] = ecm_ecf4cmr(x,pp)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="ecm_ecf4geom.html" class="code" title="function [u_tot, u, w] = ecm_ecf4geom(x,pp)">ecm_ecf4geom</a>	[u_tot, u] = ecm_ecf4geom(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/fsc_functions/ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(fsc_score,x,pp)">ecm_get_score</a>	</li><li><a href="../../.././matlab/enzyme-cost-minimization/fsc_functions/ecm_get_specific_rates.html" class="code" title="function rates = ecm_get_specific_rates(fsc_score,x,pp,ind)">ecm_get_specific_rates</a>	</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [u_tot, u, w] = ecm_ecf4cmr(x,pp)</a>
+0002 
+0003 <span class="comment">% [u_tot, u] = ecm_ecf4cmr(x,pp)</span>
+0004 
+0005 network = pp.network;
+0006 
+0007 delta_G_by_RT = sign(pp.v) .* [pp.network.N' * x - log(network.kinetics.Keq)];
+0008 
+0009 network.kinetics.type = <span class="string">'cs'</span>;
+0010 network.kinetics.u    = ones(size(network.kinetics.u)); 
+0011 
+0012 w = network_velocities(exp(x),network);
+0013 
+0014 u = pp.v./w;
+0015 
+0016 u_tot = sum(pp.enzyme_cost_weights.*u(pp.ind_scored_enzymes));
+0017 
+0018 <span class="keyword">if</span> sum(delta_G_by_RT&gt;0),
+0019   u_tot = 10^20*max(delta_G_by_RT);
+0020 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 07-Nov-2014 11:29:38 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

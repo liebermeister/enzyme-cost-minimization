@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ecm_get_specific_rates</title>
+  <meta name="keywords" content="ecm_get_specific_rates">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="#">matlab</a> &gt; <a href="#">enzyme-cost-minimization</a> &gt; <a href="#">fsc_functions</a> &gt; ecm_get_specific_rates.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./matlab/enzyme-cost-minimization/fsc_functions&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ecm_get_specific_rates
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function rates = ecm_get_specific_rates(fsc_score,x,pp,ind) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf1.html" class="code" title="function [u_tot, u, w] = ecm_ecs1(x,pp)">ecm_ecf1</a>	[u_tot, u] = ecm_ecs1(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf2s.html" class="code" title="function [u_tot, u, w] = ecm_ecs2s(x,pp)">ecm_ecf2s</a>	[u_tot, u] = ecm_ecs2s(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf2sp.html" class="code" title="function [u_tot, u, w ] = ecm_ecs2sp(x,pp)">ecm_ecf2sp</a>	[u_tot, u] = ecm_ecs2sp(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf3s.html" class="code" title="function [u_tot, u, w] = ecm_ecs3s(x,pp)">ecm_ecf3s</a>	[u_tot, u] = ecm_ecs3s(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf3sp.html" class="code" title="function [u_tot, u, w] = ecm_ecf3sp(x,pp)">ecm_ecf3sp</a>	[u_tot, u] = ecm_ecf3sp(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4cmr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4cmr</a>	[u_tot, u] = ecm_ecf4cmr(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4dmr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4dmr</a>	[u_tot, u] = ecm_ecf4cmr(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4geom.html" class="code" title="function [u_tot, u, w] = ecm_ecf4geom(x,pp)">ecm_ecf4geom</a>	[u_tot, u] = ecm_ecf4geom(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4smr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4smr</a>	[u_tot, u] = ecm_ecf4cmr(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_mdf.html" class="code" title="function [f,u,w] = ecm_mdf(x,pp)">ecm_mdf</a>	[f,u] = ecm_mdf(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_min_ecf2s.html" class="code" title="function [f, u, w] = ecm_ecf2s(x,pp)">ecm_min_ecf2s</a>	[f, u] = ecm_ecf2s(x,pp)</li><li><a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_min_ecf2sp.html" class="code" title="function [f, u, w] = ecm_min_ecf2sp(x,pp)">ecm_min_ecf2sp</a>	[f, u] = ecm_min_ecf2sp(x,pp)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../.././matlab/enzyme-cost-minimization/fsc_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network,r,v,fsc_options)">fsc_enzyme_cost_minimization</a>	FSC_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function rates = ecm_get_specific_rates(fsc_score,x,pp,ind)</a>
+0002 
+0003 <span class="keyword">switch</span> fsc_score,
+0004   <span class="keyword">case</span> <span class="string">'mdf'</span>,      [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_mdf.html" class="code" title="function [f,u,w] = ecm_mdf(x,pp)">ecm_mdf</a>(x,pp);
+0005   <span class="keyword">case</span> <span class="string">'mfsc2sub'</span>, [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_min_ecf2s.html" class="code" title="function [f, u, w] = ecm_ecf2s(x,pp)">ecm_min_ecf2s</a>(x,pp);
+0006   <span class="keyword">case</span> <span class="string">'mfsc2'</span>,    [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_min_ecf2sp.html" class="code" title="function [f, u, w] = ecm_min_ecf2sp(x,pp)">ecm_min_ecf2sp</a>(x,pp);
+0007   <span class="keyword">case</span> <span class="string">'ecf1'</span>,     [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf1.html" class="code" title="function [u_tot, u, w] = ecm_ecs1(x,pp)">ecm_ecf1</a>(x,pp);
+0008   <span class="keyword">case</span> <span class="string">'ecf2s'</span>,    [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf2s.html" class="code" title="function [u_tot, u, w] = ecm_ecs2s(x,pp)">ecm_ecf2s</a>(x,pp);
+0009   <span class="keyword">case</span> <span class="string">'ecf2sp'</span>,   [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf2sp.html" class="code" title="function [u_tot, u, w ] = ecm_ecs2sp(x,pp)">ecm_ecf2sp</a>(x,pp);
+0010   <span class="keyword">case</span> <span class="string">'ecf3s'</span>,    [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf3s.html" class="code" title="function [u_tot, u, w] = ecm_ecs3s(x,pp)">ecm_ecf3s</a>(x,pp);
+0011   <span class="keyword">case</span> <span class="string">'ecf3sp'</span>,   [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf3sp.html" class="code" title="function [u_tot, u, w] = ecm_ecf3sp(x,pp)">ecm_ecf3sp</a>(x,pp);
+0012   <span class="keyword">case</span> <span class="string">'ecf4dmr'</span>,  [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4dmr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4dmr</a>(x,pp);
+0013   <span class="keyword">case</span> <span class="string">'ecf4smr'</span>,  [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4smr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4smr</a>(x,pp);
+0014   <span class="keyword">case</span> <span class="string">'ecf4cmr'</span>,  [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4cmr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4cmr</a>(x,pp);
+0015   <span class="keyword">case</span> <span class="string">'ecf4geom'</span>, [u_tot, u, rates] = <a href="../../.././matlab/enzyme-cost-minimization/ecf_scores/ecm_ecf4geom.html" class="code" title="function [u_tot, u, w] = ecm_ecf4geom(x,pp)">ecm_ecf4geom</a>(x,pp);
+0016   <span class="keyword">otherwise</span>,       u_tot = nan; u = nan * ones(nr,1); rates = nan * ones(nr,1);
+0017 <span class="keyword">end</span>
+0018 
+0019 <span class="keyword">if</span> exist(<span class="string">'ind'</span>,<span class="string">'var'</span>),  rates = rates(ind);  <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Fri 07-Nov-2014 11:29:38 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

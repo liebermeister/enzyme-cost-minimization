@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ecm_get_one_u</title>
+  <meta name="keywords" content="ecm_get_one_u">
+  <meta name="description" content="function my_u_it = ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="#">matlab</a> &gt; <a href="#">enzyme-cost-minimization</a> &gt; <a href="#">fsc_functions</a> &gt; ecm_get_one_u.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./matlab/enzyme-cost-minimization/fsc_functions&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>ecm_get_one_u
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function my_u_it = ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function my_u_it = ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function my_u_it = ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options)
+
+ function needed for enzyme variability calculation after enzyme cost minimization:
+ given log metabolite profile xx, evaluate enzyme levels 
+ and return the levels of the it'th enzyme</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(fsc_score,x,pp)">ecm_get_score</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../.././matlab/enzyme-cost-minimization/fsc_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network,r,v,fsc_options)">fsc_enzyme_cost_minimization</a>	FSC_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function my_u_it = ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options)</a>
+0002 
+0003 <span class="comment">% function my_u_it = ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% function needed for enzyme variability calculation after enzyme cost minimization:</span>
+0006 <span class="comment">% given log metabolite profile xx, evaluate enzyme levels</span>
+0007 <span class="comment">% and return the levels of the it'th enzyme</span>
+0008 
+0009 [my_u_cost, my_u] = <a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(fsc_score,x,pp)">ecm_get_score</a>(fsc_score,xx,pp);
+0010 
+0011 my_u_it = my_u(it);</pre></div>
+<hr><address>Generated on Fri 07-Nov-2014 11:29:38 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>
