@@ -7,7 +7,7 @@ network = pp.network;
 delta_G_by_RT = sign(pp.v) .* [pp.network.N' * x - log(network.kinetics.Keq)];
 
 network.kinetics.type = 'cs';
-network.kinetics.u    = ones(size(network.kinetics.u)); 
+network.kinetics.u    = ones(size(network.N,2),1); 
 
 w = network_velocities(exp(x),network);
 

@@ -1,6 +1,6 @@
-function [u_tot, u, w ] = ecm_ecs2sp(x,pp)
+function [u_tot, u, w ] = ecm_ecf2sp(x,pp)
 
-% [u_tot, u] = ecm_ecs2sp(x,pp)
+% [u_tot, u] = ecm_ecf2sp(x,pp)
 
 delta_G_by_RT =  pp.N_forward' * x - pp.log_Keq_forward;
 

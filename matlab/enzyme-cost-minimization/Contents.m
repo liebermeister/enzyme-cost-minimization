@@ -1,11 +1,11 @@
 % Functions for Enzyme Cost Minimization
 %
 % Main functions 
-%   fsc_paramater_balancing      - Run parameter balancing
-%   fsc_enzyme_cost_minimization - Run enzyme cost minimization
+%   ecm_paramater_balancing      - Run parameter balancing
+%   ecm_enzyme_cost_minimization - Run enzyme cost minimization
 % 
 % Installation: 
-%   Edit fsc_setup.m: insert the path to your data directory
+%   Edit ecm_setup.m: insert the path to your data directory
 % 
 % Demos
 %   See directory 'demo'

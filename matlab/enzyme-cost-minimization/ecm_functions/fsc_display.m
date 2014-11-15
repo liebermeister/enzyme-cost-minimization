@@ -1,8 +1,8 @@
 function fsc_display(model_name,network,v,options,fsc_options,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)
 
-% PATHWAY_SPECIFIC_COST_DISPLAY - Display results of Pathway Specific Cost Modelling
+% fsc_display(model_name,network,v,options,fsc_options,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)
 %
-% fsc_display(network,v,fsc_options,c,u,u_tot,up,A_forward,r)
+% FSC_DISPLAY - Display results of Pathway Specific Cost Modelling
 
 fsc_options.reaction_order   = load_any_table(fsc_options.reaction_order_file);
 fsc_options.metabolite_order = load_any_table(fsc_options.metabolite_order_file);
@@ -44,6 +44,9 @@ end
 if ~isfield(fsc_options,'reaction_order'),
   fsc_options.reaction_order = reaction_names;
 else,
+  if isempty(fsc_options.reaction_order),
+    fsc_options.reaction_order = {};
+  end
   ll = label_names(fsc_options.reaction_order,reaction_names);
   fsc_options.reaction_order = fsc_options.reaction_order(find(ll));
   fsc_options.reaction_order = [column(fsc_options.reaction_order); column(setdiff(reaction_names,fsc_options.reaction_order))];
@@ -87,7 +90,8 @@ gp.arrowstyle   = 'none';
 netgraph_concentrations(fsc_options.network_CoHid,[],log10(r.Kcatf),1,gp); 
 title('log10 Kcat+, balanced (1/s)');
 
-figure(14); clf; 
+figure(14); clf;
+if length(kinetic_data),
 gp = struct('arrowsize',0.05,'actstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'metprintnames',0,'flag_edges',1,'colormap', value_colors);
 gp.actvaluesmin = log10(10);
 gp.actvaluesmax = log10(10000);
@@ -95,7 +99,7 @@ gp.actstyle     = 'fixed';
 gp.arrowstyle   = 'none';
 netgraph_concentrations(fsc_options.network_CoHid,[],log10(kinetic_data.Kcatf.median),1,gp); 
 title('log10 Kcat+, original (1/s)');
-
+end
 
 figure(11); clf; 
 gp.actstyle     = 'none';
@@ -205,10 +209,12 @@ my_xticklabel
 
 % data
 figure(21); subplot('Position',[0.15 0.05 0.8 0.7]);
+if length(kinetic_data)
 my_KM = kinetic_data.KM.median;
 my_KM(my_KM==0) = nan;
 im(log10(my_KM(:,ind_show_met)),[-3,2],network.actions,network.metabolites(ind_show_met)); colormap([0.95 0.95 0.95; value_colors]); colorbar
 my_xticklabel
+end
 
 % balanced
 figure(22); subplot('Position',[0.15 0.05 0.8 0.7]);
@@ -293,6 +299,7 @@ end
 % plot flux (data) versus enzyme level * kcat (both data)
 
 figure(45);clf; hold on
+if length(kinetic_data)
 is_finite  = isfinite(u.data .* kinetic_data.Kcatf.median .* v);
 ind_finite = find(is_finite);
 my_colors  = enzyme_colors(ind_genes,:);
@@ -309,6 +316,7 @@ if length(ind_finite),
   [cc, pvalue] = corr(log(u.data(ind_finite)),log(v(ind_finite)./kinetic_data.Kcatf.median(ind_finite)));
   [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(v(ind_finite)./kinetic_data.Kcatf.median(ind_finite)),'type','Spearman');
   title(sprintf('r (Pearson correlation): %2.2f [p-value %2.3f]\n r (Spearman rank corr): %2.2f [p-value %2.3f]',cc,pvalue,cc_spear,pvalue_spear));
+end
 end
 
 % --------------------------------------------------------

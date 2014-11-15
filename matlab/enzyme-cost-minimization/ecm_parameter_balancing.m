@@ -1,6 +1,6 @@
-function [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);
+function [r, r_orig, kinetic_data] = ecm_parameter_balancing(network,fsc_options, kinetic_data);
 
-% [r, r_orig, kinetic_data] = fsc_parameter_balancing(network,fsc_options, kinetic_data);
+% [r, r_orig, kinetic_data] = ecm_parameter_balancing(network,fsc_options, kinetic_data);
 %
 % FSC_PARAMETER_BALANCING - Prepare and run parameter balancing
 %

@@ -10,7 +10,8 @@ eval(default('model_name','''model'''));
 
 % model
 fsc_options.model_name               = model_name         ; 
-fsc_options.run_id                   = 'run';
+fsc_options.run_id                   = 'RUN';
+fsc_options.model_id                 = 'MODEL';
 fsc_options.network_CoHid            = network;
 
 % metabolite constraints

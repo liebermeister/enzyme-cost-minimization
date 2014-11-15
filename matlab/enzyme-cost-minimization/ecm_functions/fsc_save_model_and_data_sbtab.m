@@ -13,7 +13,6 @@ network.kinetics.type = 'cs';
 network.kinetics.c    = nan * c_data(:,1);
 network.kinetics.u    = nan * u_data;
 
-
 % model tables ('Compound', 'Reaction', 'QuantityData')
 sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0));
 
@@ -35,7 +34,13 @@ concentration_table = sbtab_table_construct(struct('TableName','Concentration', 
 enzyme_table = sbtab_table_construct(struct('TableName','EnzymeConcentration','TableType','Quantity','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','EnzymeConcentration'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID, u_data(:,1)});
 
 % metabolite constraint table
-constraint_table = sbtab_table_construct(struct('TableName','ConcentrationConstraint', 'TableType','Quantity','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','ConcentrationMin','ConcentrationMax'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
+constraint_table = sbtab_table_construct(struct('TableName','ConcentrationConstraint', 'TableType','Quantity','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','Concentration:Min','Concentration:Max'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
+
+% position table
+x = network.graphics_par.x(1,:)';
+y = network.graphics_par.x(2,:)';
+position_table = sbtab_table_construct(struct('TableName','Position', 'TableType','Position'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
+
 
 % --------------------------------
 
@@ -51,6 +56,7 @@ sbtab_table_save(enzyme_table, struct('filename',[ filename '_EnzymeConcentratio
 sbtab_table_save(GFE_table, struct('filename',[ filename '_FormationGFE.csv']));
 sbtab_table_save(dGFE_table, struct('filename',[ filename '_StandardReactionGFE.csv']));
 sbtab_table_save(constraint_table, struct('filename',[ filename '_ConcentrationConstraint.csv']));
+sbtab_table_save(position_table, struct('filename',[ filename '_Position.csv']));
 
 % Joint table with model and all data
 sbtab_document = sbtab_document_add_table(sbtab_document,'ConcentrationConstraint',constraint_table);
@@ -59,5 +65,6 @@ sbtab_document = sbtab_document_add_table(sbtab_document,'GibbsEnergyOfFormation
 sbtab_document = sbtab_document_add_table(sbtab_document,'GibbsEnergyOfReaction',dGFE_table);
 sbtab_document = sbtab_document_add_table(sbtab_document,'Concentration',concentration_table);
 sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',enzyme_table);
+sbtab_document = sbtab_document_add_table(sbtab_document,'Position',position_table);
 
 sbtab_document_save_to_one(sbtab_document,[filename, '_ModelData.csv']);

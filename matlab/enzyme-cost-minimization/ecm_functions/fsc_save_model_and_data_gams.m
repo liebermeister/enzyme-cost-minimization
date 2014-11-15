@@ -24,11 +24,11 @@ display('Writing GAMS files');
 
 % write table efms.csv
 
-table([ [{'efms'}; network.actions], [{1}; num2cell(v)] ]','comma',[filename 'efms.csv']);
+mytable([ [{'efms'}; network.actions], [{1}; num2cell(v)] ]','comma',[filename 'efms.csv']);
 
 % write table metfixed.csv
 
-table([column(fsc_options.fix_metabolites), num2cell(column(fsc_options.fix_metabolite_values))],'comma',[filename 'metfixed.csv']);
+mytable([column(fsc_options.fix_metabolites), num2cell(column(fsc_options.fix_metabolite_values))],'comma',[filename 'metfixed.csv']);
 
 % write table metmoiety.csv
 
@@ -39,22 +39,22 @@ table([column(fsc_options.fix_metabolites), num2cell(column(fsc_options.fix_meta
 % write table activators.csv
 
 ind = find(strcmp('activation constant', quantity_type));
-table([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'activators.csv']);
+mytable([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'activators.csv']);
 
 % write table inhibitors.csv
 
 ind = find(strcmp('inhibition constant', quantity_type));
-table([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'inhibitors.csv']);
+mytable([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'inhibitors.csv']);
 
 % write table kcats.csv
 
 ind = find(strcmp('substrate catalytic rate constant', quantity_type));
-table([reaction(ind), num2cell(value(ind))],'comma',[filename 'kcats.csv']);
+mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'kcats.csv']);
 
 % write table keqs.csv
 
 ind = find(strcmp('equilibrium constant', quantity_type));
-table([reaction(ind), num2cell(value(ind))],'comma',[filename 'keqs.csv']);
+mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'keqs.csv']);
 
 % write table kmstoich.csv
 
@@ -67,4 +67,4 @@ for it = 1:length(ind),
   stoich(it,1) = network.N(i_met,i_rea);
 end
 
-table([compound(ind), reaction(ind), num2cell([stoich, value(ind)])],'comma',[filename 'kmstoich.csv']);
+mytable([compound(ind), reaction(ind), num2cell([stoich, value(ind)])],'comma',[filename 'kmstoich.csv']);

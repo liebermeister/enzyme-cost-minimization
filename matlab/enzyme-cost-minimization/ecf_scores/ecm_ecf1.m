@@ -1,6 +1,6 @@
-function [u_tot, u, w] = ecm_ecs1(x,pp)
+function [u_tot, u, w] = ecm_ecf1(x,pp)
 
-% [u_tot, u] = ecm_ecs1(x,pp)
+% [u_tot, u] = ecm_ecf1(x,pp)
 
 u = abs(pp.v) ./ pp.kc_forward;
 

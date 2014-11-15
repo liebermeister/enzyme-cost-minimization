@@ -192,10 +192,17 @@ for it_method = 1:length(fsc_scores),
   mca_info.(fsc_score).x_gradient = my_grad;
   
   if fsc_options.compute_hessian, 
-    my_fct = @(xx) ecm_get_score(fsc_score,xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation);
     my_x = log(c.(fsc_score));
+    my_fct = @(xx) ecm_get_score(fsc_score,xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation);
     mca_info.(fsc_score).x_hessian = hessian(my_fct,my_x);
     mca_info.(fsc_score).rates     = ecm_get_specific_rates(fsc_score,my_x,pp);
+    my_fct_2 = @(xx) log(ecm_get_score(fsc_score,xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation));
+    log_hessian = hessian(my_fct_2,my_x);
+    %% fix negative eigenvalues if they occur
+    my_eigs = eig(log_hessian);
+    if min(my_eigs)<0, log_hessian = log_hessian - 1.001 * min(my_eigs) * eye(nm);end
+    mca_info.(fsc_score).x_log_hessian = log_hessian;
+
   end
 
   if fsc_options.compute_elasticities,

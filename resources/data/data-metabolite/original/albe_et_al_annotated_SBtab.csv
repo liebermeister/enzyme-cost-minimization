@@ -1,5 +1,5 @@
 !!Sbtab					
-!CompoundName	!Concentration	!ConcentrationMin	!ConcentrationMax	!Compound Identifiers:kegg.compound	!Organism
+!CompoundName	!Concentration	!Concentration:Min	!Concentration:Max	!Compound Identifiers:kegg.compound	!Organism
 ADP		320	1300	C00008	Saccharomyces cerevisiae
 AMP		170	300	C00020	Saccharomyces cerevisiae
 ATP		1100	1900	C00002	Saccharomyces cerevisiae
