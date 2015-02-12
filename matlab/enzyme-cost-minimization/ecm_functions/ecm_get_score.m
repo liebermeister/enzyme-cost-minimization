@@ -1,6 +1,6 @@
-function [u_cost, u] = ecm_get_score(fsc_score,x,pp)
+function [u_cost, u] = ecm_get_score(ecm_score,x,pp)
 
-switch fsc_score,
+switch ecm_score,
   case 'mdf',      [u_cost, u] = ecm_mdf(x,pp);
   case 'mfsc2sub', [u_cost, u] = ecm_min_ecf2s(x,pp);
   case 'mfsc2',    [u_cost, u] = ecm_min_ecf2sp(x,pp);

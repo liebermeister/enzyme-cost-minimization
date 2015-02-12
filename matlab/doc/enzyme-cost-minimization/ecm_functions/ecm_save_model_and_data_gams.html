@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ecm_save_model_and_data_gams</title>
+  <meta name="keywords" content="ecm_save_model_and_data_gams">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="#">enzyme-cost-minimization</a> &gt; <a href="#">ecm_functions</a> &gt; ecm_save_model_and_data_gams.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./enzyme-cost-minimization/ecm_functions&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ecm_save_model_and_data_gams
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ecm_save_model_and_data_gams(filename,network,v,r,c_data,u_data,ecm_options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ecm_save_model_and_data_gams(filename,network,v,r,c_data,u_data,ecm_options)</a>
+0002 
+0003 display(sprintf(<span class="string">'Writing model files (gams format) with basename\n%s'</span>, filename))
+0004 
+0005 <span class="comment">% adjust names for sbml output</span>
+0006 
+0007 [network.metabolites,network.actions] = network_adjust_names_for_sbml_export(network.metabolites,network.actions,1);
+0008 
+0009 ecm_options.fix_metabolites = network_adjust_names_for_sbml_export(ecm_options.fix_metabolites,[],1);
+0010 
+0011 <span class="comment">% turn network + kinetics into sbtab format</span>
+0012 
+0013 network.kinetics = r;
+0014 network.kinetics.type = <span class="string">'cs'</span>;
+0015 network_sbtab = network_to_sbtab(network, struct(<span class="string">'use_sbml_ids'</span>,0,<span class="string">'verbose'</span>,0,<span class="string">'write_concentrations'</span>,0,<span class="string">'write_enzyme_concentrations'</span>,0));
+0016 
+0017 quantity_type = network_sbtab.tables.Quantity.column.column.QuantityType;
+0018 value         = network_sbtab.tables.Quantity.column.column.Value;
+0019 compound      = network_sbtab.tables.Quantity.column.column.Compound;
+0020 reaction      = network_sbtab.tables.Quantity.column.column.Reaction;
+0021 
+0022 [compound,reaction] = network_adjust_names_for_sbml_export(compound,reaction,1);
+0023 
+0024 display(<span class="string">'Writing GAMS files'</span>);
+0025 
+0026 <span class="comment">% write table efms.csv</span>
+0027 
+0028 mytable([ [{<span class="string">'efms'</span>}; network.actions], [{1}; num2cell(v)] ]',<span class="string">'comma'</span>,[filename <span class="string">'efms.csv'</span>]);
+0029 
+0030 <span class="comment">% write table metfixed.csv</span>
+0031 
+0032 mytable([column(ecm_options.met_fix), num2cell(column(ecm_options.conc_fix))],<span class="string">'comma'</span>,[filename <span class="string">'metfixed.csv'</span>]);
+0033 
+0034 <span class="comment">% write table boundse.csv</span>
+0035 
+0036 [nm,nr] = size(network.N);
+0037 
+0038 mytable([[network.actions, repmat({<span class="string">'lo'</span>,<span class="string">'0'</span>},nr,1)]; <span class="keyword">...</span>
+0039          [network.actions, repmat({<span class="string">'up'</span>,<span class="string">'100'</span>},nr,1)]],<span class="string">'comma'</span>,[filename <span class="string">'boundse.csv'</span>]);
+0040 
+0041 <span class="comment">% write table boundsx.csv</span>
+0042 
+0043 mytable([[network.metabolites, repmat({<span class="string">'lo'</span>},nm,1), num2cell(log10(ecm_options.conc_min))]; <span class="keyword">...</span>
+0044          [network.metabolites, repmat({<span class="string">'up'</span>},nm,1), num2cell(log10(ecm_options.conc_max))]],<span class="string">'comma'</span>,[filename <span class="string">'boundsx.csv'</span>]);
+0045 
+0046 <span class="comment">% write table metmoiety.csv</span>
+0047 
+0048 <span class="comment">% write table moiety.csv</span>
+0049 
+0050 <span class="comment">% write table newmet.csv</span>
+0051 
+0052 <span class="comment">% write table activators.csv</span>
+0053 
+0054 ind = find(strcmp(<span class="string">'activation constant'</span>, quantity_type));
+0055 mytable([compound(ind), reaction(ind), num2cell(value(ind))],<span class="string">'comma'</span>,[filename <span class="string">'activators.csv'</span>]);
+0056 
+0057 <span class="comment">% write table inhibitors.csv</span>
+0058 
+0059 ind = find(strcmp(<span class="string">'inhibition constant'</span>, quantity_type));
+0060 mytable([compound(ind), reaction(ind), num2cell(value(ind))],<span class="string">'comma'</span>,[filename <span class="string">'inhibitors.csv'</span>]);
+0061 
+0062 <span class="comment">% write table kcats.csv</span>
+0063 
+0064 ind = find(strcmp(<span class="string">'substrate catalytic rate constant'</span>, quantity_type));
+0065 mytable([reaction(ind), num2cell(value(ind))],<span class="string">'comma'</span>,[filename <span class="string">'kcats.csv'</span>]);
+0066 
+0067 <span class="comment">% write table keqs.csv</span>
+0068 
+0069 ind = find(strcmp(<span class="string">'equilibrium constant'</span>, quantity_type));
+0070 mytable([reaction(ind), num2cell(value(ind))],<span class="string">'comma'</span>,[filename <span class="string">'keqs.csv'</span>]);
+0071 
+0072 <span class="comment">% write table kmstoich.csv</span>
+0073 
+0074 ind = find(strcmp(<span class="string">'Michaelis constant'</span>, quantity_type));
+0075 
+0076 stoich = [];
+0077 <span class="keyword">for</span> it = 1:length(ind),
+0078   i_met = find(strcmp(compound{ind(it)},network.metabolites));
+0079   i_rea = find(strcmp(reaction{ind(it)},network.actions));
+0080   stoich(it,1) = network.N(i_met,i_rea);
+0081 <span class="keyword">end</span>
+0082 
+0083 mytable([compound(ind), reaction(ind), num2cell([stoich, value(ind)])],<span class="string">'comma'</span>,[filename <span class="string">'kmstoich.csv'</span>]);</pre></div>
+<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

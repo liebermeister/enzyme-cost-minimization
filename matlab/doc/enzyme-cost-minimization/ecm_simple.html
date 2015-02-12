@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ecm_simple</title>
+  <meta name="keywords" content="ecm_simple">
+  <meta name="description" content="[report, errors] = ecm_simple(infile, outdir, options)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="#">enzyme-cost-minimization</a> &gt; ecm_simple.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./enzyme-cost-minimization&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ecm_simple
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>[report, errors] = ecm_simple(infile, outdir, options)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [report, errors] = ecm_simple(infile, outdir, options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> [report, errors] = ecm_simple(infile, outdir, options)</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li><li><a href=".././enzyme-cost-minimization/ecm_functions/ecm_default_options.html" class="code" title="function ecm_options = ecm_default_options(network, model_name)">ecm_default_options</a>	ecm_options = ecm_default_options(network, model_name)</li><li><a href=".././enzyme-cost-minimization/ecm_functions/ecm_display.html" class="code" title="function ecm_display(model_name,network,v,options,ecm_options,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)">ecm_display</a>	ecm_display(model_name,network,v,options,ecm_options,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)</li><li><a href=".././enzyme-cost-minimization/ecm_functions/ecm_load_model_and_data_sbtab.html" class="code" title="function [my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions,warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab, outdir)">ecm_load_model_and_data_sbtab</a>	[my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions, warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab)</li><li><a href=".././enzyme-cost-minimization/ecm_functions/ecm_save_result_sbtab.html" class="code" title="function ecm_save_result_sbtab(filename,network,c,u,A_forward,options)">ecm_save_result_sbtab</a>	</li><li><a href=".././enzyme-cost-minimization/ecm_functions/ecm_update_options.html" class="code" title="function ecm_options = ecm_update_options(network, ecm_options, r_orig);">ecm_update_options</a>	ecm_options = ecm_update_options(network, ecm_options, r_orig)</li><li><a href="ecm_parameter_balancing.html" class="code" title="function [r, r_orig, kinetic_data] = ecm_parameter_balancing(network,ecm_options, kinetic_data);">ecm_parameter_balancing</a>	[r, r_orig, kinetic_data] = ecm_parameter_balancing(network,ecm_options, kinetic_data);</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href=".././enzyme-cost-minimization/demo/demo_escherichia_coli_ccm.html" class="code" title="">demo_escherichia_coli_ccm</a>	--------------------------------------------------------</li></ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [report, errors] = ecm_simple(infile, outdir, options)</a>
+0002 
+0003 <span class="comment">% [report, errors] = ecm_simple(infile, outdir, options)</span>
+0004 
+0005 <span class="comment">% This function reads the input file [infile] (in SBtab format),</span>
+0006 <span class="comment">% performs Parameter Balancing or ECM,</span>
+0007 <span class="comment">% and saves the results to an SBtab file in [outdir]</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Possible actions: (in options.actions)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% 'ecm_standard':</span>
+0012 <span class="comment">%    runs an ECM using standard settings,</span>
+0013 <span class="comment">%    input file: prepared model with data (&quot;ModelData&quot;)</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% 'parameter_balancing':</span>
+0016 <span class="comment">%    runs an ECM using standard settings,</span>
+0017 <span class="comment">%    input file: prepared model with data (&quot;ModelData&quot;)</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% The function can also be called via the python script 'ecm.py'</span>
+0020 
+0021 errors = <span class="string">''</span>;
+0022 report = <span class="string">''</span>;
+0023 
+0024 eval(default(<span class="string">'options'</span>,<span class="string">'struct'</span>));
+0025 options_default = struct(<span class="string">'actions'</span>,<span class="string">'ecm_standard'</span>,<span class="string">'make_report'</span>,0);
+0026 options         = join_struct(options_default, options);
+0027 
+0028 <span class="keyword">switch</span> options.actions,
+0029   
+0030   <span class="keyword">case</span> <span class="string">'ecm_standard'</span>,
+0031 
+0032     display(<span class="string">'ecm_simple: Running ECM'</span>);
+0033 
+0034     outfile = [outdir <span class="string">'/ecm_result.csv'</span>];
+0035     report  = <span class="string">''</span>;
+0036     errors   = <span class="string">''</span>;
+0037 
+0038     <span class="comment">%% Load model and data from input file</span>
+0039     [my_network, v, c_data, u_data, conc_min, conc_max, my_positions,errors] = <a href=".././enzyme-cost-minimization/ecm_functions/ecm_load_model_and_data_sbtab.html" class="code" title="function [my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions,warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab, outdir)">ecm_load_model_and_data_sbtab</a>(infile,outdir);
+0040     <span class="comment">% if length(errors),</span>
+0041     <span class="comment">%   report = sprintf('An error occurred while parsing the SBtab file // No result file saved');</span>
+0042     <span class="comment">%   errors = sprintf('An error occurred while parsing the SBtab file: %s', error);</span>
+0043     <span class="comment">% end</span>
+0044     errors = <span class="string">''</span>;
+0045     
+0046     <span class="keyword">if</span> isempty(errors),
+0047       <span class="keyword">if</span> length(my_positions),
+0048         my_network = netgraph_read_positions(my_network, my_positions,[],1,0,my_network.actions);
+0049       <span class="keyword">end</span>
+0050       
+0051       <span class="comment">%% ECM standard options</span>
+0052 
+0053       my_ecm_options                      = <a href=".././enzyme-cost-minimization/ecm_functions/ecm_default_options.html" class="code" title="function ecm_options = ecm_default_options(network, model_name)">ecm_default_options</a>(my_network);
+0054       my_ecm_options.conc_min             = conc_min; 
+0055       my_ecm_options.conc_max             = conc_max;
+0056       my_ecm_options.conc_min_default     = 10^-10; 
+0057       my_ecm_options.conc_max_default     = 10^10; 
+0058       my_ecm_options.ecm_scores           = {<span class="string">'ecf1'</span>, <span class="string">'mdf'</span>, <span class="string">'ecf2s'</span>, <span class="string">'ecf2sp'</span>, <span class="string">'ecf3s'</span>, <span class="string">'ecf3sp'</span>, <span class="string">'ecf4geom'</span>, <span class="string">'ecf4cmr'</span>}; <span class="comment">% {'mdf'};%</span>
+0059       my_ecm_options.c_data               = c_data;
+0060       my_ecm_options.u_data               = u_data;
+0061       my_ecm_options.Keq_upper            = 100000000;
+0062       my_ecm_options.insert_Keq_from_data = 1;
+0063       my_ecm_options.replace_cofactors    = {<span class="string">'ATP'</span>,<span class="string">'ADP'</span>,<span class="string">'Orthophosphate'</span>,<span class="string">'NADH'</span>, <span class="string">'NAD+'</span>, <span class="string">'NADPH'</span>,<span class="string">'NADP+'</span>,<span class="string">'Ubiquinone'</span>, <span class="string">'Ubiquinol'</span>};
+0064       my_ecm_options.compute_tolerance    = 0;
+0065       my_ecm_options.cost_tolerance_factor  = 1.01;  
+0066       my_ecm_options.tolerance_from_hessian = 0;
+0067       my_ecm_options = <a href=".././enzyme-cost-minimization/ecm_functions/ecm_update_options.html" class="code" title="function ecm_options = ecm_update_options(network, ecm_options, r_orig);">ecm_update_options</a>(my_network, my_ecm_options, my_network.kinetics);
+0068       
+0069       <span class="comment">%% Run ECM</span>
+0070 
+0071       <span class="comment">%try</span>
+0072         [c,u,u_cost,up,A_forward,mca_info,c_min,c_max,u_min,u_max] = <a href="ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>(my_network, my_network.kinetics, v, my_ecm_options);
+0073         <a href=".././enzyme-cost-minimization/ecm_functions/ecm_save_result_sbtab.html" class="code" title="function ecm_save_result_sbtab(filename,network,c,u,A_forward,options)">ecm_save_result_sbtab</a>(outfile, my_network, c, u, A_forward, struct(<span class="string">'flag_one_file'</span>,1,<span class="string">'r'</span>,my_network.kinetics));
+0074         report = sprintf(<span class="string">'ECM finished // Results saved to file %s'</span>, outfile);
+0075         errors = <span class="string">''</span>;
+0076       <span class="comment">%catch err</span>
+0077       <span class="comment">%  display('error!!!!!');</span>
+0078       <span class="comment">%  report = sprintf('An error occurred during ECM // No result file saved');</span>
+0079       <span class="comment">%  errors  = [ 'An error occurred during ECM: ' err.identifier];</span>
+0080       <span class="comment">%end</span>
+0081     <span class="keyword">end</span>
+0082       
+0083   <span class="keyword">case</span> <span class="string">'parameter_balancing'</span>,
+0084     
+0085       display(<span class="string">'ecm_simple: Running parameter balancing'</span>);
+0086 
+0087       outfile              = [outdir <span class="string">'/pb_result.csv'</span>];
+0088       options.make_report  = 0;
+0089       options.use_kegg_ids = [1];
+0090       report               = <span class="string">''</span>;
+0091       errors                = <span class="string">''</span>;
+0092 
+0093       <span class="comment">%try</span>
+0094         my_sbtab = sbtab_document_load_from_one(infile);
+0095       <span class="comment">%catch err</span>
+0096       <span class="comment">%  report = sprintf('An error occurred while parsing the SBtab file // No result file saved');</span>
+0097       <span class="comment">%    errors  = sprintf('An error occurred while parsing the SBtab file: %s- Probably the input file is incomplete or syntactically wrong', err.identifier);</span>
+0098       <span class="comment">%end</span>
+0099 
+0100       <span class="keyword">if</span> isempty(errors),
+0101         <span class="keyword">try</span>
+0102          errors = network_sbtab_check_for_errors(my_sbtab);
+0103         <span class="keyword">catch</span> err
+0104           report = sprintf(<span class="string">'An error occurred while converting SBtab file to model // No result file saved'</span>);
+0105           errors  = sprintf(<span class="string">'An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong'</span>, err.identifier);
+0106         <span class="keyword">end</span>
+0107       <span class="keyword">end</span>
+0108       
+0109       <span class="keyword">if</span> isempty(errors),
+0110         <span class="keyword">try</span>
+0111          my_network = sbtab_to_network(my_sbtab,struct(<span class="string">'load_quantity_table'</span>,0));
+0112         <span class="keyword">catch</span> err
+0113           report = sprintf(<span class="string">'An error occurred while converting SBtab file to model // No result file saved'</span>);
+0114           errors  = sprintf(<span class="string">'An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong.'</span>, err.identifier);
+0115         <span class="keyword">end</span>
+0116       <span class="keyword">end</span>
+0117 
+0118       <span class="keyword">if</span> isempty(errors),
+0119         <span class="comment">%try</span>
+0120           import_quantity_list = {<span class="string">'standard Gibbs energy of reaction'</span>, <span class="keyword">...</span>
+0121                               <span class="string">'standard chemical potential'</span>,<span class="string">'Michaelis constant'</span>,<span class="keyword">...</span>
+0122                               <span class="string">'activation constant'</span>, <span class="string">'inhibitory constant'</span>,<span class="keyword">...</span>
+0123                               <span class="string">'equilibrium constant'</span>,<span class="string">'substrate catalytic rate constant'</span>, <span class="keyword">...</span>
+0124                               <span class="string">'product catalytic rate constant'</span>};
+0125           use_kegg_ids  = 1;
+0126           organism_long = [];<span class="comment">% 'Escherichia coli';</span>
+0127           sbtab_table_save(my_sbtab.tables.RateConstant,struct(<span class="string">'filename'</span>,<span class="string">'/tmp/my_pb_data.csv'</span>));
+0128           <span class="comment">%% store input rate constants in intermediate file '/tmp/my_pb_data.csv'</span>
+0129           my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, <span class="string">'/tmp/my_pb_data.csv'</span>, 0, options.use_kegg_ids, 0, 1, <span class="string">'Organism'</span>,organism_long);
+0130           
+0131           my_ecm_options = <a href=".././enzyme-cost-minimization/ecm_functions/ecm_default_options.html" class="code" title="function ecm_options = ecm_default_options(network, model_name)">ecm_default_options</a>(my_network);
+0132           my_ecm_options.insert_Keq_from_data = 0;
+0133           my_ecm_options.GFE_fixed = 0;
+0134           my_ecm_options.show_graphics = 0;
+0135           
+0136           [r, r_orig, kinetic_data] = <a href="ecm_parameter_balancing.html" class="code" title="function [r, r_orig, kinetic_data] = ecm_parameter_balancing(network,ecm_options, kinetic_data);">ecm_parameter_balancing</a>(my_network, my_ecm_options, my_kinetic_data);
+0137           my_network.kinetics = r;
+0138           my_network.kinetics.type = <span class="string">'cs'</span>;
+0139           network_to_sbtab(my_network,struct(<span class="string">'filename'</span>,outfile,<span class="string">'write_concentrations'</span>,0,<span class="string">'save_in_one_file'</span>,1,<span class="string">'write_enzyme_concentrations'</span>,0));
+0140           report = sprintf(<span class="string">'Parameter balancing finished // Results saved to file %s'</span>, outfile);
+0141         <span class="comment">%catch err</span>
+0142         <span class="comment">%  report = sprintf('An error occurred during parameter balancing // No result file saved');</span>
+0143         <span class="comment">%  errors  = [ 'An error occurred during parameter balancing: ' err.identifier];</span>
+0144         <span class="comment">%end</span>
+0145       <span class="keyword">end</span>
+0146 
+0147 <span class="keyword">end</span>
+0148 
+0149 <span class="keyword">if</span> isempty(errors),
+0150 
+0151   <span class="keyword">if</span> options.make_report,
+0152   display(<span class="string">'Making graphics files'</span>)
+0153   r                             = my_network.kinetics;
+0154   kinetic_data                  = [];
+0155   my_ecm_options.show_graphics  = 1;
+0156   my_ecm_options.print_graphics = 1;
+0157   my_ecm_options.psfile_dir     = [outdir <span class="string">'/ps-files/'</span> ];
+0158   my_ecm_options.model_id       = <span class="string">'MODEL'</span>;  <span class="comment">% for filenames</span>
+0159   my_ecm_options.metabolite_order_file = [];
+0160   my_ecm_options.reaction_order_file   = [];
+0161   eval(sprintf(<span class="string">'mkdir %s'</span>,my_ecm_options.psfile_dir));
+0162 <span class="keyword">else</span>
+0163   my_ecm_options.show_graphics  = 0;    
+0164 <span class="keyword">end</span>
+0165 
+0166 <span class="keyword">if</span> my_ecm_options.show_graphics,
+0167   <a href=".././enzyme-cost-minimization/ecm_functions/ecm_display.html" class="code" title="function ecm_display(model_name,network,v,options,ecm_options,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)">ecm_display</a>(my_ecm_options.model_id,my_network,v,options,my_ecm_options,c,u,u_cost,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max);
+0168 <span class="keyword">end</span>
+0169 <span class="keyword">end</span>
+0170 
+0171 <span class="keyword">if</span> isempty(errors),
+0172   errors = <span class="string">'No errors'</span>;
+0173 <span class="keyword">else</span>
+0174   display(errors)
+0175 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

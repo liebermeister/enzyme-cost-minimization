@@ -1,5 +1,5 @@
-!!SBtab							
-!QuantityType	!Reaction Identifiers:kegg.reaction	!Compound Identifiers:kegg.compound	!Value	!Unit	!Temperature	!pH	!OrganismIDKegg
+!!SBtab TableType='Quantity'							
+!QuantityType	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!Value	!Unit	!Temperature	!pH	!Organism:KEGGnumber
 substrate catalytic rate constant	R00754	C00084	16.7	1/s	NaN	7	65
 substrate catalytic rate constant	R00754	C00084	0.3	1/s	40	9	72
 substrate catalytic rate constant	R00754	C00084	5.4	1/s	70	9	72

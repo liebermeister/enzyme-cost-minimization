@@ -1,5 +1,5 @@
-!!SBtab !Organism="Saccharomyces cerevisiae"
-!Reaction	!Value
+!!SBtab !Organism='Saccharomyces cerevisiae'
+!Reaction	!Flux:Value
 HXK_R01786	15.2
 PGI_R02740	13.1
 PFK_R04779	13.1

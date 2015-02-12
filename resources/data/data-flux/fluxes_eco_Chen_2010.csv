@@ -1,4 +1,4 @@
-!!SBtab !Organism="Escherichia coli"
+!!SBtab !Organism='Escherichia coli'
 !Reaction	!Aerobic	!Anaerobic
 HXK_R01786	8.7	14.9
 PTS_RPTSsy	8.7	14.9

@@ -1,4 +1,4 @@
-!!SBtab !Organism="Saccharomyces cerevisiae"
+!!SBtab TableType='Enzyme' !Organism='Saccharomyces cerevisiae'
 !Enzyme	!Gene
 AAD	-
 ACC	-

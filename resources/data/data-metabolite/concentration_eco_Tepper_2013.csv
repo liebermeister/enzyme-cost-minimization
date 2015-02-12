@@ -1,5 +1,5 @@
-!!SBtab !Organism="Escherichia coli"
-!QuantityType	!CompoundName	!Value	Acetate	Glycerol	GlucoseAnaerobic	!Compound Identifiers:kegg.compound
+!!SBtab TableType='Quantity' !Organism='Escherichia coli'
+!QuantityType	!Compound:Name	!Value	Acetate	Glycerol	GlucoseAnaerobic	!Compound:Identifiers:kegg.compound
 !Condition		Glucose	Acetate	Glycerol	GlucoseAnaerobic	
 concentration	Succinate	0.569	0.923	1.14	17.126113	C00042
 concentration	Fumarate	0.115	0.267	0.255	2.6991093	C00122

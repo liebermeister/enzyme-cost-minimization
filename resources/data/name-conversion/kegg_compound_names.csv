@@ -1,5 +1,5 @@
 !!SBtab
-!Compound Identifiers:kegg.compound	!CompoundName
+!Identifiers:kegg.compound	!Compound:Name
 C00001	H2O
 C00002	ATP
 C00003	NAD+

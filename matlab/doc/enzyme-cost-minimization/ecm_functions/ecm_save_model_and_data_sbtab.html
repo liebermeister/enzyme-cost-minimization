@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ecm_save_model_and_data_sbtab</title>
+  <meta name="keywords" content="ecm_save_model_and_data_sbtab">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="#">enzyme-cost-minimization</a> &gt; <a href="#">ecm_functions</a> &gt; ecm_save_model_and_data_sbtab.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for ./enzyme-cost-minimization/ecm_functions&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ecm_save_model_and_data_sbtab
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max,document_name) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max,document_name)</a>
+0002 
+0003 
+0004 eval(default(<span class="string">'v'</span>,<span class="string">'[]'</span>,<span class="string">'r'</span>,<span class="string">'[]'</span>,<span class="string">'c_data'</span>,<span class="string">'[]'</span>,<span class="string">'u_data'</span>,<span class="string">'[]'</span>,<span class="string">'kinetic_data'</span>,<span class="string">'[]'</span>,<span class="string">'conc_min'</span>,<span class="string">'[]'</span>,<span class="string">'conc_max'</span>,<span class="string">'[]'</span>));
+0005 
+0006 <span class="comment">% -------------------------------------------------------</span>
+0007 <span class="comment">% prepare data</span>
+0008 
+0009 [network.metabolites,network.actions] = network_adjust_names_for_sbml_export(network.metabolites,network.actions);
+0010 
+0011 [nm,nr] = size(network.N);
+0012 
+0013 formulae = network_print_formulae(network);
+0014 
+0015 network.kinetics      = r;
+0016 network.kinetics.type = <span class="string">'cs'</span>;
+0017 network.kinetics.c    = nan * c_data(:,1);
+0018 network.kinetics.u    = nan * u_data;
+0019 
+0020 <span class="comment">% model tables ('Compound', 'Reaction', 'QuantityData')</span>
+0021 sbtab_document = network_to_sbtab(network, struct(<span class="string">'use_sbml_ids'</span>,0,<span class="string">'verbose'</span>,0,<span class="string">'write_concentrations'</span>,0,<span class="string">'document_name'</span>,document_name));
+0022 sbtab_document_save(sbtab_document,filename,0,1);
+0023 
+0024 <span class="comment">% flux table</span>
+0025 <span class="keyword">if</span> length(v),      
+0026   flux_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'Flux'</span>, <span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'mM/s'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Reaction'</span>,<span class="string">'Reaction:Identifiers:kegg.reaction'</span>,<span class="string">'Flux'</span>},{repmat({<span class="string">'flux'</span>},nr,1),network.actions,network.reaction_KEGGID,v});
+0027   sbtab_table_save(flux_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_Flux.csv'</span>])); 
+0028   sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'Flux'</span>,flux_table);
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="comment">% compound GFE of formation</span>
+0032 <span class="keyword">if</span> length(r),
+0033   GFE_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'GibbsEnergyOfFormation'</span>,<span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'kJ/mol'</span>,<span class="string">'StandardConcentration'</span>,<span class="string">'1mM'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Compound'</span>,<span class="string">'Compound:Identifiers:kegg.compound'</span>,<span class="string">'Value'</span>},{repmat({<span class="string">'standard Gibbs energy of formation'</span>},nm,1),network.metabolites, network.metabolite_KEGGID, r.mu0});
+0034   sbtab_table_save(GFE_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_FormationGFE.csv'</span>])); 
+0035   sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'GibbsEnergyOfFormation'</span>,GFE_table);
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="comment">% reaction GFE table</span>
+0039 <span class="keyword">if</span> length(r),
+0040   delta_mu0      = network.N' * r.mu0;
+0041   <span class="keyword">if</span> length(kinetic_data),
+0042     delta_mu0_orig = kinetic_data.dmu0.median;
+0043   <span class="keyword">else</span>
+0044     delta_mu0_orig = nan*delta_mu0;
+0045   <span class="keyword">end</span>
+0046   dGFE_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'GibbsEnergyOfReaction'</span>,<span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'kJ/mol'</span>,<span class="string">'StandardConcentration'</span>,<span class="string">'1mM'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Reaction'</span>,<span class="string">'Reaction:Identifiers:kegg.reaction'</span>,<span class="string">'Value'</span>,<span class="string">'OriginalValue'</span>,<span class="string">'SumFormula'</span>},{repmat({<span class="string">'standard Gibbs energy of reaction'</span>},nr,1),network.actions, network.reaction_KEGGID, delta_mu0, delta_mu0_orig, formulae});
+0047   sbtab_table_save(dGFE_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_StandardReactionGFE.csv'</span>])); 
+0048   sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'GibbsEnergyOfReaction'</span>,dGFE_table);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">% metabolite concentration table</span>
+0052 <span class="keyword">if</span> length(c_data), 
+0053   concentration_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'Concentration'</span>, <span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'mM'</span>),<span class="keyword">...</span>
+0054                                               {<span class="string">'QuantityType'</span>,<span class="string">'Compound'</span>,<span class="string">'Compound:Identifiers:kegg.compound'</span>,<span class="string">'Concentration'</span>},<span class="keyword">...</span>
+0055                                               {repmat({<span class="string">'concentration'</span>},nm,1),network.metabolites, network.metabolite_KEGGID, c_data(:,1)});
+0056   sbtab_table_save(concentration_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_Concentration.csv'</span>])); 
+0057   sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'Concentration'</span>,concentration_table);
+0058 <span class="keyword">end</span>
+0059 
+0060 <span class="comment">% enzyme concentration table</span>
+0061 <span class="keyword">if</span> length(u_data),
+0062   enzyme_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'EnzymeConcentration'</span>,<span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'mM'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Reaction'</span>,<span class="string">'Reaction:Identifiers:kegg.reaction'</span>,<span class="string">'EnzymeConcentration'</span>},{repmat({<span class="string">'concentration of enzyme'</span>},nr,1),network.actions, network.reaction_KEGGID, u_data(:,1)});
+0063   sbtab_table_save(enzyme_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_EnzymeConcentration.csv'</span>]));  
+0064   sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'EnzymeConcentration'</span>,enzyme_table);
+0065 <span class="keyword">end</span>
+0066 
+0067 <span class="comment">% metabolite constraint table</span>
+0068 <span class="keyword">if</span> length(conc_min),
+0069   constraint_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'ConcentrationConstraint'</span>, <span class="string">'TableType'</span>,<span class="string">'Quantity'</span>,<span class="string">'Unit'</span>,<span class="string">'mM'</span>),{<span class="string">'QuantityType'</span>,<span class="string">'Compound'</span>,<span class="string">'Compound:Identifiers:kegg.compound'</span>,<span class="string">'Concentration:Min'</span>,<span class="string">'Concentration:Max'</span>},{repmat({<span class="string">'concentration'</span>},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
+0070   sbtab_table_save(constraint_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_ConcentrationConstraint.csv'</span>]));
+0071   sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'ConcentrationConstraint'</span>,constraint_table);
+0072 <span class="keyword">end</span>
+0073 
+0074 <span class="comment">% position table</span>
+0075 x = network.graphics_par.x(1,:)';
+0076 y = network.graphics_par.x(2,:)';
+0077 position_table = sbtab_table_construct(struct(<span class="string">'DocumentName'</span>,document_name,<span class="string">'TableName'</span>,<span class="string">'Position'</span>, <span class="string">'TableType'</span>,<span class="string">'Position'</span>),{<span class="string">'Element'</span>,<span class="string">'PositionX'</span>,<span class="string">'PositionY'</span>},{[network.metabolites; network.actions],x,y});
+0078 sbtab_table_save(position_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_Position.csv'</span>]));
+0079 sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'Position'</span>,position_table);
+0080 
+0081 
+0082 <span class="comment">% --------------------------------</span>
+0083 
+0084 sbtab_document_save_to_one(sbtab_document,[filename, <span class="string">'_ModelData.csv'</span>]);
+0085 
+0086 display(sprintf(<span class="string">'Wrote model files (sbtab format) with basename\n%s'</span>, filename))
+0087</pre></div>
+<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+</body>
+</html>

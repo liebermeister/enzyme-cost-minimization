@@ -1,37 +1,37 @@
-function [r, r_orig, kinetic_data] = ecm_parameter_balancing(network,fsc_options, kinetic_data);
+function [r, r_orig, kinetic_data] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 
-% [r, r_orig, kinetic_data] = ecm_parameter_balancing(network,fsc_options, kinetic_data);
+% [r, r_orig, kinetic_data] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 %
-% FSC_PARAMETER_BALANCING - Prepare and run parameter balancing
+% ECM_PARAMETER_BALANCING - Prepare and run parameter balancing
 %
 % Output
-%   r             Kinetic constants (used as input in parameter balancing)
-%   r_orig        Original kinetic constants (used as input in parameter balancing)
+%   r        Kinetic constants (used as input in parameter balancing)
+%   r_orig   Original kinetic constants (used as input in parameter balancing)
 % 
-% Uses (potentially) the following options from fsc_options.
-%  fsc_options.flag_given_kinetics
-%  fsc_options.reaction_column_name
-%  fsc_options.compound_column_name
-%  fsc_options.kcat_usage
-%  fsc_options.kcat_prior_median
-%  fsc_options.kcat_prior_log10_std
-%  fsc_options.kcat_lower
-%  fsc_options.kcat_upper
-%  fsc_options.KM_lower
-%  fsc_options.Keq_upper
-%  fsc_options.quantity_info_file
-%  fsc_options.GFE_fixed
+% Uses (potentially) the following options from ecm_options.
+%  ecm_options.flag_given_kinetics
+%  ecm_options.reaction_column_name
+%  ecm_options.compound_column_name
+%  ecm_options.kcat_usage
+%  ecm_options.kcat_prior_median
+%  ecm_options.kcat_prior_log10_std
+%  ecm_options.kcat_lower
+%  ecm_options.kcat_upper
+%  ecm_options.KM_lower
+%  ecm_options.Keq_upper
+%  ecm_options.quantity_info_file
+%  ecm_options.GFE_fixed
 
-fsc_options_def = fsc_default_options(network);
-fsc_options     = join_struct(fsc_options_def,fsc_options);
+ecm_options_def = ecm_default_options(network);
+ecm_options     = join_struct(ecm_options_def,ecm_options);
 
 
 % -------------------------------------------------
-% fsc_options
+% ecm_options
 
-if fsc_options.flag_given_kinetics == 0,
+if ecm_options.flag_given_kinetics == 0,
   if isempty(kinetic_data),
-    kinetic_data = data_integration_load_kinetic_data({'standard chemical potential','standard chemical potential difference','Michaelis constant','activation constant',  'inhibitory constant','equilibrium constant','substrate catalytic rate constant', 'product catalytic rate constant'}, [], network, [], 0, 1, fsc_options.reaction_column_name, fsc_options.compound_column_name);
+    kinetic_data = data_integration_load_kinetic_data({'standard chemical potential','standard chemical potential difference','Michaelis constant','activation constant',  'inhibitory constant','equilibrium constant','substrate catalytic rate constant', 'product catalytic rate constant'}, [], network, [], 0, 1, ecm_options.reaction_column_name, ecm_options.compound_column_name);
   end
 end
 
@@ -39,7 +39,7 @@ end
 % --------------------------------------------------------------------------------------
 % run parameter balancing for kinetic constants
 
-if fsc_options.flag_given_kinetics,
+if ecm_options.flag_given_kinetics,
 
   switch network.kinetics.type 
     case {'cs','ms','ds'},
@@ -52,7 +52,7 @@ if fsc_options.flag_given_kinetics,
   
 else
   
-  switch fsc_options.kcat_usage
+  switch ecm_options.kcat_usage
     case 'use',
     
     case 'none',
@@ -79,8 +79,8 @@ else
       emp   = ones(size(ind_p));
       emm   = ones(size(ind_m));
       
-      if isempty(fsc_options.kcat_prior_median), error('Kcat standard value missing'); end
-      kcat_forward_value      = fsc_options.kcat_prior_median; % unit: 1/s
+      if isempty(ecm_options.kcat_prior_median), error('Kcat standard value missing'); end
+      kcat_forward_value      = ecm_options.kcat_prior_median; % unit: 1/s
       kk                      = kinetic_data;
       kk.Kcatf.median(ind_p)  =     kcat_forward_value  * emp; 
       kk.Kcatr.median(ind_m)  =     kcat_forward_value  * emm; 
@@ -98,14 +98,14 @@ else
   end
   
   
-  options = struct('kcat_prior_median',fsc_options.kcat_prior_median,...
-                   'kcat_prior_log10_std',fsc_options.kcat_prior_log10_std,...
-                   'kcat_lower',fsc_options.kcat_lower,...
-                   'kcat_upper',fsc_options.kcat_upper,...
-                   'KM_lower',fsc_options.KM_lower,...
-                   'Keq_upper',fsc_options.Keq_upper,...
-                   'GFE_fixed',fsc_options.GFE_fixed,...
-                   'quantity_info_file',fsc_options.quantity_info_file);
+  options = struct('kcat_prior_median',ecm_options.kcat_prior_median,...
+                   'kcat_prior_log10_std',ecm_options.kcat_prior_log10_std,...
+                   'kcat_lower',ecm_options.kcat_lower,...
+                   'kcat_upper',ecm_options.kcat_upper,...
+                   'KM_lower',ecm_options.KM_lower,...
+                   'Keq_upper',ecm_options.Keq_upper,...
+                   'GFE_fixed',ecm_options.GFE_fixed,...
+                   'quantity_info_file',ecm_options.quantity_info_file);
   
   [r, r_orig, kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
 

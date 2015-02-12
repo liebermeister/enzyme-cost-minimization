@@ -2,12 +2,6 @@
 Data directory for enzyme cost score calculations
 -------------------------------------------------
 
-These are the ORIGINAL FILES used for our analyses.
-
-There is a copy of this directory in the Dropbox: /home/wolfram/Dropbox/enzyme_cost_scores
-
-
--------------------------------------------------
 Subdirectories:
 
 pathways - stoichiometric descriptions of metabolic pathways

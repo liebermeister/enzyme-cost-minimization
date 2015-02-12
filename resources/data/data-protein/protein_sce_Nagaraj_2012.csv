@@ -1,5 +1,5 @@
-!!SBtab !Organism="Saccharomyces cerevisiae"
-!QuantityType	!GeneSystematic	!Abundance	!Value	!SizeWeightedAbundance	!SizeWeightedAbundancePPM	!Gene	!KOnumber	!KOcategory
+!!SBtab TableType='Quantity' !Organism='Saccharomyces cerevisiae'
+!QuantityType	!Gene:LocusName	!Abundance	!Value	!SizeWeightedAbundance	!SizeWeightedAbundancePPM	!Gene	!Gene:Identifiers:kegg.orthology	!Pathway
 concentration of enzyme	YBR177C	9765000000	77.1478412116	2929500000000	56.2976208772			
 concentration of enzyme	YIL140W	1063500000	8.40212279862	319050000000	6.13133843347			
 concentration of enzyme	YLR268W	4967200000	39.2430882608	1062980800000	20.4278170603	Sec22	K08517	SNARE interactions in vesicular transport

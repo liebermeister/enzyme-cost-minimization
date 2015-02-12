@@ -1,30 +1,30 @@
-Enzyme Cost Minimization functions for Matlab
+---------------------------------------------------------------------
+Enzyme Cost Minimization functions for MATLAB
 
-Wolfram Liebermeister (2013)
+Wolfram Liebermeister (2015)
 ---------------------------------------------------------------------
 
 INSTALLATION
 
   1. Unpack the files
-  2. Include the subdirectory 'enzyme-cost-minimization' into your Matlab path
-  3. Make sure that the following toolboxes are installed:
-      o Metabolic Network Toolbox  (https://github.com/wolframliebermeister/mnt)
+  2. Include the directory 'matlab/enzyme-cost-minimization' into your MATLAB path
+  3. Make sure that the following MATLAB toolboxes are also installed:
+      o Metabolic Network Toolbox  (https://github.com/liebermeister/mnt)
       o SBML Toolbox               (http://sbml.org/Software/SBMLToolbox)
-      o SBtab toolbox              (https://github.com/wolframliebermeister/sbtab-matlab)
+      o SBtab toolbox              (https://github.com/liebermeister/sbtab-matlab)
       o efmtool Toolbox            (http://www.csb.ethz.ch/tools/efmtool)
-  4. Set the path of your data directory in the m-file fsc_setup.m (directory flux-specific-enzyme-cost)
+  4. Set the path of your data directory in the m-file fsc_setup.m (directory enzyme-cost-minimization)
   5. For a little demo, run 'mnt_demo'
 
 
 REQUIREMENTS
 
-  The functions were developed and tested with matlab6
+  The functions were developed and tested with MATLAB6
  
   They also require:
-    Metabolic Network Toolbox - (https://github.com/wolframliebermeister/mnt)
+    Metabolic Network Toolbox - (https://github.com/liebermeister/mnt)
     SBMLtoolbox    - SBML import / export  (see http://sbml.org/Software/SBMLToolbox)
-    SBtab toolbox  - SBtab format (https://github.com/wolframliebermeister/sbtab-matlab)
-    Tensor toolbox - Tensors (http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.5.html)
+    SBtab toolbox  - SBtab format (https://github.com/liebermeister/sbtab-matlab)
     efmtool        - Elementary flux modes (see http://www.csb.ethz.ch/tools/efmtool)
 
 
@@ -35,7 +35,7 @@ STATE OF THE SOFTWARE.
 
 DOCUMENTATION
 
-  Documentation (in directory 'doc') has been built automatically with M2HMTL
+  Documentation of the MATLAB code (in directory 'doc') has been built automatically with M2HMTL
 
 
 LICENSE

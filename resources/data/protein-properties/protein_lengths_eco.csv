@@ -1,5 +1,5 @@
-!!SBtab !Organism="Escherichia coli"
-!GeneSystematic	!Gene	!KOnumber	!ProteinSize
+!!SBtab !Organism='Escherichia coli'
+!Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!ProteinSize
 b0882	ClpA	K03694	758
 b2592	ClpB	K03695	823
 b0438	ClpX	K03544	424

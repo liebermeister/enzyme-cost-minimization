@@ -1,5 +1,5 @@
-!!SBtab !Organism="Escherichia coli"
-!CompoundName	!Compound Identifiers:kegg.compound	!Organism	!Value	!QuantityType
+!!SBtab TableType='Quantity' Organism="Escherichia coli"
+!Compound:Name	!Compound:Identifiers:kegg.compound	!Organism	!Value	!QuantityType
 Acetyl-CoA	C00024	E.Coli	0.35	concentration
 ADP	C00008	E.Coli	0.823	concentration
 AMP	C00020	E.Coli	0.151	concentration

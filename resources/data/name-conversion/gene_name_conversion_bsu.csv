@@ -1,4 +1,4 @@
-!!SBtab !Organism="Bacillus subtilis"
+!!SBtab TableType='Enzyme' !Organism='Bacillus subtilis'
 !Enzyme	!Gene
 AAD	-
 ACC	-

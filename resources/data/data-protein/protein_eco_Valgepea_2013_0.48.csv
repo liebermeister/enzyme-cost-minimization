@@ -1,5 +1,5 @@
-!!SBtab !Organism="Escherichia coli"									
-!QuantityType	!GeneSystematic	!Abundance	!Value	!SizeWeightedAbundance	!SizeWeightedAbundancePPM	!Size	!Gene	!KOnumber	!KOcategory
+!!SBtab TableType='Quantity' !Organism='Escherichia coli'
+!QuantityType	!Gene:LocusName	!Abundance	!Value	!SizeWeightedAbundance	!SizeWeightedAbundancePPM	!Size	!Gene	!Gene:Identifiers:kegg.orthology	!Pathway
 concentration of enzyme	b2341	2	0.4658214027	1428	1.1659104575	714	FadJ	K01782	Lipid and steroid metabolism
 concentration of enzyme	b2344	11	2.5620177147	3850	3.1433860374	350			
 concentration of enzyme	b0346	15	3.4936605201	720	0.5878540122	48	MhpR	K05818	Transcription factors

@@ -1,5 +1,5 @@
-!!SBtab !Organism="Escherichia coli"
-!Reaction	!Value	!StdDev
+!!SBtab !Organism='Escherichia coli'
+!Reaction	!Flux:Value	!Flux:StdDev
 HXK_R01786	8.7	0.4
 PTS_RPTSsy	8.7	0.4
 PGI_R02740	7.2	0.4

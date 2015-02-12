@@ -1,14 +1,14 @@
-function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network,r,v,fsc_options)
+function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)
 
-% FSC_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution
+% ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution
 %
-% [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = fsc_enzyme_cost_minimization(network, e, v, fsc_options)
+% [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = ecm_enzyme_cost_minimization(network, e, v, ecm_options)
 %
 % Input 
 %   network       metabolic network structure (as in Metabolic Network Toolbox)
 %   r             Kinetic constants (from parameter balancing)
 %   v             flux mode
-%   fsc_options   options struct (for fields and default values, see 'fsc_default_options')
+%   ecm_options   options struct (for fields and default values, see 'ecm_default_options')
 %
 % Output
 %   c                 metabolite concentrations
@@ -24,7 +24,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = f
 %                     other columns: possible sampled solutions
 %
 %   up                enzyme levels (only scored enzymes as defined by 
-%                                    fsc_scores.ind_scored_enzymes)
+%                                    ecm_scores.ind_scored_enzymes)
 %   up.[SCORE]        1st column: result from optimising the score [SCORE]
 %                     other columns: possible sampled solutions
 %
@@ -53,21 +53,21 @@ network.kinetics = set_kinetics(network,'cs',r);
 
 [Mplus, Mminus, Wplus, Wminus, nm, nr] = make_structure_matrices(network.N,network.regulation_matrix,find(network.external));
 
-ind_scored_enzymes = fsc_options.ind_scored_enzymes ;
+ind_scored_enzymes = ecm_options.ind_scored_enzymes ;
 ind_not_scored     = setdiff(1:nr,ind_scored_enzymes);
 
-c_data              = fsc_options.c_data             ;
-u_data              = fsc_options.u_data             ;  
-conc_min_default    = fsc_options.conc_min_default   ;
-conc_max_default    = fsc_options.conc_max_default   ;
-conc_fix            = fsc_options.conc_fix;
-conc_min            = fsc_options.conc_min;
-conc_max            = fsc_options.conc_max;
+c_data              = ecm_options.c_data             ;
+u_data              = ecm_options.u_data             ;  
+conc_min_default    = ecm_options.conc_min_default   ;
+conc_max_default    = ecm_options.conc_max_default   ;
+conc_fix            = ecm_options.conc_fix;
+conc_min            = ecm_options.conc_min;
+conc_max            = ecm_options.conc_max;
 conc_min(isnan(conc_min)) = conc_min_default;
 conc_max(isnan(conc_max)) = conc_max_default;
-fsc_scores          = fsc_options.fsc_scores         ;
-ind_met_fix         = fsc_options.ind_met_fix;
-enzyme_cost_weights = fsc_options.enzyme_cost_weights;
+ecm_scores          = ecm_options.ecm_scores         ;
+ind_met_fix         = ecm_options.ind_met_fix;
+enzyme_cost_weights = ecm_options.enzyme_cost_weights;
 
 
 % --------------------------------------------------------------------------------------
@@ -151,14 +151,14 @@ X_extreme = [x1, x2]; % matrix with extreme initial concentration vectors
 % choose the starting point
 
 
-switch fsc_options.initial_choice,
+switch ecm_options.initial_choice,
   case 'polytope_center',
     display('  Choosing polytope center as starting point'); 
   case 'interval_center',
     display('  Choosing point close to center of allowed intervals as starting point'); 
-    x_start = fmincon(@(xx) fsc_regularisation(xx,x_min,x_max,1), x_start,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
+    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max,1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
   case 'mdf',
-    x_start = fmincon(@(xx) ecm_mdf(xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) fsc_inequalities(xx,N_forward,log_Keq_forward),opt);
+    x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,ecm_options.lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
     display('  Choosing MDF solution as starting point'); 
 end
 
@@ -177,38 +177,38 @@ A_forward.initial = A_forward_init;
 
 display('  Running optimisation using normal starting point');
 
-for it_method = 1:length(fsc_scores),
+for it_method = 1:length(ecm_scores),
 
-  fsc_score = fsc_scores{it_method};
-  display(sprintf('   %s',fsc_score));
+  ecm_score = ecm_scores{it_method};
+  display(sprintf('   %s',ecm_score));
   
-  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(fsc_score,pp,x_min,x_max,x_init,fsc_options,opt);
+  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt);
 
-  c.(fsc_score)         = my_c;
-  u.(fsc_score)         = my_u;
-  up.(fsc_score)        = my_up;
-  u_cost.(fsc_score)    = my_u_cost;
-  A_forward.(fsc_score) = my_A_forward;
-  mca_info.(fsc_score).x_gradient = my_grad;
+  c.(ecm_score)         = my_c;
+  u.(ecm_score)         = my_u;
+  up.(ecm_score)        = my_up;
+  u_cost.(ecm_score)    = my_u_cost;
+  A_forward.(ecm_score) = my_A_forward;
+  mca_info.(ecm_score).x_gradient = my_grad;
   
-  if fsc_options.compute_hessian, 
-    my_x = log(c.(fsc_score));
-    my_fct = @(xx) ecm_get_score(fsc_score,xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation);
-    mca_info.(fsc_score).x_hessian = hessian(my_fct,my_x);
-    mca_info.(fsc_score).rates     = ecm_get_specific_rates(fsc_score,my_x,pp);
-    my_fct_2 = @(xx) log(ecm_get_score(fsc_score,xx,pp) + fsc_regularisation(xx,x_min,x_max,fsc_options.lambda_regularisation));
+  if ecm_options.compute_hessian, 
+    my_x = log(c.(ecm_score));
+    my_fct = @(xx) ecm_get_score(ecm_score,xx,pp) + ecm_regularisation(xx,x_min,x_max,ecm_options.lambda_regularisation);
+    mca_info.(ecm_score).x_hessian = hessian(my_fct,my_x);
+    mca_info.(ecm_score).rates     = ecm_get_specific_rates(ecm_score,my_x,pp);
+    my_fct_2 = @(xx) log(ecm_get_score(ecm_score,xx,pp) + ecm_regularisation(xx,x_min,x_max,ecm_options.lambda_regularisation));
     log_hessian = hessian(my_fct_2,my_x);
     %% fix negative eigenvalues if they occur
     my_eigs = eig(log_hessian);
     if min(my_eigs)<0, log_hessian = log_hessian - 1.001 * min(my_eigs) * eye(nm);end
-    mca_info.(fsc_score).x_log_hessian = log_hessian;
+    mca_info.(ecm_score).x_log_hessian = log_hessian;
 
   end
 
-  if fsc_options.compute_elasticities,
+  if ecm_options.compute_elasticities,
     %% elasticities between the specific rate (i.e. v/u) and x
     for it_r = 1:nr,
-      mca_info.(fsc_score).elasticities_rate_x(it_r,:) = gradest(@(xx) ecm_get_specific_rates(fsc_score,xx,pp,it_r),my_x)';
+      mca_info.(ecm_score).elasticities_rate_x(it_r,:) = gradest(@(xx) ecm_get_specific_rates(ecm_score,xx,pp,it_r),my_x)';
     end
   end
   
@@ -224,15 +224,15 @@ u_min = [];
 u_max = [];
 
 
-for it_method = 1:length(fsc_scores),
+for it_method = 1:length(ecm_scores),
 
-  fsc_score = fsc_scores{it_method};
-  display(sprintf('   %s',fsc_score));
+  ecm_score = ecm_scores{it_method};
+  display(sprintf('   %s',ecm_score));
 
   %% -------------------------------------------------------------------------
   %% run more optimisations starting from extreme points
 
-  if fsc_options.multiple_starting_points,
+  if ecm_options.multiple_starting_points,
   
     display(sprintf('     Running optimisation from %d extreme starting points',size(X_extreme,2)));
     
@@ -249,24 +249,24 @@ for it_method = 1:length(fsc_scores),
       c.fixed                   = exp(x_fix);
       c.initial(:,1+itt)         = c_init;
       A_forward.initial(:,1+itt) = A_forward_init;
-      [my_c, my_u, my_up, my_u_cost, my_A_forward] = ecm_one_run(fsc_score,pp,x_min,x_max,x_init,fsc_options,opt);
-      c.(fsc_score)(:,1+itt)         = my_c;
-      u.(fsc_score)(:,1+itt)         = my_u;
-      up.(fsc_score)(:,1+itt)        = my_up;
-      u_cost.(fsc_score)(:,1+itt)    = my_u_cost;
-      A_forward.(fsc_score)(:,1+itt) = my_A_forward;
+      [my_c, my_u, my_up, my_u_cost, my_A_forward] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt);
+      c.(ecm_score)(:,1+itt)         = my_c;
+      u.(ecm_score)(:,1+itt)         = my_u;
+      up.(ecm_score)(:,1+itt)        = my_up;
+      u_cost.(ecm_score)(:,1+itt)    = my_u_cost;
+      A_forward.(ecm_score)(:,1+itt) = my_A_forward;
       
     end
     
     %% copy the best result to the first position
-    [dum,ind_opt] = min(u_cost.(fsc_score));
+    [dum,ind_opt] = min(u_cost.(ecm_score));
     
     c.initial             = [ c.initial(:,ind_opt)                c.initial               ];  
-    c.(fsc_score)         = [ c.(fsc_score)(:,ind_opt)         c.(fsc_score)        ];  
-    u.(fsc_score)         = [ u.(fsc_score)(:,ind_opt)         u.(fsc_score)        ];  
-    up.(fsc_score)        = [ up.(fsc_score)(:,ind_opt)        up.(fsc_score)       ];  
-    u_cost.(fsc_score)    = [ u_cost.(fsc_score)(ind_opt)      u_cost.(fsc_score)   ];  
-    A_forward.(fsc_score) = [ A_forward.(fsc_score)(:,ind_opt) A_forward.(fsc_score)];
+    c.(ecm_score)         = [ c.(ecm_score)(:,ind_opt)         c.(ecm_score)        ];  
+    u.(ecm_score)         = [ u.(ecm_score)(:,ind_opt)         u.(ecm_score)        ];  
+    up.(ecm_score)        = [ up.(ecm_score)(:,ind_opt)        up.(ecm_score)       ];  
+    u_cost.(ecm_score)    = [ u_cost.(ecm_score)(ind_opt)      u_cost.(ecm_score)   ];  
+    A_forward.(ecm_score) = [ A_forward.(ecm_score)(:,ind_opt) A_forward.(ecm_score)];
     A_forward.initial     = [ A_forward.initial(:,ind_opt) A_forward.initial];
 
   end
@@ -275,42 +275,42 @@ for it_method = 1:length(fsc_scores),
   %% compute tolerance in log concentration profile
   %% (at some maximum allowed percentage increase in cost)
 
-  if fsc_options.compute_tolerance,
+  if ecm_options.compute_tolerance,
 
     display('    Computing the effects of relaxed optimality assumptions');
   
-    x           = log(c.(fsc_score)(:,1));
-    u_threshold = fsc_options.cost_tolerance_factor * u_cost.(fsc_score)(1);
+    x           = log(c.(ecm_score)(:,1));
+    u_threshold = ecm_options.cost_tolerance_factor * u_cost.(ecm_score)(1);
   
     my_x_min = x;
     my_x_max = x;
   
     for it = 1:length(x),
       if x(it) ~= x_min(it),
-        [my_x, my_x_min(it)] = fmincon(@(xx) xx(it), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options), opt);
+        [my_x, my_x_min(it)] = fmincon(@(xx) xx(it), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options), opt);
       end
       if x(it) ~= x_max(it),
-        [my_x, my_x_max(it)] = fmincon(@(xx) -xx(it), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options), opt);
+        [my_x, my_x_max(it)] = fmincon(@(xx) -xx(it), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options), opt);
         my_x_max(it) = -my_x_max(it);
       end
     end
   
-    c_min.(fsc_score) = exp(my_x_min);
-    c_max.(fsc_score) = exp(my_x_max);
+    c_min.(ecm_score) = exp(my_x_min);
+    c_max.(ecm_score) = exp(my_x_max);
   
     %% compute possible variation in enzyme profile u
     %% (at some maximum allowed percentage increase in cost)
     
-    my_u     = u.(fsc_score)(:,1);
+    my_u     = u.(ecm_score)(:,1);
     my_u_min = my_u;
     my_u_max = my_u;
 
     if sum(isfinite(my_u)),
       
     for it = 1:length(u.data),
-      [my_x, my_u_min(it),exitflag] = fmincon(@(xx) ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options), opt);
+      [my_x, my_u_min(it),exitflag] = fmincon(@(xx) ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options), opt);
   
-      [my_x, my_u_max(it),exitflag] = fmincon(@(xx) -ecm_get_one_u(it,fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(fsc_score,xx,pp,u_threshold,x_min,x_max,fsc_options), opt);
+      [my_x, my_u_max(it),exitflag] = fmincon(@(xx) -ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options), x,[],[],[],[],x_min,x_max,@(xx) ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options), opt);
   
       if ~exitflag, warning(sprintf('Enzyme variability in %s: No valid solution found',network.actions{it})); 
         my_u_max(it) = nan;
@@ -319,8 +319,8 @@ for it_method = 1:length(fsc_scores),
       my_u_max(it) = - my_u_max(it);
     end
   
-    u_min.(fsc_score) = my_u_min;
-    u_max.(fsc_score) = my_u_max;
+    u_min.(ecm_score) = my_u_min;
+    u_max.(ecm_score) = my_u_max;
 
     end
   end

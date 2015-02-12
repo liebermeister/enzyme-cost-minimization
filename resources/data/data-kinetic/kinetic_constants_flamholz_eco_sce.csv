@@ -1,5 +1,5 @@
-!!Sbtab													
-!QuantityType	!Direction	!Reaction Identifiers:kegg.reaction	!Compound Identifiers:kegg.compound	!Value	!Unit	!Organism	!EnzymeName	!EnzymeShortName	!Ecnumber	!ReactionSumFormula	!ReactionSumFormulaKEGG	!Compound	!Reference
+!!Sbtab TableType='Quantity'
+!QuantityType	!Direction	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!Value	!Unit	!Organism	!EnzymeName	!EnzymeShortName	!Ecnumber	!ReactionSumFormula	!ReactionSumFormulaKEGG	!Compound	!Reference
 molecular weight		R00756		35	kDa	Escherichia coli	6-phosphofructokinase	pfk	2.7.1.11	ATP + D-Fructose 6-phosphate <=> ADP + D-Fructose 1,6-bisphosphate	C00002 + C00085 => C00008 + C00354		Many sources
 substrate catalytic rate constant	F	R00756		167	1/s	Escherichia coli	6-phosphofructokinase	pfk	2.7.1.11	ATP + D-Fructose 6-phosphate <=> ADP + D-Fructose 1,6-bisphosphate	C00002 + C00085 => C00008 + C00354		Zheng et al., 1995, Biochemical and Biophysical Research Communications, Phosphofructo-1-kinase: Role of Charge Neutralization in the Active Site
 Michaelis constant	F	R00756	C00002	0.2	mM	Escherichia coli	6-phosphofructokinase	pfk	2.7.1.11	ATP + D-Fructose 6-phosphate <=> ADP + D-Fructose 1,6-bisphosphate	C00002 + C00085 => C00008 + C00354	ATP	Zheng et al., 1995, Biochemical and Biophysical Research Communications, Phosphofructo-1-kinase: Role of Charge Neutralization in the Active Site

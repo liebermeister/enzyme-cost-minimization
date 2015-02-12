@@ -1,4 +1,4 @@
-!!SBtab !Organism="Escherichia coli"
+!!SBtab TableType='Enzyme' !Organism='Escherichia coli'
 !Enzyme	!Gene
 AAD	-
 ACC	-

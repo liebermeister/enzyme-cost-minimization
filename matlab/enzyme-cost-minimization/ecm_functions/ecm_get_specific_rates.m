@@ -1,6 +1,6 @@
-function rates = ecm_get_specific_rates(fsc_score,x,pp,ind)
+function rates = ecm_get_specific_rates(ecm_score,x,pp,ind)
 
-switch fsc_score,
+switch ecm_score,
   case 'mdf',      [u_tot, u, rates] = ecm_mdf(x,pp);
   case 'mfsc2sub', [u_tot, u, rates] = ecm_min_ecf2s(x,pp);
   case 'mfsc2',    [u_tot, u, rates] = ecm_min_ecf2sp(x,pp);
