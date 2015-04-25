@@ -1,6 +1,6 @@
--------------------------------------------------
+-------------------------------------------
 Data Resources for Enzyme Cost Minimization
--------------------------------------------------
+-------------------------------------------
 
 Subdirectories:
 
@@ -12,3 +12,5 @@ data     - Quantitative data in SBtab table format (see www.sbtab.org)
            (metabolite levels, fluxes, kinetic constants etc.)
 
 models   - Example models
+
+python   - Python code for data conversion

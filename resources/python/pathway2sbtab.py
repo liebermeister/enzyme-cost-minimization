@@ -5,8 +5,8 @@
 # The input file can contain one or more pathway models.
 #
 # Depending on [FLAG_SINGLE_OUTPUT_FILE], each model is stored
-#  o in one file   [PATHWAY].csv                                  (FLAG_SINGLE_OUTPUT_FILE=1; default ) 
-#  o in two files  [PATHWAY]_Compound.csv, [PATHWAY]_Reaction.csv (FLAG_SINGLE_OUTPUT_FILE=0) 
+#  in one file:   [PATHWAY].csv                        (FLAG_SINGLE_OUTPUT_FILE=1; default) 
+#  in two files:  [PATHWAY]_Compound.csv, [PATHWAY]_Reaction.csv (FLAG_SINGLE_OUTPUT_FILE=0) 
 
 import sys
 import os
