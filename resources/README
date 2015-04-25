@@ -1,5 +1,5 @@
 -------------------------------------------------
-Data directory for enzyme cost score calculations
+Data Resources for Enzyme Cost Minimization
 -------------------------------------------------
 
 Subdirectories:
@@ -10,5 +10,7 @@ pathways - stoichiometric descriptions of metabolic pathways
 
 data     - Collected quantitative data in SBtab table format (see www.sbtab.org)
            (metabolite levels, fluxes, kinetic constants etc)
+
+models   - Example models
 
 -------------------------------------------------

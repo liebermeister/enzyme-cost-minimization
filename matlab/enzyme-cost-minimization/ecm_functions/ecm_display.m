@@ -20,6 +20,8 @@ pm(ecm_options.conc_fix,ecm_options.met_fix)
 [nm,nr] = size(network.N);
 
 value_colors  = flipud(colormapRGBmatrices); % rb_colors;
+
+% enzyme colors (according to enzyme order shown)
 enzyme_colors = sunrise_colors(length(ecm_options.ind_scored_enzymes));
 
 %cm            = jet(length(ecm_options.ecm_scores));
@@ -44,7 +46,7 @@ else
 end
   
 if ~isfield(ecm_options,'reaction_order'),
-  ecm_options.reaction_order = reaction_names;
+  ecm_options.reaction_order = reaction_names(ecm_options.ind_scored_enzymes);
 else,
   if isempty(ecm_options.reaction_order),
     ecm_options.reaction_order = {};
@@ -54,10 +56,15 @@ else,
   ecm_options.reaction_order = [column(ecm_options.reaction_order); column(setdiff(reaction_names,ecm_options.reaction_order))];
 end
 
-ind_genes        = label_names(reaction_names,ecm_options.reaction_order);
-ind_genes_rev    = label_names(ecm_options.reaction_order,reaction_names);
-ind_genes_scored = ecm_options.ind_scored_enzymes(ind_genes_rev);
+ecm_options.reaction_order = ecm_options.reaction_order(find(label_names(ecm_options.reaction_order,reaction_names(ecm_options.ind_scored_enzymes))));
 
+ind_enzymes           = label_names(reaction_names,ecm_options.reaction_order);
+ind_enzymes_rev       = label_names(ecm_options.reaction_order,reaction_names(ecm_options.ind_scored_enzymes));
+ind_enzymes_scored    = ecm_options.ind_scored_enzymes(ind_enzymes_rev(find(ind_enzymes_rev)));
+
+% enzyme colors (according to reactions in network model)
+my_colors  = nan * ones(nr,3);
+my_colors(ecm_options.ind_scored_enzymes,:) = enzyme_colors(ind_enzymes_rev,:);
 
 % -----------------------------------
 
@@ -256,10 +263,10 @@ if length(u.data),
   methods = [methods,{'data'}];
 end
 
-h = bar(flipud(ug(ind_genes_scored,:))','stacked');
+h = bar(flipud(ug)','stacked');
 colormap(flipud(enzyme_colors)); 
 axis([0,3+length(ecm_options.ecm_scores), 0, 1.02]); 
-legend(fliplr(h),gene_names(ind_genes_scored),'Fontsize',8,'Location','East')
+legend(fliplr(h),gene_names(ind_enzymes_scored),'Fontsize',8,'Location','East')
 set(gca,'FontSize',12);
 set(gca,'XTickLabel',methods); ylabel('Relative protein amount');
 
@@ -267,7 +274,7 @@ set(gca,'XTickLabel',methods); ylabel('Relative protein amount');
 
 figure(34); clf; 
 mmm = nan * ones(nr,1); 
-mmm(ecm_options.ind_scored_enzymes) = ind_genes(ecm_options.ind_scored_enzymes);
+mmm(ecm_options.ind_scored_enzymes) = ind_enzymes(ecm_options.ind_scored_enzymes);
 gpp = struct('actprintnames',1,'arrowstyle','none','showsign',0,'colormap',enzyme_colors,'text_offset',[0.03,0]);
 gpp.actnames = gene_names;
 netgraph_concentrations(ecm_options.network_CoHid,[],column(mmm),1,gpp); 
@@ -278,8 +285,8 @@ netgraph_concentrations(ecm_options.network_CoHid,[],column(mmm),1,gpp);
 if length(u.data),
   ud = u.data(ecm_options.ind_scored_enzymes);
   ud = ud / nansum(ud);
-  ud = ud(ind_genes_scored);
-  proteomap_draw_treemap(gene_names(ind_genes_scored),ud,{'Protein data'},struct('color_file',enzyme_colors,'show_level',1,'window_position',[250,120,600,600],'fignums',350)); % title('');
+  %ud = ud(ind_enzymes_scored);
+ proteomap_draw_treemap(gene_names(ind_enzymes_scored),ud,{''},struct('color_file',enzyme_colors,'show_level',1,'window_position',[250,120,600,600],'fignums',350,'fontsize',12)); % title('');
 end
 
 % % proteomap from predictions
@@ -288,8 +295,8 @@ end
 %   this_ecm_score = ecm_options.ecm_scores{it_method};
 %   ug   = up.(this_ecm_score)(ecm_options.ind_scored_enzymes,1);
 %   ug = ug / nansum(ug);
-%   ug = ug(ind_genes_scored);
-%   proteomap_draw_treemap(gene_names(ind_genes_scored),ug,{this_ecm_score},struct('color_file',enzyme_colors,'show_level',1,'window_position',[250,120,600,600], 'fignums', 350+it_method)); %title('');
+%   ug = ug(ind_enzymes_scored);
+%   proteomap_draw_treemap(gene_names(ind_enzymes_scored),ug,{this_ecm_score},struct('color_file',enzyme_colors,'show_level',1,'window_position',[250,120,600,600], 'fignums', 350+it_method)); %title('');
 % end
 
 
@@ -303,7 +310,7 @@ end
 figure(44); clf; hold on
 is_finite  = isfinite(u.data .* v);
 ind_finite = find(is_finite);
-my_colors  = enzyme_colors(ind_genes,:);
+
 for it = 1:nr,
   if is_finite(it),
     plot(u.data(it),v(it),'.','Color',my_colors(it,:),'MarkerSize',30);
@@ -327,7 +334,6 @@ figure(45);clf; hold on
 if length(kinetic_data)
   is_finite  = isfinite(u.data .* kinetic_data.Kcatf.median .* v);
   ind_finite = find(is_finite);
-  my_colors  = enzyme_colors(ind_genes,:);
   for it = 1:nr,
      if is_finite(it),
        plot(u.data(it),v(it)/kinetic_data.Kcatf.median(it),'.','Color',my_colors(it,:),'MarkerSize',30);
@@ -354,23 +360,23 @@ n_methods = length(ecm_options.ecm_scores);
 
 for it_method = 1:n_methods,
   this_ecm_score = ecm_options.ecm_scores{it_method};
-  ug   = up.(this_ecm_score)(ecm_options.ind_scored_enzymes,1);
+  ug   = up.(this_ecm_score)(:,1);%(ecm_options.ind_scored_enzymes,1);
   subplot(n_methods+1,1,it_method); hold on;set(gca,'FontSize',10);
-  for it = 1:length(ind_genes_scored);
-    h = bar(it,ug(ind_genes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); 
+  for it = 1:length(ind_enzymes_scored);
+    h = bar(it,ug(ind_enzymes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); 
   end
   ylabel(sprintf('%s',this_ecm_score));
   set(gca,'XTick',[]); 
 end
 
-ud   = u.data(ecm_options.ind_scored_enzymes,1);
+ud   = u.data;%(ecm_options.ind_scored_enzymes,1);
 subplot(n_methods+1,1,it_method+1); hold on
-for it = 1:length(ind_genes_scored);
-  h= bar(it,ud(ind_genes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); 
+for it = 1:length(ind_enzymes_scored);
+  h= bar(it,ud(ind_enzymes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); 
 end
 ylabel('Data');
 set(gca,'FontSize',6);
-set(gca,'XTick',1:length(ind_genes_scored),'XTickLabel',gene_names(ind_genes_scored)); 
+set(gca,'XTick',1:length(ind_enzymes_scored),'XTickLabel',gene_names(ind_enzymes_scored)); 
 
 
 % --------------------------------------------------------
@@ -477,33 +483,38 @@ for it_method = 1:length(ecm_options.ecm_scores),
   % --------------------------------------
   % enzyme predictions scatter plot
   
-  figure(102); clf; hold on; set(gcf,'Position',[150 350 600 600])
+  figure(102); clf; hold on;
+  set(gcf,'Position',[150 350 600 600])
   is_finite  = isfinite(u.data) .* [v~=0];
   ind_finite = find(is_finite);
-  my_colors  = enzyme_colors(ind_genes,:);
+
   % plot points, then axis tight, then lines
   for it = 1:nr,
     if is_finite(it),
       plot(u.data(it),u.(this_ecm_score)(it,1),'.','Markersize',30,'Color',my_colors(it,:)); 
     end
   end
-  axis tight; axis equal; axis square; 
+  amin = min([u.data; u.(this_ecm_score)(ind_finite,1)]);
+  amax = max([u.data; u.(this_ecm_score)(ind_finite,1)]);
+  plot([amin, amax],[amin,amax],'b'); 
+  axis([amin,amax,amin,amax]); 
   for it = 1:nr,
     if is_finite(it) * [1-isempty(u_min)],
       if isfield(u_min,this_ecm_score)
         plot(u.data(it) * [1 1],[u_min.(this_ecm_score)(it),u_max.(this_ecm_score)(it)],'-','Color',my_colors(it,:)); 
+        text(1.05*u.data(it),1.05*u.(this_ecm_score)(it,1),network.genes(it),'FontSize',8);
       end
     end
   end
-  text(1.05*u.data(ind_finite),1.05*u.(this_ecm_score)(ind_finite,1),network.genes(ecm_options.ind_scored_enzymes(ind_finite)),'FontSize',8);
   xlabel('Measured enzyme level (mM)','Fontsize',16);
   ylabel(sprintf('Predicted enzyme level (mM) %s',this_ecm_score),'Fontsize',16);
   set(gca,'XScale','Log','YScale','Log','Fontsize',16);
-if length(ind_finite),
-  [cc, pvalue] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)));
-  [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)),'type','Spearman');
-  title(sprintf('r (Pearson correlation): %2.2f [p-value %2.3f]\n r (Spearman rank corr): %2.2f [p-value %2.3f]',cc,pvalue,cc_spear,pvalue_spear));
-end  
+  if length(ind_finite),
+    [cc, pvalue] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)));
+    [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)),'type','Spearman');
+    title(sprintf('r (Pearson correlation): %2.2f [p-value %2.3f]\n r (Spearman rank corr): %2.2f [p-value %2.3f]',cc,pvalue,cc_spear,pvalue_spear));
+  end  
+  axis tight; axis square
   
   % --------------------------------------
   % concentration predictions scatter plot
@@ -544,23 +555,23 @@ end
   % --------------------------------------------------------
   % barplot
   
-  ug   = up.(this_ecm_score)(ecm_options.ind_scored_enzymes,1);
-  ud   = u.data(ecm_options.ind_scored_enzymes,1);
+  ug   = up.(this_ecm_score)(:,1);
+  ud   = u.data(:,1);
   
   figure(104); clf; 
   subplot(2,1,1);
-  for it = 1:length(ind_genes_scored);
-    h = bar(it,ug(ind_genes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); hold on
+  for it = 1:length(ind_enzymes_scored);
+    h = bar(it,ug(ind_enzymes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); hold on
   end
   ylabel(sprintf('Predicted enzyme level [mM] %s',this_ecm_score));
-  title(sprintf('Total predicted enzyme level (%s): %f mM',this_ecm_score, sum(ug(ind_genes_scored))));
+  title(sprintf('Total predicted enzyme level (%s): %f mM',this_ecm_score, sum(ug(ind_enzymes_scored))));
 
   subplot(2,1,2);
-  for it = 1:length(ind_genes_scored);
-    h= bar(it,ud(ind_genes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); hold on
+  for it = 1:length(ind_enzymes_scored);
+    h= bar(it,ud(ind_enzymes_scored(it))); set(h,'FaceColor',enzyme_colors(it,:)); hold on
   end
   set(gca,'FontSize',8);
-  set(gca,'XTick',1:length(ind_genes_scored),'XTickLabel',gene_names(ind_genes_scored)); 
+  set(gca,'XTick',1:length(ind_enzymes_scored),'XTickLabel',gene_names(ind_enzymes_scored)); 
   ylabel('Measured enzyme level [mM]');
   set(gca,'FontSize',8);
 
@@ -584,13 +595,14 @@ my_xticklabel
   my_eta_energ = 1-exp(-my_A_forward);
   my_eta_energ(my_eta_energ<0)=0;
   my_u         = u.(this_ecm_score);
-  my_h         = ecm_options.enzyme_cost_weights;
+  my_h         = nan * ones(nr,1);
+  my_h(ecm_options.ind_scored_enzymes) = ecm_options.enzyme_cost_weights;
   my_v         = v;
   plot(my_v,'-','Color',[0.3 0.3 0.3],'Linewidth',2); hold on
   plot(my_v./my_kcat,'-','Color',[0 0 0.9],'Linewidth',2);
   plot(my_v./my_kcat./my_eta_energ,'-','Color',[0.8 0 0.8],'Linewidth',2);
   plot(my_u,'-','Color',[1 0 0],'Linewidth',2);
-  plot(my_u.*my_h,'--','Color',[0.9 0.6 0],'Linewidth',2);
+  plot(my_u.* my_h,'--','Color',[0.9 0.6 0],'Linewidth',2);
   set(gca, 'YScale','Log'); hold off
   title(this_ecm_score)
   my_xticklabel(1:length(network.actions),10^-5,strrep(network.actions,'_','-')')

@@ -1,78 +1,78 @@
-!!SBtab TableType='Enzyme' !Organism='Escherichia coli'
-!Enzyme	!Gene
-AAD	-
-ACC	-
-ACL	gltA
-ACN	acnB|acnA
-ACR	-
-ACT	-
-ADH	adhE
-ALD	fba
-APT	-
-CAT	-
-CCL	-
-CLG	-
-CSN	gltA
-DGK	-
-DHY	edd
-FBP	fbp
-FDH	-
-FTL	-
-FUM	fumA|fumB|fumC
-FUR	-
-GADH	-
-GAP	gapA
-GDH	-
-GLH	pgl
-HDH	-
-HPD	-
-HXK	ptsI
-ICD	icd
-ICL	-
-ISM	-
-KGD	sucB|sucA
-KOR	-
-LDH	ldhA
-MCE	-
-MCL	-
-MCM	-
-MCT	-
-MDH	mdh
-MGO	-
-MGS	-
-MLS	-
-MQO	-
-MSD	-
-MTC	-
-MTD	-
-MTR	-
-ODC	-
-PCK	-
-PDH	aceE|aceF|lpd
-PFK	pfkA
-PFL	-
-PGD	gnd
-PGH	eno
-PGI	pgi
-PGK	pgk
-PGM	gpmA|gpmM
-PKT	-
-POR	-
-PPC	-
-PPS	-
-PRK	-
-PYK	pykF|pykA
-RBC	-
-RPE	rpe
-RPI	rpiA
-SBP	-
-SCR	-
-SCS	sucC|sucD|ldt
-SCT	-
-SDH	sdhA|sdhB|sdhC|sdhD
-SSR	-
-TAL	talB|talA
-TIM	tpiA
-TXT	tktB|tktA
-ZWF	zwf
-PTS	ptsI
+!!SBtab TableType='Enzyme' !Organism='Escherichia coli'		
+!Enzyme	!Gene	!EnzymeReaction
+AAD	-	AAD
+ACC	-	ACC
+ACL	gltA	ACL
+ACN	acnB|acnA	ACN_R00351|ACN_R01900
+ACR	-	ACR
+ACT	-	ACT
+ADH	adhE	ADH
+ALD	fba	ALD_R01070
+APT	-	APT
+CAT	-	CAT
+CCL	-	CCL
+CLG	-	CLG
+CSN	gltA	CSN_R00351
+DGK	-	DGK
+DHY	edd	DHY
+FBP	fbp	FBP_R00762
+FDH	-	FDH
+FTL	-	FTL
+FUM	fumA|fumB|fumC	FUM_R01082
+FUR	-	FUR
+GADH	-	GADH
+GAP	gapA	GAP_R01061
+GDH	-	GDH
+GLH	pgl	GLH_R02035
+HDH	-	HDH
+HPD	-	HPD
+HXK	ptsI	HXK
+ICD	icd	ICD_R00709
+ICL	-	ICL
+ISM	-	ISM
+KGD	sucB|sucA	KGD_R08549
+KOR	-	KOR
+LDH	ldhA	LDH
+MCE	-	MCE
+MCL	-	MCL
+MCM	-	MCM
+MCT	-	MCT
+MDH	mdh	MDH_R00342
+MGO	-	MGO
+MGS	-	MGS
+MLS	-	MLS
+MQO	-	MQO
+MSD	-	MSD
+MTC	-	MTC
+MTD	-	MTD
+MTR	-	MTR
+ODC	-	ODC
+PCK	-	PCK
+PDH	aceE|aceF|lpd	PDH_R00209
+PFK	pfkA	PFK_R04779
+PFL	-	PFL
+PGD	gnd	PGD_R01528
+PGH	eno	PGH_R00658
+PGI	pgi	PGI_R02740
+PGK	pgk	PGK_R01512
+PGM	gpmA|gpmM	PGM_R01518
+PKT	-	PKT
+POR	-	POR
+PPC	-	PPC
+PPS	-	PPS
+PRK	-	PRK
+PYK	pykF|pykA	PYK_R00200
+RBC	-	RBC
+RPE	rpe	RPE_R01529
+RPI	rpiA	RPI_R01056
+SBP	-	SBP
+SCR	-	SCR
+SCS	sucC|sucD|ldt	SCS_R00405
+SCT	-	SCT
+SDH	sdhA|sdhB|sdhC|sdhD	SDH_R02164
+SSR	-	SSR
+TAL	talB|talA	TAL_R08575
+TIM	tpiA	TIM_R01015
+TXT	tktB|tktA	TXT_R01641|TXT_R01067
+ZWF	zwf	ZWF_R00835
+PTS	ptsI	PTS_RPTSsy

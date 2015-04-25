@@ -1,4 +1,4 @@
-!!Sbtab !Organism="Bacillus subtilis"
+!!SBtab !Organism="Bacillus subtilis"
 !Reaction	Substrate name	Product name	Gene	Comment	!Flux:Value
 PTS_RPTSsy	D-glucose (ext)	D-glucose 6-phosphate (cyt)	uptake	glucose uptake	7.63
 	carbondioxide (ext)	carbondioxide (cyt)	uptake	CO2 uptake	13.46

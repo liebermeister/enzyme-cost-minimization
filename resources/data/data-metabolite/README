@@ -5,7 +5,7 @@ Data directory data-metabolite
 ------------------------------
 E. coli, mixed data sources (references in file)
 
-File  concentration_eco_glucose.csv  
+File concentration_eco_glucose.csv  
 
 from ~/projekte/pathway_modelling/data (from mixed sources, including rabinovitz 2009)
 attention: some metabolites (eg F16BP) appear twice with different values

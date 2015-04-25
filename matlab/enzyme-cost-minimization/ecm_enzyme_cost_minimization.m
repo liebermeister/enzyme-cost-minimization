@@ -134,7 +134,8 @@ pp.ind_not_scored      = ind_not_scored     ;
 % find feasible initial solution (as a test for feasibility) and extreme metabolite profiles
 
 %epsilon = 10^-10;   % flux directions must be possible at least
-epsilon = 1 * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required  
+%epsilon = 1 * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required  
+epsilon = double(v~=0) * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required;
 
 try
   [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max, 0*x_min);
