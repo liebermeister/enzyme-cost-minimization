@@ -4,13 +4,11 @@ Data Resources for Enzyme Cost Minimization
 
 Subdirectories:
 
-pathways - stoichiometric descriptions of metabolic pathways
-           a single file (in the format defined by Elad) 
-           contains multiple pathways
+pathways - Stoichiometric descriptions of metabolic pathways
+           in a format similar to KEGG's
+           A single file can contain multiple pathways
 
-data     - Collected quantitative data in SBtab table format (see www.sbtab.org)
-           (metabolite levels, fluxes, kinetic constants etc)
+data     - Quantitative data in SBtab table format (see www.sbtab.org)
+           (metabolite levels, fluxes, kinetic constants etc.)
 
 models   - Example models
-
--------------------------------------------------

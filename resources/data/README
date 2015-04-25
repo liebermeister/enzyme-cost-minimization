@@ -3,10 +3,4 @@ Data for ECM calculations and other models
 ==========================================
 
 o Different sorts of data are stored in different subdirectories
-
-o All data are eventually stored in SBtab table format (see www.sbtab.org)
-
-o If you add data files, please adhere to this format 
-  and leave a note in the README file of the respective directory
-
-o matlab scripts for data file conversion -> see Wolf's directory 'matlab_enzyme_cost_functions/data_conversion'
+o All data are given in the SBtab table format (see www.sbtab.org)
