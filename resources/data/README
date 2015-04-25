@@ -1,6 +1,6 @@
-==========================================
-Data for ECM calculations and other models
-==========================================
+------------------------------------------------------------
+Data for ECM calculations and other kinetic metabolic models
+------------------------------------------------------------
 
 o Different sorts of data are stored in different subdirectories
 o All data are given in the SBtab table format (see www.sbtab.org)
