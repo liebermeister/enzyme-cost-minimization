@@ -3,7 +3,7 @@ Python code for data and model conversion
 -----------------------------------------
 
 kegg.py
- -> Retrieve data from KEGG; provides interfaces to Kegg files and single Compounds
+ -> Retrieve data from KEGG; provides interfaces to KEGG files and single Compounds
     main routine writes a list of compounds with id, name, and synonyms
 
 pathway2sbtab.py
