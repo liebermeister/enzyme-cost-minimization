@@ -45,7 +45,7 @@ This function is called by:
 0002 
 0003 eval(default(<span class="string">'options'</span>,<span class="string">'struct'</span>));
 0004 
-0005 <span class="keyword">if</span> strcmp(filename(end-3:end),<span class="string">'.csv'</span>), 
+0005 <span class="keyword">if</span> strcmp(filename(end-3:end),<span class="string">'.tsv'</span>), 
 0006   filename(1:end-4);
 0007 <span class="keyword">end</span>
 0008   
@@ -82,8 +82,8 @@ This function is called by:
 0039 <span class="keyword">end</span>
 0040 
 0041 <span class="comment">% model tables ('Compound', 'Reaction', 'QuantityData')</span>
-0042 display(sprintf(<span class="string">'Writing model file %s'</span>,  [filename <span class="string">'_CMR_final.csv'</span>]));
-0043 sbtab_document_save_to_one(sbtab_document,[filename <span class="string">'_CMR_final.csv'</span>],0);
+0042 display(sprintf(<span class="string">'Writing model file %s'</span>,  [filename <span class="string">'_CMR_final.tsv'</span>]));
+0043 sbtab_document_save_to_one(sbtab_document,[filename <span class="string">'_CMR_final.tsv'</span>],0);
 0044 
 0045 
 0046 <span class="comment">% -----------------------------------------------</span>
@@ -129,16 +129,16 @@ This function is called by:
 0086   
 0087   <span class="keyword">case</span> 0,
 0088     display(sprintf(<span class="string">'Writing model files (SBtab format) with basename\n%s'</span>, filename))
-0089     sbtab_table_save(c_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedConcentrations.csv'</span>]));
-0090     sbtab_table_save(u_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedEnzymeLevels.csv'</span>]));
-0091     sbtab_table_save(A_forward_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedForces.csv'</span>]));
+0089     sbtab_table_save(c_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedConcentrations.tsv'</span>]));
+0090     sbtab_table_save(u_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedEnzymeLevels.tsv'</span>]));
+0091     sbtab_table_save(A_forward_table, struct(<span class="string">'filename'</span>,[ filename <span class="string">'_PredictedForces.tsv'</span>]));
 0092   <span class="keyword">case</span> 1,
 0093     display(sprintf(<span class="string">'Writing model file (SBtab format, one file)\nBASENAME: %s'</span>, filename))
 0094     sbtab_document = sbtab_document_construct;
 0095     sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'Concentration'</span>,c_table);
 0096     sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'EnzymeConcentration'</span>,u_table);
 0097     sbtab_document = sbtab_document_add_table(sbtab_document,<span class="string">'ReactionAffinity'</span>,A_forward_table);
-0098     sbtab_document_save_to_one(sbtab_document, [ filename <span class="string">'_Predictions.csv'</span>]);
+0098     sbtab_document_save_to_one(sbtab_document, [ filename <span class="string">'_Predictions.tsv'</span>]);
 0099 <span class="keyword">end</span></pre></div>
 <hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>

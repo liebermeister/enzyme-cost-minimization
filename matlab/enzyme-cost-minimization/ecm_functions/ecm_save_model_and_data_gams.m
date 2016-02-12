@@ -23,53 +23,53 @@ reaction      = network_sbtab.tables.Quantity.column.column.Reaction;
 
 display('Writing GAMS files');
 
-% write table efms.csv
+% write table efms.tsv
 
-mytable([ [{'efms'}; network.actions], [{1}; num2cell(v)] ]','comma',[filename 'efms.csv']);
+mytable([ [{'efms'}; network.actions], [{1}; num2cell(v)] ]','comma',[filename 'efms.tsv']);
 
-% write table metfixed.csv
+% write table metfixed.tsv
 
-mytable([column(ecm_options.met_fix), num2cell(column(ecm_options.conc_fix))],'comma',[filename 'metfixed.csv']);
+mytable([column(ecm_options.met_fix), num2cell(column(ecm_options.conc_fix))],'comma',[filename 'metfixed.tsv']);
 
-% write table boundse.csv
+% write table boundse.tsv
 
 [nm,nr] = size(network.N);
 
 mytable([[network.actions, repmat({'lo','0'},nr,1)]; ...
-         [network.actions, repmat({'up','100'},nr,1)]],'comma',[filename 'boundse.csv']);
+         [network.actions, repmat({'up','100'},nr,1)]],'comma',[filename 'boundse.tsv']);
 
-% write table boundsx.csv
+% write table boundsx.tsv
 
 mytable([[network.metabolites, repmat({'lo'},nm,1), num2cell(log10(ecm_options.conc_min))]; ...
-         [network.metabolites, repmat({'up'},nm,1), num2cell(log10(ecm_options.conc_max))]],'comma',[filename 'boundsx.csv']);
+         [network.metabolites, repmat({'up'},nm,1), num2cell(log10(ecm_options.conc_max))]],'comma',[filename 'boundsx.tsv']);
 
-% write table metmoiety.csv
+% write table metmoiety.tsv
 
-% write table moiety.csv
+% write table moiety.tsv
 
-% write table newmet.csv
+% write table newmet.tsv
 
-% write table activators.csv
+% write table activators.tsv
 
 ind = find(strcmp('activation constant', quantity_type));
-mytable([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'activators.csv']);
+mytable([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'activators.tsv']);
 
-% write table inhibitors.csv
+% write table inhibitors.tsv
 
 ind = find(strcmp('inhibition constant', quantity_type));
-mytable([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'inhibitors.csv']);
+mytable([compound(ind), reaction(ind), num2cell(value(ind))],'comma',[filename 'inhibitors.tsv']);
 
-% write table kcats.csv
+% write table kcats.tsv
 
 ind = find(strcmp('substrate catalytic rate constant', quantity_type));
-mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'kcats.csv']);
+mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'kcats.tsv']);
 
-% write table keqs.csv
+% write table keqs.tsv
 
 ind = find(strcmp('equilibrium constant', quantity_type));
-mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'keqs.csv']);
+mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'keqs.tsv']);
 
-% write table kmstoich.csv
+% write table kmstoich.tsv
 
 ind = find(strcmp('Michaelis constant', quantity_type));
 
@@ -80,4 +80,4 @@ for it = 1:length(ind),
   stoich(it,1) = network.N(i_met,i_rea);
 end
 
-mytable([compound(ind), reaction(ind), num2cell([stoich, value(ind)])],'comma',[filename 'kmstoich.csv']);
+mytable([compound(ind), reaction(ind), num2cell([stoich, value(ind)])],'comma',[filename 'kmstoich.tsv']);

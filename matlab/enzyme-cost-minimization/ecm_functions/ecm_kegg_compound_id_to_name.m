@@ -2,7 +2,7 @@ function names = ecm_kegg_compound_id_to_name(ids,kegg_conversion_file)
 
 if ~exist('kegg_conversion_file','var'),
   ecm_info = ecm_setup;
-  kegg_conversion_file = [ecm_info.data_dir 'name-conversion/kegg_compound_names.csv'];
+  kegg_conversion_file = [ecm_info.data_dir 'name-conversion/kegg_compound_names.tsv'];
 end
   
 T = sbtab_table_load(kegg_conversion_file);

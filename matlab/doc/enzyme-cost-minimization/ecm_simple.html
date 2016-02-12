@@ -74,7 +74,7 @@ This function is called by:
 0031 
 0032     display(<span class="string">'ecm_simple: Running ECM'</span>);
 0033 
-0034     outfile = [outdir <span class="string">'/ecm_result.csv'</span>];
+0034     outfile = [outdir <span class="string">'/ecm_result.tsv'</span>];
 0035     report  = <span class="string">''</span>;
 0036     errors   = <span class="string">''</span>;
 0037 
@@ -127,7 +127,7 @@ This function is called by:
 0084     
 0085       display(<span class="string">'ecm_simple: Running parameter balancing'</span>);
 0086 
-0087       outfile              = [outdir <span class="string">'/pb_result.csv'</span>];
+0087       outfile              = [outdir <span class="string">'/pb_result.tsv'</span>];
 0088       options.make_report  = 0;
 0089       options.use_kegg_ids = [1];
 0090       report               = <span class="string">''</span>;
@@ -167,9 +167,9 @@ This function is called by:
 0124                               <span class="string">'product catalytic rate constant'</span>};
 0125           use_kegg_ids  = 1;
 0126           organism_long = [];<span class="comment">% 'Escherichia coli';</span>
-0127           sbtab_table_save(my_sbtab.tables.RateConstant,struct(<span class="string">'filename'</span>,<span class="string">'/tmp/my_pb_data.csv'</span>));
-0128           <span class="comment">%% store input rate constants in intermediate file '/tmp/my_pb_data.csv'</span>
-0129           my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, <span class="string">'/tmp/my_pb_data.csv'</span>, 0, options.use_kegg_ids, 0, 1, <span class="string">'Organism'</span>,organism_long);
+0127           sbtab_table_save(my_sbtab.tables.RateConstant,struct(<span class="string">'filename'</span>,<span class="string">'/tmp/my_pb_data.tsv'</span>));
+0128           <span class="comment">%% store input rate constants in intermediate file '/tmp/my_pb_data.tsv'</span>
+0129           my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, <span class="string">'/tmp/my_pb_data.tsv'</span>, 0, options.use_kegg_ids, 0, 1, <span class="string">'Organism'</span>,organism_long);
 0130           
 0131           my_ecm_options = <a href=".././enzyme-cost-minimization/ecm_functions/ecm_default_options.html" class="code" title="function ecm_options = ecm_default_options(network, model_name)">ecm_default_options</a>(my_network);
 0132           my_ecm_options.insert_Keq_from_data = 0;

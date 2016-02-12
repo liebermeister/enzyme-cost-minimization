@@ -30,7 +30,7 @@ switch options.actions,
 
     display('ecm_simple: Running ECM');
 
-    outfile = [outdir '/ecm_result.csv'];
+    outfile = [outdir '/ecm_result.tsv'];
     report  = '';
     errors   = '';
 
@@ -83,7 +83,7 @@ switch options.actions,
     
       display('ecm_simple: Running parameter balancing');
 
-      outfile              = [outdir '/pb_result.csv'];
+      outfile              = [outdir '/pb_result.tsv'];
       options.make_report  = 0;
       options.use_kegg_ids = [1];
       report               = '';
@@ -123,9 +123,9 @@ switch options.actions,
                               'product catalytic rate constant'};
           use_kegg_ids  = 1;
           organism_long = [];% 'Escherichia coli';
-          sbtab_table_save(my_sbtab.tables.RateConstant,struct('filename','/tmp/my_pb_data.csv'));
-          %% store input rate constants in intermediate file '/tmp/my_pb_data.csv'
-          my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, '/tmp/my_pb_data.csv', 0, options.use_kegg_ids, 0, 1, 'Organism',organism_long);
+          sbtab_table_save(my_sbtab.tables.RateConstant,struct('filename','/tmp/my_pb_data.tsv'));
+          %% store input rate constants in intermediate file '/tmp/my_pb_data.tsv'
+          my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', 0, options.use_kegg_ids, 0, 1, 'Organism',organism_long);
           
           my_ecm_options = ecm_default_options(my_network);
           my_ecm_options.insert_Keq_from_data = 0;

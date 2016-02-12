@@ -3,20 +3,20 @@ Data directory data-kinetic
 ---------------------------
 
 ----------------------------
-kinetic_constants_brenda.csv         from ~/projekte/pathway_modelling/data 
+kinetic_constants_brenda.tsv         from ~/projekte/pathway_modelling/data 
 
 ORGANISM-SPECIFIC DATA:                                 
- kinetic_constants_brenda_bsu.csv    extracted from kinetic_constants_brenda.csv (matlab script brenda_to_organism.m)
- kinetic_constants_brenda_eco.csv    extracted from kinetic_constants_brenda.csv (matlab script brenda_to_organism.m)
- kinetic_constants_brenda_sce.csv    extracted from kinetic_constants_brenda.csv (matlab script brenda_to_organism.m)
+ kinetic_constants_brenda_bsu.tsv    extracted from kinetic_constants_brenda.tsv (matlab script brenda_to_organism.m)
+ kinetic_constants_brenda_eco.tsv    extracted from kinetic_constants_brenda.tsv (matlab script brenda_to_organism.m)
+ kinetic_constants_brenda_sce.tsv    extracted from kinetic_constants_brenda.tsv (matlab script brenda_to_organism.m)
 
 AVERAGE DATA (AVERAGE OVER ORGANISMS):
- kinetic_constants_brenda_average.csv   extracted from kinetic_constants_brenda.csv 
+ kinetic_constants_brenda_average.tsv   extracted from kinetic_constants_brenda.tsv 
                                         (matlab script brenda_average_over_organisms.m)
 
 ----------------------------
 EXTRA DATA FILE FROM ARREN 
- kinetic_constants_flamholz_eco_sce.csv  
+ kinetic_constants_flamholz_eco_sce.tsv  
   
-    from /home/wolfram/projekte/pathway_modelling/data/kinetic_constants_Ecoli_Scerevisiae.csv 
+    from /home/wolfram/projekte/pathway_modelling/data/kinetic_constants_Ecoli_Scerevisiae.tsv 
     original file SuppTable1_KineticParams.xlsx from Arren, email 2013-09-26

@@ -1,4 +1,4 @@
-function [r, r_orig, kinetic_data] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+function [r, r_orig, kinetic_data, r_samples] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 
 % [r, r_orig, kinetic_data] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 %
@@ -97,7 +97,6 @@ else
       kinetic_data         = kk;
   end
   
-  
   options = struct('kcat_prior_median',ecm_options.kcat_prior_median,...
                    'kcat_prior_log10_std',ecm_options.kcat_prior_log10_std,...
                    'kcat_lower',ecm_options.kcat_lower,...
@@ -106,7 +105,9 @@ else
                    'Keq_upper',ecm_options.Keq_upper,...
                    'GFE_fixed',ecm_options.GFE_fixed,...
                    'quantity_info_file',ecm_options.quantity_info_file);
+
+  options.n_samples = ecm_options.n_samples;
   
-  [r, r_orig, kinetic_data] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
+  [r, r_orig, kinetic_data, r_samples] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
 
 end

@@ -93,7 +93,9 @@ ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ec
 % -----------------------------
 % adapt lambda_regularistion to typical magnitude of enzyme cost
 
-ecm_options.lambda_regularisation = ecm_options.lambda_reg_factor * nanmedian(ecm_options.enzyme_cost_weights);
+median_cost =  nanmedian(ecm_options.enzyme_cost_weights);
+if isnan(median_cost), median_cost = 1; end 
+ecm_options.lambda_regularisation = ecm_options.lambda_reg_factor * median_cost;
 
 % -----------------------------
 % if desired, insert original Keq values

@@ -163,7 +163,6 @@ switch ecm_options.initial_choice,
     display('  Choosing MDF solution as starting point'); 
 end
 
-
 % --------------------------------------------------------------------------------------
 % run optimisations starting from x_start
 

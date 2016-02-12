@@ -5,7 +5,7 @@ Data directory data-metabolite
 ------------------------------
 E. coli, mixed data sources (references in file)
 
-File concentration_eco_glucose.csv  
+File concentration_eco_glucose.tsv  
 
 from ~/projekte/pathway_modelling/data (from mixed sources, including rabinovitz 2009)
 attention: some metabolites (eg F16BP) appear twice with different values
@@ -14,16 +14,16 @@ attention: some metabolites (eg F16BP) appear twice with different values
 E. coli, Tepper et al.
 
 File 
-concentration_eco_Tepper_2013.csv
-from ~/projekte/pathway_modelling/data/E_coli_metabolite_concentrations_Tepper_S2_v2.1_annotated.csv
+concentration_eco_Tepper_2013.tsv
+from ~/projekte/pathway_modelling/data/E_coli_metabolite_concentrations_Tepper_S2_v2.1_annotated.tsv
 use glucose aerobic as standard ("!Value")
 
 ------------------------------
 B. subtilis, Basysbio Experiment
 
 File 
-concentration_bsu_BigExpGM1.0.csv
-from /home/wolfram/projekte/data/bacillus_subtilis/big_experiment/bsu_Metabolites_BigExperiment_GM1_KEGG_first_time_point.csv  
+concentration_bsu_BigExpGM1.0.tsv
+from /home/wolfram/projekte/data/bacillus_subtilis/big_experiment/bsu_Metabolites_BigExperiment_GM1_KEGG_first_time_point.tsv  
 
 Processing: 
   KEGG IDS fixed manually: 
@@ -38,28 +38,28 @@ Processing:
 % Yeast oxygen metabolite data (Wiebe et al.)
 
 Files
-  concentration_sce_Wiebe_2007_aerobic_0.5.csv
-  concentration_sce_Wiebe_2007_aerobic_0.99.csv
-  concentration_sce_Wiebe_2007_aerobic_20.88.csv
-  concentration_sce_Wiebe_2007_aerobic_2.85.csv
-  concentration_sce_Wiebe_2007_anaerobic.csv
-  concentration_sce_Wiebe_2007.csv
+  concentration_sce_Wiebe_2007_aerobic_0.5.tsv
+  concentration_sce_Wiebe_2007_aerobic_0.99.tsv
+  concentration_sce_Wiebe_2007_aerobic_20.88.tsv
+  concentration_sce_Wiebe_2007_aerobic_2.85.tsv
+  concentration_sce_Wiebe_2007_anaerobic.tsv
+  concentration_sce_Wiebe_2007.tsv
 
 Processing 
   1. Apply matlab script convert_wiebe.m
   2. Generate SBtab files manually:
-     ~/projekte/flux_specific_cost/resources/sce_oxygen_data_wiebe.csv
-     ~/projekte/flux_specific_cost/resources/sce_oxygen_data_wiebe_aerobic.csv
-     ~/projekte/flux_specific_cost/resources/sce_oxygen_data_wiebe_anaerobic.csv
+     ~/projekte/flux_specific_cost/resources/sce_oxygen_data_wiebe.tsv
+     ~/projekte/flux_specific_cost/resources/sce_oxygen_data_wiebe_aerobic.tsv
+     ~/projekte/flux_specific_cost/resources/sce_oxygen_data_wiebe_anaerobic.tsv
 
 % ---------------------------------------------------------------------
 General concentrations Albe et al.
 
 Files: 
-  concentration_eco_Albe_1990.csv
-  concentration_sce_Albe_1990.csv
+  concentration_eco_Albe_1990.tsv
+  concentration_sce_Albe_1990.tsv
 
 Processing: 
   1. used albe_et_al_annotated.txt from /home/wolfram/projekte/pathway_modelling/data
-  2. sorted manually -> file albe_et_al_annotated_SBtab.csv
+  2. sorted manually -> file albe_et_al_annotated_SBtab.tsv
   3. applied matlab-script albe_to_organism.m

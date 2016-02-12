@@ -2,7 +2,7 @@ function [u_tot, u, w] = ecm_ecf3sp(x,pp)
 
 % [u_tot, u] = ecm_ecf3sp(x,pp)
 
-delta_G_by_RT =  pp.N_forward' * x - pp.log_Keq_forward;
+delta_G_by_RT = pp.N_forward' * x - pp.log_Keq_forward;
 
 w =  [ pp.kc_forward .* [1 - exp(delta_G_by_RT)] ./ [[  pp.km_forward  ./ exp(abs(pp.M_forward) * x)] .* [1 + 1./pp.km_forward .* exp(abs(pp.M_forward) * x) + 1./pp.kmprod_forward .* exp(abs(pp.Mprod_forward) * x)]  ]];
 

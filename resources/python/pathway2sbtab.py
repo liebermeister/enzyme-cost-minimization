@@ -5,8 +5,8 @@
 # The input file can contain one or more pathway models.
 #
 # Depending on [FLAG_SINGLE_OUTPUT_FILE], each model is stored
-#  in one file:   [PATHWAY].csv                        (FLAG_SINGLE_OUTPUT_FILE=1; default) 
-#  in two files:  [PATHWAY]_Compound.csv, [PATHWAY]_Reaction.csv (FLAG_SINGLE_OUTPUT_FILE=0) 
+#  in one file:   [PATHWAY].tsv                        (FLAG_SINGLE_OUTPUT_FILE=1; default) 
+#  in two files:  [PATHWAY]_Compound.tsv, [PATHWAY]_Reaction.tsv (FLAG_SINGLE_OUTPUT_FILE=0) 
 
 import sys
 import os
@@ -73,18 +73,18 @@ for line in igot:
 
         # WRITE OUT FILE(S)
         if flag_single_output == 1:            
-          ff = open(outdir + entry + ".csv", 'w')
+          ff = open(outdir + entry + ".tsv", 'w')
           for line in compound_table:
               ff.write(line + '\n')
           for line in reaction_table:
               ff.write(line + '\n')
           ff.close
         else:
-          ff = open(outdir + entry + "_Compound.csv", 'w')
+          ff = open(outdir + entry + "_Compound.tsv", 'w')
           for line in compound_table:
               ff.write(line + '\n')
           ff.close
-          ff = open(outdir + entry + "_Reaction.csv", 'w')
+          ff = open(outdir + entry + "_Reaction.tsv", 'w')
           for line in reaction_table:
               ff.write(line + '\n')
           ff.close

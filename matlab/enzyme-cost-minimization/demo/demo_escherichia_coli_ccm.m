@@ -20,9 +20,9 @@ data_DIR   = [ecm_BASEDIR 'demo/data/'];
 
 result_DIR = [ecm_BASEDIR 'demo/results/'];
 
-infile_pb  = [data_DIR 'pb_ecoli_aerobic_minimal.csv'];
+infile_pb  = [data_DIR 'pb_ecoli_aerobic_minimal.tsv'];
 
-infile_ecm = [data_DIR 'ecm_ecoli_aerobic.csv'];
+infile_ecm = [data_DIR 'ecm_ecoli_aerobic.tsv'];
   
 
 % --------------------------------------------------------

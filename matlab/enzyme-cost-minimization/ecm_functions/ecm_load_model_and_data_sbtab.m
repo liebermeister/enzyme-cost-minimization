@@ -1,11 +1,13 @@
-function [my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions,warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab, outdir)
+function [my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions,warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab, tmp_dir)
 
-% [my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions, warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab)
+% [my_network,my_v,my_c_data,my_u_data, my_conc_min, my_conc_max, my_positions, warnings] = ecm_load_model_and_data_sbtab(problem_filename_sbtab, tmp_dir)
 
 my_sbtab = sbtab_document_load_from_one(problem_filename_sbtab);
 
+options = struct;
+
 if exist('outdir','var'),
-  options.my_matlab_tmp = outdir;
+  options.my_matlab_tmp = tmp_dir;
 end
 
 warnings = '';

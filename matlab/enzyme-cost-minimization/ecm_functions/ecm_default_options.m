@@ -40,7 +40,7 @@ ecm_options.kcat_usage               = 'use';
 ecm_options.kcat_prior_median        = 350;   % similar to median in glycolysis+tca
 ecm_options.kcat_prior_log10_std     = 0.1;   % reduce spread of kcat values
 ecm_options.kcat_lower               = 50;    % 1/s
-ecm_options.kcat_upper               = 2000;  % 1/s
+ecm_options.kcat_upper               = 5000;  % 1/s
 ecm_options.GFE_fixed                = 1;     % flag
 ecm_options.insert_Keq_from_data     = 0;     % flag
 
