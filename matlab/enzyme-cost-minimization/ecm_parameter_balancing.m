@@ -1,6 +1,6 @@
-function [r, r_orig, kinetic_data, r_samples] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+function [r, r_orig, kinetic_data, r_samples, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 
-% [r, r_orig, kinetic_data] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+% [r, r_orig, kinetic_data, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 %
 % ECM_PARAMETER_BALANCING - Prepare and run parameter balancing
 %
@@ -10,21 +10,22 @@ function [r, r_orig, kinetic_data, r_samples] = ecm_parameter_balancing(network,
 % 
 % Uses (potentially) the following options from ecm_options.
 %  ecm_options.flag_given_kinetics
-%  ecm_options.reaction_column_name
-%  ecm_options.compound_column_name
-%  ecm_options.kcat_usage
+%  ecm_options.reaction_column_name (only if no kinetic data are given)
+%  ecm_options.compound_column_name (only if no kinetic data are given)
+%  ecm_options.kcat_usage  {'use','none','forward'} (default: 'use')
 %  ecm_options.kcat_prior_median
 %  ecm_options.kcat_prior_log10_std
 %  ecm_options.kcat_lower
+%  ecm_options.kcatr_lower
 %  ecm_options.kcat_upper
 %  ecm_options.KM_lower
 %  ecm_options.Keq_upper
 %  ecm_options.quantity_info_file
 %  ecm_options.GFE_fixed
+%  ecm_options.use_pseudo_values
 
 ecm_options_def = ecm_default_options(network);
 ecm_options     = join_struct(ecm_options_def,ecm_options);
-
 
 % -------------------------------------------------
 % ecm_options
@@ -97,17 +98,30 @@ else
       kinetic_data         = kk;
   end
   
-  options = struct('kcat_prior_median',ecm_options.kcat_prior_median,...
-                   'kcat_prior_log10_std',ecm_options.kcat_prior_log10_std,...
-                   'kcat_lower',ecm_options.kcat_lower,...
-                   'kcat_upper',ecm_options.kcat_upper,...
-                   'KM_lower',ecm_options.KM_lower,...
-                   'Keq_upper',ecm_options.Keq_upper,...
-                   'GFE_fixed',ecm_options.GFE_fixed,...
-                   'quantity_info_file',ecm_options.quantity_info_file);
+  options = struct('kcat_prior_median',    ecm_options.kcat_prior_median,...
+                   'kcat_prior_log10_std', ecm_options.kcat_prior_log10_std,...
+                   'kcat_lower',           ecm_options.kcat_lower,...
+                   'kcatr_lower',          ecm_options.kcatr_lower,...
+                   'kcat_upper',           ecm_options.kcat_upper,...
+                   'KM_lower',             ecm_options.KM_lower,...
+                   'Keq_upper',            ecm_options.Keq_upper,...
+                   'GFE_fixed',            ecm_options.GFE_fixed,...
+                   'quantity_info_file',   ecm_options.quantity_info_file,...
+                   'use_pseudo_values',    ecm_options.use_pseudo_values);
 
   options.n_samples = ecm_options.n_samples;
   
   [r, r_orig, kinetic_data, r_samples] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
 
 end
+
+% -----------------------------
+% if desired, insert original Keq values
+
+if exist('Keq','var'),
+  if ecm_options.insert_Keq_from_data,
+    display('  Using predefined equilibrium constants exactly'); 
+    r.Keq = r_orig.Keq;
+  end
+end
+

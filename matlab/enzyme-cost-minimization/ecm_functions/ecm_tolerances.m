@@ -3,6 +3,7 @@ function [c_min, c_max, u_min, u_max] = ecm_tolerances(c,u,v,ecm_options,mca_inf
 % rough estimate, assuming that 1/2 deltaxi^2 Hii = ytolerance
 
 if ecm_options.tolerance_from_hessian,
+
   for it = 1:length(ecm_options.ecm_scores),
     my_cost_score     = ecm_options.ecm_scores{it};
     my_x              = log(c.(my_cost_score));
@@ -51,6 +52,12 @@ if ecm_options.tolerance_from_hessian,
     c_min.mdf(find(~isfinite(  c_min.mdf)))=nan;
   end
 
+else
+  display('  No tolerances are computed');
+  c_min = c;
+  c_max = c;
+  u_min = u;
+  u_max = u;
 end
 
 % Hessian is not defined for MDF (not differentiable)

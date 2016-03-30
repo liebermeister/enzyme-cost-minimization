@@ -36,26 +36,11 @@ This function calls:
 </ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li><li><a href="../.././enzyme-cost-minimization/ecm_functions/ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	</li><li><a href="../.././enzyme-cost-minimization/ecm_functions/ecm_get_specific_rates.html" class="code" title="function rates = ecm_get_specific_rates(ecm_score,x,pp,ind)">ecm_get_specific_rates</a>	</li></ul>
+<li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li><li><a href="../.././enzyme-cost-minimization/ecm_functions/ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	</li><li><a href="../.././enzyme-cost-minimization/ecm_functions/ecm_get_specific_rates.html" class="code" title="function rates = ecm_get_specific_rates(ecm_score,x,pp,ind)">ecm_get_specific_rates</a>	</li></ul>
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [f,u,w] = ecm_mdf(x,pp)</a>
-0002 
-0003 <span class="comment">% [f,u] = ecm_mdf(x,pp)</span>
-0004 
-0005 delta_G_by_RT = pp.N_forward' * x - pp.log_Keq_forward;
-0006 
-0007 
-0008 f = max(delta_G_by_RT(pp.ind_scored_enzymes));
-0009 
-0010 <span class="keyword">if</span> sum(delta_G_by_RT &gt; 0),
-0011   f = 10^20*max(delta_G_by_RT);
-0012 <span class="keyword">end</span>
-0013 
-0014 u = nan * pp.v;
-0015 w = nan * pp.v;</pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Tue 29-Mar-2016 12:27:24 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

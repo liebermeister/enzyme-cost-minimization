@@ -1,8 +1,8 @@
-function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)
+function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)
 
 % ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution
 %
-% [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max] = ecm_enzyme_cost_minimization(network, e, v, ecm_options)
+% [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network, e, v, ecm_options)
 %
 % Input 
 %   network       metabolic network structure (as in Metabolic Network Toolbox)
@@ -135,7 +135,7 @@ pp.ind_not_scored      = ind_not_scored     ;
 
 %epsilon = 10^-10;   % flux directions must be possible at least
 %epsilon = 1 * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required  
-epsilon = double(v~=0) * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required;
+epsilon = 10^-10 * double(v~=0) * 1/RT;  % minimal reaction GFE of 10^-10 kJ/mol is required;
 
 try
   [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max, 0*x_min);
@@ -151,7 +151,6 @@ X_extreme = [x1, x2]; % matrix with extreme initial concentration vectors
 % --------------------------------------------------------------------------
 % choose the starting point
 
-
 switch ecm_options.initial_choice,
   case 'polytope_center',
     display('  Choosing polytope center as starting point'); 
@@ -162,6 +161,7 @@ switch ecm_options.initial_choice,
     x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,ecm_options.lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
     display('  Choosing MDF solution as starting point'); 
 end
+
 
 % --------------------------------------------------------------------------------------
 % run optimisations starting from x_start
@@ -325,4 +325,37 @@ for it_method = 1:length(ecm_scores),
     end
   end
   
+end
+
+
+% ---------------------------------------------------------------------
+% compute efficiency values
+
+kcat_forward      = r.Kcatf;
+kcat_forward(v<0) = r.Kcatr(v<0);
+u_capacity        = abs(v)./kcat_forward;
+eta_energetic     = struct;
+eta_saturation    = struct;
+
+for it_method = 1:length(ecm_options.ecm_scores),
+  this_ecm_score   = ecm_options.ecm_scores{it_method};
+  my_u             = u.(this_ecm_score);
+  switch this_ecm_score,
+    case {'mdf','emc1'},
+      my_eta_energetic = nan * ones(size(v));
+      my_eta_energetic(ecm_options.ind_scored_enzymes) = ones(size(ecm_options.ind_scored_enzymes));
+    otherwise,
+      my_A_forward     = A_forward.(this_ecm_score);
+      my_eta_energetic = 1-exp(-my_A_forward/RT);
+      my_eta_energetic(my_eta_energetic<0) = 0;
+    end
+  switch this_ecm_score,
+    case {'mdf','emc1','emc2s','emc2sp'},
+      my_eta_saturation = nan * ones(size(v));
+      my_eta_saturation(ecm_options.ind_scored_enzymes) = ones(size(ecm_options.ind_scored_enzymes));
+    otherwise,
+      my_eta_saturation = [abs(v) ./ kcat_forward ./ my_eta_energetic] ./ my_u;
+  end
+  eta_energetic.(this_ecm_score)  = my_eta_energetic ;
+  eta_saturation.(this_ecm_score) = my_eta_saturation;
 end

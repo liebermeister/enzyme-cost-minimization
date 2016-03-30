@@ -3,6 +3,37 @@ function ecm_display(ecm_options,graphics_options,network,v,c,u,u_tot,up,A_forwa
 % ecm_display(network,options,ecm_options,v,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)
 %
 % ECM_DISPLAY - Display results of Enzyme Cost Minimization
+%
+% Options in 'graphics_options':
+%
+%  graphics_options.few_graphics                    Omit many graphics
+%  graphics_options.show_proteomaps                 Show proteomaps
+%  graphics_options.show_original_data              Show graphs with original data
+%  graphics_options.show_network_graphics           Show network graphs
+%  graphics_options.show_matrix_graphics            Show matrix graphs
+%  graphics_options.reaction_order_file             Filename for reordering reactions
+%  graphics_options.metabolites_order_file          Filename for reordering compounds
+
+
+%----------------------------------------------------------------------------------
+% Options
+
+graphics_options_default.few_graphics       = 0;
+graphics_options_default.show_proteomaps    = 1;
+graphics_options_default.show_original_data = 1;
+graphics_options_default.show_network_graphics = 1;
+graphics_options_default.show_matrix_graphics = 1;
+
+graphics_options = join_struct(graphics_options_default,graphics_options);
+
+if graphics_options.few_graphics,
+  graphics_options.show_proteomaps       = 0;
+  graphics_options.show_original_data    = 0;
+  graphics_options.show_network_graphics = 0;
+  graphics_options.show_matrix_graphics  = 0;
+end
+
+%----------------------------------------------------------------------------------
 
 if length(graphics_options.reaction_order_file),
   ecm_options.reaction_order   = load_any_table(graphics_options.reaction_order_file);
@@ -84,72 +115,82 @@ ind_show_met = ind_show_met(find(ind_show_met));
 % GENERAL PLOTS 
 % -----------------------------------
 
-kcat_forward_original      = kinetic_data.Kcatf.median;
-kcat_forward_original(v<0) = kinetic_data.Kcatr.median(v<0);
+if length(kinetic_data),
+  kcat_forward_original      = kinetic_data.Kcatf.median;
+  kcat_forward_original(v<0) = kinetic_data.Kcatr.median(v<0);
+else
+  kcat_forward_original      = nan * ones(size(network.actions));
+end
 
-kcat_forward = r.Kcatf;
+kcat_forward      = r.Kcatf;
 kcat_forward(v<0) = r.Kcatr(v<0);
 
 gp = struct('arrowsize',0.05,'arrowstyle','fluxes','actstyle','none','arrowvalues',v);
-figure(27); netgraph_concentrations(ecm_options.network_CoHid,[],v,1,gp);
 
-figure(4); clf; 
-gp = struct('arrowsize',0.05,'actstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'metprintnames',0,'flag_edges',1,'colormap', value_colors);
-gp.actvaluesmin = log10(10);
-gp.actvaluesmax = log10(10000);
-gp.actstyle     = 'fixed';
-gp.arrowstyle   = 'none';
-netgraph_concentrations(ecm_options.network_CoHid,[],log10(kcat_forward),1,gp); 
-title('log10 Kcat+, balanced (1/s)');
+if graphics_options.show_network_graphics,
 
-figure(14); clf;
-if length(kinetic_data),
-  gp = struct('arrowsize',0.05,'actstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'metprintnames',0,'flag_edges',1,'colormap', value_colors);
-  gp.actvaluesmin = log10(10);
-  gp.actvaluesmax = log10(10000);
-  gp.actstyle     = 'fixed';
-  gp.arrowstyle   = 'none';
-  netgraph_concentrations(ecm_options.network_CoHid,[],log10(kcat_forward_original),1,gp); 
-  title('log10 Kcat+, original (1/s)');
-else
-  text(1,1,'No data');
+  figure(27); netgraph_concentrations(ecm_options.network_CoHid,[],v,1,gp);
+
+ figure(4); clf; 
+ gp = struct('arrowsize',0.05,'actstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'metprintnames',0,'flag_edges',1,'colormap', value_colors);
+ gp.actvaluesmin = log10(10);
+ gp.actvaluesmax = log10(10000);
+ gp.actstyle     = 'fixed';
+ gp.arrowstyle   = 'none';
+ netgraph_concentrations(ecm_options.network_CoHid,[],log10(kcat_forward),1,gp); 
+ title('log10 Kcat+, balanced (1/s)');
+ 
+ if graphics_options.show_original_data,
+ figure(14); clf;
+ if length(kinetic_data),
+   gp = struct('arrowsize',0.05,'actstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'metprintnames',0,'flag_edges',1,'colormap', value_colors);
+   gp.actvaluesmin = log10(10);
+   gp.actvaluesmax = log10(10000);
+   gp.actstyle     = 'fixed';
+   gp.arrowstyle   = 'none';
+   netgraph_concentrations(ecm_options.network_CoHid,[],log10(kcat_forward_original),1,gp); 
+   title('log10 Kcat+, original (1/s)');
+ else
+   text(1,1,'No original Kcat data available');
+ end
+ end
+
+ figure(11); clf; 
+ gp.actstyle     = 'none';
+ gp.metvaluesmin = log10(ecm_options.conc_min_default);
+ gp.metvaluesmax = log10(100);% (ecm_options.conc_max_default);
+ netgraph_concentrations(network,log10(c.initial(:,1)),[],1,gp); title('Initial state: log10 Concentrations (mM)');
+ 
+ figure(12); clf; 
+ gp.arrowstyle   ='none'; gp.actstyle = 'fixed';
+ gp.actvaluesmin = log10(1);
+ gp.actvaluesmax = log10(100);
+ gp.metvaluesmin = [];
+ gp.metvaluesmax = [];
+ netgraph_concentrations(ecm_options.network_CoHid,[],log10(A_forward.initial),1,gp); title('Inital state: log10 Reaction affinities (kJ/mol)');
+ 
+ figure(8); clf
+ gp = struct('arrowstyle','none','colorbar',1,'showsign',0,'actprintnames',0,'flag_edges',1,'colormap', value_colors);
+ gp.metvaluesmin = log10(ecm_options.conc_min_default);
+ gp.metvaluesmax = log10(100); % ecm_options.conc_max_default);
+ netgraph_concentrations(network,log10(c.data(:,1)),[],1,gp); title('Experimental data (1st file): log10 Concentrations (mM)');
+ 
+ figure(28); clf
+ gp = struct('arrowstyle','none','colorbar',1,'showsign',0,'actprintnames',0,'flag_edges',1,'colormap', value_colors);
+ gp.metvaluesmin = log10(ecm_options.conc_min_default);
+ gp.metvaluesmax = log10(100); % ecm_options.conc_max_default);
+ netgraph_concentrations(network,log10(c.fixed),[],1,gp); title('Fixed values: log10 Concentrations (mM)');
+ 
+ figure(9); clf
+ gp = struct('arrowstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'flag_edges',1,'colormap', value_colors);
+ gp.actnames     = gene_names;
+ gp.actvaluesmin = log10(nanmin(u.data));
+ gp.actvaluesmax = log10(nanmax(u.data));
+ gp.metvaluesmin = [];
+ gp.metvaluesmax = [];
+ netgraph_concentrations(ecm_options.network_CoHid,[],log10(u.data),1,gp); title('Experimental data: log10 enzyme levels (mM)');
+
 end
-
-figure(11); clf; 
-gp.actstyle     = 'none';
-gp.metvaluesmin = log10(ecm_options.conc_min_default);
-gp.metvaluesmax = log10(100);% (ecm_options.conc_max_default);
-netgraph_concentrations(network,log10(c.initial(:,1)),[],1,gp); title('Initial state: log10 Concentrations (mM)');
-
-figure(12); clf; 
-gp.arrowstyle   ='none'; gp.actstyle = 'fixed';
-gp.actvaluesmin = log10(1);
-gp.actvaluesmax = log10(100);
-gp.metvaluesmin = [];
-gp.metvaluesmax = [];
-netgraph_concentrations(ecm_options.network_CoHid,[],log10(A_forward.initial),1,gp); title('Inital state: log10 Reaction affinities (kJ/mol)');
-
-figure(8); clf
-gp = struct('arrowstyle','none','colorbar',1,'showsign',0,'actprintnames',0,'flag_edges',1,'colormap', value_colors);
-gp.metvaluesmin = log10(ecm_options.conc_min_default);
-gp.metvaluesmax = log10(100); % ecm_options.conc_max_default);
-netgraph_concentrations(network,log10(c.data(:,1)),[],1,gp); title('Experimental data (1st file): log10 Concentrations (mM)');
-
-figure(28); clf
-gp = struct('arrowstyle','none','colorbar',1,'showsign',0,'actprintnames',0,'flag_edges',1,'colormap', value_colors);
-gp.metvaluesmin = log10(ecm_options.conc_min_default);
-gp.metvaluesmax = log10(100); % ecm_options.conc_max_default);
-netgraph_concentrations(network,log10(c.fixed),[],1,gp); title('Fixed values: log10 Concentrations (mM)');
-
-figure(9); clf
-gp = struct('arrowstyle','none','colorbar',1,'showsign',0,'actprintnames',1,'flag_edges',1,'colormap', value_colors);
-gp.actnames     = gene_names;
-gp.actvaluesmin = log10(nanmin(u.data));
-gp.actvaluesmax = log10(nanmax(u.data));
-gp.metvaluesmin = [];
-gp.metvaluesmax = [];
-netgraph_concentrations(ecm_options.network_CoHid,[],log10(u.data),1,gp); title('Experimental data: log10 enzyme levels (mM)');
-
 
 % --------------------------------------
 % concentration predictions
@@ -179,10 +220,10 @@ end
 metnames_show = strrep(network.metabolites(ind_show_met),'D-','');
 metnames_show = strrep(metnames_show,'_','.');
 
-text(xtick + 0.2,c.data(ind_show_met),metnames_show,'FontSize',10);
+text(xtick + 0.2,c.data(ind_show_met),metnames_show,'FontSize',8);
 legend(methods,'Location','NorthEastOutside','FontSize',10);
 axis tight; set(gca,'XTick',xtick,'XTickLabel',metnames_show,'YScale','Log');
-my_xticklabel([],ecm_options.conc_min_default,[],10);
+my_xticklabel([],ecm_options.conc_min_default,[],6);
 title('Comparison: log10 Concentration profiles (mM)');
 
 
@@ -212,18 +253,21 @@ title('Cumulative entropy production (v * A)');
 % --------------------------------------
 % c over KM
 
+if graphics_options.show_matrix_graphics,
 figure(20); subplot('Position',[0.15 0.05 0.8 0.7]);
 c_over_KM = repmat(c.initial(:,1)',length(network.actions),1)./r.KM;
 c_over_KM(r.KM==0) = nan;
 im(log10(c_over_KM(:,ind_show_met)),[-3,3],network.actions,metnames_show); colormap([0.95 0.95 0.95; value_colors]); colorbar
 my_xticklabel
 %title('log10 c (initial solution) / KM');
-
+end
 
 % --------------------------------------
 % KM
 
 % data
+
+if graphics_options.show_original_data,
 figure(21); subplot('Position',[0.15 0.05 0.8 0.7]);
 if length(kinetic_data),
   my_KM = kinetic_data.KM.median;
@@ -231,15 +275,18 @@ if length(kinetic_data),
   im(log10(my_KM(:,ind_show_met)),[-3,2],network.actions,metnames_show); colormap([0.95 0.95 0.95; value_colors]); colorbar
   my_xticklabel
 else
-  text(1,1,'No data');
+  text(1,1,'No original KM data available');
+end
 end
 
+if graphics_options.show_matrix_graphics,
 % balanced
 figure(22); subplot('Position',[0.15 0.05 0.8 0.7]);
 my_KM = r.KM;
 my_KM(my_KM==0) = nan;
 im(log10(my_KM(:,ind_show_met)),[-3,2],network.actions,metnames_show); colormap([0.95 0.95 0.95; value_colors]); colorbar
 my_xticklabel
+end
 
 % --------------------------------------
 % enzyme level predictions
@@ -253,11 +300,11 @@ methods = ecm_options.ecm_scores;
 
 for it = 1:length(ecm_options.ecm_scores),
   ecm_score = ecm_options.ecm_scores{it};
-  if ~strcmp(ecm_score,'mdf'),
+  %if ~strcmp(ecm_score,'mdf'),
     ug_meth   = up.(ecm_score)(ecm_options.ind_scored_enzymes,1);
     ug_meth   = ug_meth/sum(ug_meth);
     ug        = [ug, ug_meth];
-  end
+  %end
 end
 
 if length(u.data),
@@ -283,28 +330,38 @@ gpp.actnames = gene_names;
 netgraph_concentrations(ecm_options.network_CoHid,[],column(mmm),1,gpp); 
 %title('Enzymes colour legend');
 
+% -------------------------------------------------------------------------
+% proteomaps
+% -------------------------------------------------------------------------
+
 % proteomap from data
 
-if length(u.data),
-  ud = u.data(ecm_options.ind_scored_enzymes);
-  ud = ud / nansum(ud);
-  %ud = ud(ind_enzymes_scored);
- proteomap_draw_treemap(gene_names(ind_enzymes_scored),ud,{''},struct('color_file',graphics_options.enzyme_colors,'show_level',1,'window_position',[250,120,600,600],'fignums',350,'fontsize',12)); % title('');
+if  graphics_options.show_proteomaps,
+
+  figure(350)
+  if length(u.data),
+    ud = u.data(ecm_options.ind_scored_enzymes);
+    ud = ud / nansum(ud);
+    %ud = ud(ind_enzymes_scored);
+   proteomap_draw_treemap(gene_names(ind_enzymes_scored),ud,{''},struct('color_file',graphics_options.enzyme_colors,'show_level',1,'window_position',[250,120,600,600],'fignums',350,'fontsize',12)); % title('');
+  end
+  
+  % proteomap from predictions
+  
+  n_methods = length(ecm_options.ecm_scores);
+  for it_method = 1:n_methods,
+    this_ecm_score = ecm_options.ecm_scores{it_method};
+    ug = up.(this_ecm_score)(ecm_options.ind_scored_enzymes,1);
+    ug = ug / nansum(ug);
+    proteomap_draw_treemap(gene_names(ind_enzymes_scored),ug,{this_ecm_score},struct('color_file',graphics_options.enzyme_colors,'show_level',1,'window_position',[250,120,600,600], 'fignums', 350+it_method));
+    if graphics_options.print_graphics,
+      cd(graphics_options.psfile_dir);
+      figure(350+it_method);
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_proteomap.eps'],['-f' num2str(350+it_method)],'-depsc');
+    end
+  end
+
 end
-
-% proteomap from predictions
-
-n_methods = length(ecm_options.ecm_scores);
-for it_method = 1:n_methods,
-  this_ecm_score = ecm_options.ecm_scores{it_method};
-  ug = up.(this_ecm_score)(ecm_options.ind_scored_enzymes,1);
-  ug = ug / nansum(ug);
-  proteomap_draw_treemap(gene_names(ind_enzymes_scored),ug,{this_ecm_score},struct('color_file',graphics_options.enzyme_colors,'show_level',1,'window_position',[250,120,600,600], 'fignums', 350+it_method));
-  cd(graphics_options.psfile_dir);
-  figure(350+it_method);
-  print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_proteomap.eps'],['-f' num2str(350+it_method)],'-depsc');
-end
-
 
 % -----------------------------------
 % PLOTS FOR MEASURED DATA ONLY 
@@ -316,63 +373,65 @@ end
 figure(44); clf; hold on
 is_finite  = isfinite(u.data .* v);
 ind_finite = find(is_finite);
-amin = min([u.data(is_finite); abs(v(is_finite))]);
-amax = max([u.data(is_finite); abs(v(is_finite))]);
-plot([amin, amax],[amin,amax],'--k'); 
 for it = 1:nr,
   if isfinite(u.data(it)),
-    plot(u.data(it),abs(v(it)),'.','Color',my_colors(it,:),'MarkerSize',30);
+    plot(1000*u.data(it),abs(v(it)),'.','Color',my_colors(it,:),'MarkerSize',20);
   end
 end
-text(u.data(ind_finite) * 1.03,v(ind_finite),gene_names(ind_finite));
-set(gca,'XScale','Log','YScale','Log','Fontsize',16);
-xlabel('Measured enzyme level (mM)','Fontsize',16); ylabel('Measured flux (mM/s)','Fontsize',16);
+text(1.25*1000*u.data(ind_finite),1.05*v(ind_finite),gene_names(ind_finite),'FontSize',12);
+set(gca,'XScale','Log','YScale','Log','Fontsize',18);
+xlabel('Measured enzyme level (uM)','Fontsize',18); ylabel('Measured flux (mM/s)','Fontsize',18);
 if length(ind_finite),
   [cc, pvalue] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))));
   [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))),'type','Spearman');
   rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(v(ind_finite))].^2));
-  title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  %title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
   display('Flux vs enzyme levels:')
   sprintf('RMSE: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear);
   %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
 end
-%axis tight; aa = axis; axis([min(aa([1,3])), max(aa([2,4])), min(aa([1,3])), max(aa([2,4]))]); 
-axis([amin amax amin amax]); axis square;
+axis tight;% aa = axis; axis([min(aa([1,3])), max(aa([2,4])), min(aa([1,3])), max(aa([2,4]))]); 
+% amin = min([1000*u.data(is_finite); abs(v(is_finite))]);
+% amax = max([1000*u.data(is_finite); abs(v(is_finite))]);
+% if isempty(ind_finite), amin=0; amax=1; end
+% axis([amin amax amin amax]); axis square;
 
 
 % --------------------------------------------------------
 % plot flux (data) versus enzyme level * kcat (both data)
 
-figure(45);clf; hold on
-if length(kinetic_data)
-  is_finite  = isfinite(u.data .* kcat_forward_original .* v);
-  ind_finite = find(is_finite);
-  amin = min([u.data; abs(v)./kcat_forward_original]);
-  amax = max([u.data; abs(v)./kcat_forward_original]);
-  plot([amin, amax],[amin,amax],'--k'); 
-  for it = 1:nr,
-     if is_finite(it),
-       plot(u.data(it),abs(v(it))/kcat_forward_original(it),'.','Color',my_colors(it,:),'MarkerSize',30);
-     end
+figure(45); clf; hold on
+
+is_finite  = isfinite(u.data .* kcat_forward .* v);
+ind_finite = find(is_finite);
+%amin = min([u.data; abs(v)./kcat_forward]);
+%amax = max([u.data; abs(v)./kcat_forward]);
+amin = 0.01; amax = 100;
+plot([amin, amax],[amin,amax],'--k');
+
+for it = 1:nr,
+  if is_finite(it),
+    plot(1000*u.data(it),1000*abs(v(it))/kcat_forward(it),'.','Color',my_colors(it,:),'MarkerSize',20);
   end
-  text(u.data(ind_finite) * 1.03,v(ind_finite)  ./ kcat_forward_original(ind_finite),gene_names(ind_finite));
-  set(gca,'XScale','Log','YScale','Log','Fontsize',16);
-  xlabel('Measured enzyme level (mM)','Fontsize',16); 
-  ylabel('Measured flux / kcat (mM, data)','Fontsize',16);
-  if length(ind_finite),
-    [cc, pvalue] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))./kcat_forward_original(ind_finite)));
-    [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))./kcat_forward_original(ind_finite)),'type','Spearman');
-  rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(v(ind_finite)./kcat_forward_original(ind_finite))].^2));
-  title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+end
+text(1.25*1000*u.data(ind_finite),1.05*1000*v(ind_finite)  ./ kcat_forward(ind_finite),gene_names(ind_finite),'FontSize',12);
+set(gca,'XScale','Log','YScale','Log','Fontsize',18);
+xlabel('Measured enzyme level (uM)','Fontsize',18); 
+ylabel('Measured flux / kcat (uM, data)','Fontsize',18);
+if length(ind_finite),
+  [cc, pvalue] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))./kcat_forward(ind_finite)));
+  [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))./kcat_forward(ind_finite)),'type','Spearman');
+  rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(v(ind_finite)./kcat_forward(ind_finite))].^2));
+  text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
+  text(0.02,50,sprintf('r=%2.2f', cc),'Fontsize',18);
+  text(0.02,27,sprintf('Fold error=%2.2f', 10^rmse),'Fontsize',18);
+  %title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
   display('Fluxes vs enzyme levels/kcat');
   sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
-  %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
-  end
-  %axis tight; aa = axis; axis([min(aa([1,3])), max(aa([2,4])), min(aa([1,3])), max(aa([2,4]))]); axis square;
-  axis([amin amax amin amax]); axis square;
-else
-  text(1,1,'No data');
+  %%  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
 end
+%axis tight; aa = axis; axis([min(aa([1,3])), max(aa([2,4])), min(aa([1,3])), max(aa([2,4]))]); axis square;
+axis([amin amax amin amax]); axis square;
 
 % --------------------------------------------------------
 % barplot
@@ -402,40 +461,46 @@ set(gca,'XTick',1:length(ind_enzymes_scored),'XTickLabel',gene_names(ind_enzymes
 
 
 % --------------------------------------------------------
-
-% --------------------------------------------------------
 % SAVE GRAPHICS
 % --------------------------------------------------------
 
-
 if graphics_options.print_graphics,
   cd(graphics_options.psfile_dir);
-  print([ ecm_options.model_id '_' ecm_options.run_id '_fluxes.eps'],'-f27','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_data_concentrations.eps'],'-f8','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_data_enzymes.eps'],'-f9','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_fix_concentrations.eps'],'-f28','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_init_concentrations.eps'],'-f11','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_init_affinities.eps'],'-f12','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_kcat_balanced.eps'],'-f4','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_kcat_original.eps'],'-f14','-depsc');
+  if graphics_options.show_network_graphics,
+    print([ ecm_options.model_id '_' ecm_options.run_id '_fluxes.eps'],'-f27','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_kcat_balanced.eps'],'-f4','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_init_concentrations.eps'],'-f11','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_init_affinities.eps'],'-f12','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_data_concentrations.eps'],'-f8','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_data_enzymes.eps'],'-f9','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_fix_concentrations.eps'],'-f28','-depsc');
+    if graphics_options.show_original_data,
+      print([ ecm_options.model_id '_' ecm_options.run_id '_kcat_original.eps'],'-f14','-depsc');
+    end
+  end
+  if graphics_options.show_original_data,
+    print([ ecm_options.model_id '_' ecm_options.run_id '_KM_original.eps'],'-f21','-depsc');
+  end
   print([ ecm_options.model_id '_' ecm_options.run_id '_barplot.eps'],'-f33','-depsc');
   print([ ecm_options.model_id '_' ecm_options.run_id '_barplot_legend.eps'],'-f34','-depsc');
   print([ ecm_options.model_id '_' ecm_options.run_id '_all_conc_profiles.eps'],'-f18','-depsc');
   print([ ecm_options.model_id '_' ecm_options.run_id '_affinity_profiles.eps'],'-f19','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_c_by_KM_initial.eps'],'-f20','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_KM_original.eps'],'-f21','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_KM_balanced.eps'],'-f22','-depsc');
+  if graphics_options.show_matrix_graphics,
+    print([ ecm_options.model_id '_' ecm_options.run_id '_c_by_KM_initial.eps'],'-f20','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_KM_balanced.eps'],'-f22','-depsc');
+  end
   print([ ecm_options.model_id '_' ecm_options.run_id '_scatter_enzyme_vs_flux.eps'],'-f44','-depsc');
   print([ ecm_options.model_id '_' ecm_options.run_id '_scatter_enzyme_kcat_vs_flux.eps'],'-f45','-depsc');
   print([ ecm_options.model_id '_' ecm_options.run_id '_enzyme_multiple_barplots.eps'],'-f46','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_proteomap_data.eps'],'-f350','-depsc');
+  if  graphics_options.show_proteomaps,
+    print([ ecm_options.model_id '_' ecm_options.run_id '_proteomap_data.eps'],'-f350','-depsc');
+  end
 end
 
 
 % -----------------------------------
 % PLOTS FOR INDIVIDUAL SCORES
 % -----------------------------------
-
 
 for it_method = 1:length(ecm_options.ecm_scores),
   this_ecm_score = ecm_options.ecm_scores{it_method};
@@ -444,28 +509,32 @@ for it_method = 1:length(ecm_options.ecm_scores),
   my_A_forward = A_forward.(this_ecm_score)(:,1);
   my_up = up.(this_ecm_score)(:,1);
 
-  figure(1); clf; 
-  gp.actstyle = 'none';
-  gp.metvaluesmin = log10(ecm_options.conc_min_default);
-  gp.metvaluesmax = log10(100);%ecm_options.conc_max_default);
-  netgraph_concentrations(network,log10(my_c),[],1,gp); title('Optimised state: log10 Concentrations (mM)');
+  if graphics_options.show_network_graphics,
+
+    figure(1); clf; 
+    gp.actstyle = 'none';
+    gp.metvaluesmin = log10(ecm_options.conc_min_default);
+    gp.metvaluesmax = log10(100);%ecm_options.conc_max_default);
+    netgraph_concentrations(network,log10(my_c),[],1,gp); title('Optimised state: log10 Concentrations (mM)');
+    
+    figure(2); clf; 
+    gp.arrowstyle='none'; 
+    gp.actstyle = 'fixed';
+    gp.actvaluesmin = log10(0.01);
+    gp.actvaluesmax = log10(100);
+    gp.metvaluesmin = [];
+    gp.metvaluesmax = [];
+    netgraph_concentrations(ecm_options.network_CoHid,[],log10(my_A_forward),1,gp); title('Optimised state: log10 Reaction affinities (kJ/mol)');
   
-  figure(2); clf; 
-  gp.arrowstyle='none'; 
-  gp.actstyle = 'fixed';
-  gp.actvaluesmin = log10(0.01);
-  gp.actvaluesmax = log10(100);
-  gp.metvaluesmin = [];
-  gp.metvaluesmax = [];
-  netgraph_concentrations(ecm_options.network_CoHid,[],log10(my_A_forward),1,gp); title('Optimised state: log10 Reaction affinities (kJ/mol)');
-  
-  figure(3); clf; 
-  gp.actnames  = gene_names;
-  gp.actvaluesmin = log10(10^-6);
-  gp.actvaluesmax = log10(10^-2);
-  gp.metvaluesmin = [];
-  gp.metvaluesmax = [];
-  netgraph_concentrations(ecm_options.network_CoHid,[],log10(my_up),1,gp); title('Optimised state: log10 Enzyme levels (mM)');
+    figure(3); clf; 
+    gp.actnames  = gene_names;
+    gp.actvaluesmin = log10(10^-6);
+    gp.actvaluesmax = log10(10^-2);
+    gp.metvaluesmin = [];
+    gp.metvaluesmax = [];
+    netgraph_concentrations(ecm_options.network_CoHid,[],log10(my_up),1,gp); title('Optimised state: log10 Enzyme levels (mM)');
+
+  end
 
   % --------------------------------------------------------
 
@@ -510,32 +579,37 @@ for it_method = 1:length(ecm_options.ecm_scores),
   is_finite  = isfinite(u.data) .* [v~=0];
   ind_finite = find(is_finite);
 
-  amin = min([u.data; u.(this_ecm_score)(ind_finite,1)]);
-  amax = max([u.data; u.(this_ecm_score)(ind_finite,1)]);
-  plot([amin, amax],[amin,amax],'--k'); 
+  %amin = min(1000*[u.data; u.(this_ecm_score)(ind_finite,1)]);
+  %amax = max(1000*[u.data; u.(this_ecm_score)(ind_finite,1)]);
+  amin = 0.01; amax = 100;
+  plot([amin, amax],[amin,amax],'--k');
 
   for it = 1:nr,
     if is_finite(it),
-      plot(u.data(it),u.(this_ecm_score)(it,1),'.','Markersize',30,'Color',my_colors(it,:)); 
-      text(1.05*u.data(it),1.05*u.(this_ecm_score)(it,1),network.genes(it),'FontSize',8);
+      plot(1000*u.data(it),1000*u.(this_ecm_score)(it,1),'.','Markersize',20,'Color',my_colors(it,:)); 
+      text(1.25*1000*u.data(it),1.05*1000*u.(this_ecm_score)(it,1),network.genes(it),'FontSize',12);
       if length(u_min),
         if isfield(u_min,this_ecm_score)
-          plot(u.data(it) * [1 1],[u_min.(this_ecm_score)(it),u_max.(this_ecm_score)(it)],'-','Color',my_colors(it,:)); 
+          plot(1000*u.data(it) * [1 1], 1000*[u_min.(this_ecm_score)(it),u_max.(this_ecm_score)(it)],'-','Color',my_colors(it,:)); 
         end
       end
     end
   end
 
-  xlabel('Measured enzyme level (mM)','Fontsize',16);
-  ylabel(sprintf('Predicted enzyme level (mM) %s',this_ecm_score),'Fontsize',16);
-  set(gca,'XScale','Log','YScale','Log','Fontsize',16);
+  xlabel('Measured enzyme level (uM)','Fontsize',18);
+  ylabel(sprintf('Predicted enzyme level (uM)'),'Fontsize',16); %  %s',this_ecm_score
+  set(gca,'XScale','Log','YScale','Log','Fontsize',18);
   axis([amin amax amin amax]); axis square;
 
   if length(ind_finite),
     [cc, pvalue] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)));
     [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)),'type','Spearman');
     rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(u.(this_ecm_score)(ind_finite,1))].^2));
-  title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  %title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
+  text(0.02,50,sprintf('r=%2.2f', cc),'Fontsize',18);
+  text(0.02,27,sprintf('Fold error=%2.2f', 10^rmse),'Fontsize',18);
+
   display(sprintf('Score: %s',this_ecm_score))
   sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
   %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
@@ -643,23 +717,31 @@ my_xticklabel(1:length(ecm_options.ind_scored_enzymes),10^-5,strrep(network.gene
 xlabel('Enzymes'); ylabel('Enzyme cost measures');
 legend('Flux','Flux/k_{cat}','Flux/(k_{cat}*\eta^{energy})','Enzyme','Enzyme cost','Data');
 
-figure(1501); clf; set(gca, 'Fontsize',14);
+figure(1501); clf; 
+subplot('Position',[0.15,0.8,0.8,0.15]); set(gca, 'Fontsize',12); hold on;
+for itt = 1:length(my_v),
+  plot(itt,5+log10(my_v(itt)),'k.','Markersize',15);
+end
+ylabel('Flux [mM/s]'); 
+set(gca,'Ytick',0:6,'YTicklabel',{'0.00001','0.0001','0.001','0.01','0.1','1','10'},'Xtick',[]);
+subplot('Position',[0.15,0.1,0.8,0.65]); set(gca, 'Fontsize',12); 
+hold on;
 M = [5+log10(my_u_capacity), -log10(my_eta_energetic), -log10(my_eta_saturation)];
 bar(M,'stacked'); colormap([0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2;]);
 hold on; 
 plot(5+log10(my_u_data),'.','Color',[1 0.7 0],'Markersize',20);
 for itt = 1:length(my_v),
-  plot(itt,5+log10(my_v(itt)),'k.','Markersize',15);
-  my_xticklabel(itt,-0.7,strrep(network.genes(ecm_options.ind_scored_enzymes(itt)),'_','-')',14,graphics_options.enzyme_colors(itt,:))
+  my_xticklabel(itt,-0.5,strrep(network.genes(ecm_options.ind_scored_enzymes(itt)),'_','-')',12,graphics_options.enzyme_colors(itt,:))
 end
 fill([0.1,length(my_v)+0.9,length(my_v)+0.9,0.1],[0.01,0.01,.5,.5],'w','EdgeColor','w')
 plot([0,length(my_v)+1],[.5,.5],'k--')
-text(1,0.2,'Arbitrary baseline capacity');
-axis([0,length(my_u_capacity)+1,0,6])
-ylabel('Enzyme demand [mM]'); set(gca,'Ytick',0:6,'YTicklabel',{'0.00001','0.0001','0.001','0.01','0.1','1','10'});
-legend('Capacity','Energetic','Saturation','Data','Flux [mM/s]');
+text(21,0.3,'Arbitrary baseline capacity');
+axis([0,length(my_u_capacity)+1,0,4.1])
+ylabel('Enzyme demand [uM]'); set(gca,'Ytick',0:4,'YTicklabel',{'0.01','0.1','1','10','100'});
+legend('Capacity','Energetic','Saturation','Data','Location','SouthWest');
 %title(this_ecm_score)
 
+if graphics_options.show_network_graphics,
 figure(1502); clf
 dum = nan * v;
 dum(ecm_options.ind_scored_enzymes) = my_eta_energetic;
@@ -667,14 +749,19 @@ netgraph_concentrations(ecm_options.network_CoHid, [], dum, 1, struct('actvalues
 figure(1503); clf
 dum(ecm_options.ind_scored_enzymes) = my_eta_saturation;
 netgraph_concentrations(ecm_options.network_CoHid, [], dum, 1, struct('actvalues',dum,'actstyle','fixed','showsign',0)); title('\eta^{\rm kin}');
+end
 
   % -------------------------------------------------------------------------------------
   
   if graphics_options.print_graphics,
     cd(graphics_options.psfile_dir);
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_opt_concentrations.eps'],'-f1','-depsc');
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_opt_affinities.eps'],    '-f2','-depsc');
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_opt_enzymes.eps'],       '-f3','-depsc');
+    if graphics_options.show_network_graphics,
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_opt_concentrations.eps'],'-f1','-depsc');
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_opt_affinities.eps'],    '-f2','-depsc');
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_opt_enzymes.eps'],       '-f3','-depsc');
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_cost_diagram_eta_therm.eps'],'-depsc','-f1502');
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_cost_diagram_eta_kin.eps'],'-depsc','-f1503');
+    end
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_conc_prediction.eps'],  '-f101','-depsc');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_enzyme_scatter.eps'], '-f102','-depsc');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_conc_scatter.eps'], '-f103','-depsc');
@@ -682,8 +769,6 @@ netgraph_concentrations(ecm_options.network_CoHid, [], dum, 1, struct('actvalues
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_c_by_KM.eps'],'-f105','-depsc');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram.eps'],'-depsc','-f1500');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram_bar.eps'],'-depsc','-f1501');
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_cost_diagram_eta_therm.eps'],'-depsc','-f1502');
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_cost_diagram_eta_kin.eps'],'-depsc','-f1503');
   end
   
 end

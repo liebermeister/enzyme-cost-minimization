@@ -36,21 +36,11 @@ This function calls:
 <li><a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	</li><li><a href="ecm_inequalities.html" class="code" title="function [delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)">ecm_inequalities</a>	[delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)</li><li><a href="ecm_regularisation.html" class="code" title="function f = ecm_regularisation(x,x_min,x_max,lambda)">ecm_regularisation</a>	</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li></ul>
+<li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li></ul>
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ineq_constraints, eq_constraints] = ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)</a>
-0002 
-0003 <span class="comment">% function needed for enzyme cost minimization</span>
-0004 
-0005 a1 = <a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>(ecm_score,xx,pp) + <a href="ecm_regularisation.html" class="code" title="function f = ecm_regularisation(x,x_min,x_max,lambda)">ecm_regularisation</a>(xx,x_min,x_max,ecm_options.lambda_regularisation) - u_threshold;
-0006  
-0007 a2 = <a href="ecm_inequalities.html" class="code" title="function [delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)">ecm_inequalities</a>(xx,pp.N_forward,pp.log_Keq_forward);
-0008 
-0009 ineq_constraints = [a1; a2];
-0010 eq_constraints   = [];</pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

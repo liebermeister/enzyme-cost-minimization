@@ -37,12 +37,17 @@ ecm_options.KM_lower                 = []; % mM
 ecm_options.Keq_upper                = [];
 ecm_options.flag_given_kinetics      = 0;
 ecm_options.kcat_usage               = 'use';
+ecm_options.kcat_lower               = 0.1;    % 1/s
+ecm_options.kcatr_lower              = 0.0001;    % 1/s
+ecm_options.kcat_upper               = 10000;  % 1/s
 ecm_options.kcat_prior_median        = 350;   % similar to median in glycolysis+tca
-ecm_options.kcat_prior_log10_std     = 0.1;   % reduce spread of kcat values
-ecm_options.kcat_lower               = 50;    % 1/s
-ecm_options.kcat_upper               = 5000;  % 1/s
+ecm_options.kcat_prior_log10_std     = 0.2;   % reduce spread of kcat values
 ecm_options.GFE_fixed                = 1;     % flag
 ecm_options.insert_Keq_from_data     = 0;     % flag
+
+% parameter balancing
+ecm_options.n_samples = 0;
+ecm_options.use_pseudo_values = 1;
 
 % specific enzyme costs
 ecm_options.ind_scored_enzymes       = 1:length(network.actions);
@@ -52,7 +57,7 @@ ecm_options.use_cost_weights         = 'none';
 % ecm
 ecm_options.initial_choice           = 'mdf'; 
 ecm_options.multiple_starting_points = 0;
-ecm_options.ecm_scores               = {'ecf3sp'}           ;
+ecm_options.ecm_scores               = {'emc3sp'}           ;
 ecm_options.lambda_regularisation    = 10^-3; 
 ecm_options.lambda_reg_factor        = 0.01;
 ecm_options.quantity_info_file       = [];

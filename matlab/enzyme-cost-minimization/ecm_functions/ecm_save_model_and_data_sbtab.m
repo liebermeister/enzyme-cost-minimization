@@ -1,6 +1,29 @@
-function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, enzyme_cost_weights, document_name)
+function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
 
-eval(default('v','[]','r','[]','c_data','[]','u_data','[]','kinetic_data','[]','conc_min','[]','conc_max','[]'));
+%ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
+%
+%Write SBtab file containing (model and data) information for Enzyme Cost Minimization
+%
+%For loading an SBtab file, see 'help ecm_load_model_and_data_sbtab'
+%
+%Arguments
+% filename               filename for SBtab output
+% network                (struct describing model, see mnt toolbox)
+% v                      (nr x 1 vector of reaction rates)
+% r                      (struct describing model kinetics, see mnt toolbox)
+% c_data                 (nm x 1 vector of measured concentrations (only for information))
+% u_data                 (nr x 1 vector of measured enzyme concentrations (only for information))
+% kinetic_data           (OPTIONAL: struct with kinetic data; only to give original dmu0 values)
+% conc_min               (nm x 1 vector of minimal concentrations)
+% conc_max               (nm x 1 vector of maximal concentrations)
+% met_fix                (OPTIONAL: list of metabolites with fixed concentrations)
+% conc_fix               (OPTIONAL: fixed concentrations corresponding to met_fix)
+% enzyme_cost_weights    ( nr x 1 vector of enzyme cost weights; default [])
+% document_name          (string; document name to be mentioned in SBtab)
+% save_single_tables     (flag for saving SBtab tables in single files; default 0)
+
+
+eval(default('v','[]','r','[]','c_data','[]','u_data','[]','kinetic_data','[]','conc_min','[]','conc_max','[]','enzyme_cost_weights','[]','document_name','[]', 'save_single_tables','0'));
 
 % -------------------------------------------------------
 % prepare data
@@ -13,24 +36,31 @@ formulae = network_print_formulae(network);
 
 network.kinetics      = r;
 network.kinetics.type = 'cs';
-network.kinetics.c    = nan * c_data(:,1);
-network.kinetics.u    = nan * u_data;
+network.kinetics.c    = nan * ones(size(network.metabolites));
+network.kinetics.u    = nan * ones(size(network.actions));
 
 % model tables ('Compound', 'Reaction', 'QuantityData')
-sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'document_name',document_name));
-sbtab_document_save(sbtab_document,filename,0,1);
+sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'write_enzyme_concentrations',0,'document_name',document_name));
 
+if save_single_tables,
+  sbtab_document_save(sbtab_document,filename,0,1);
+end
+  
 % flux table
 if length(v),      
-  flux_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Flux', 'TableType','Quantity','Unit','mM/s'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Flux'},{repmat({'flux'},nr,1),network.actions,network.reaction_KEGGID,v});
-  sbtab_table_save(flux_table, struct('filename',[ filename '_Flux.tsv'])); 
+  flux_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Flux', 'TableType','Quantity','Unit','mM/s'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'flux'},nr,1),network.actions,network.reaction_KEGGID,v});
+  if save_single_tables,
+    sbtab_table_save(flux_table, struct('filename',[ filename '_Flux.tsv'])); 
+  end
   sbtab_document = sbtab_document_add_table(sbtab_document,'Flux',flux_table);
 end
 
 % compound GFE of formation
 % if length(r),
 %   GFE_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','GibbsEnergyOfFormation','TableType','Quantity','Unit','kJ/mol','StandardConcentration','1mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','Value'},{repmat({'standard Gibbs energy of formation'},nm,1),network.metabolites, network.metabolite_KEGGID, r.mu0});
+%   if save_single_tables,
 %   sbtab_table_save(GFE_table, struct('filename',[ filename '_FormationGFE.tsv'])); 
+% end
 %   sbtab_document = sbtab_document_add_table(sbtab_document,'GibbsEnergyOfFormation',GFE_table);
 % end
 
@@ -42,56 +72,91 @@ if length(r),
   else
     delta_mu0_orig = nan*delta_mu0;
   end
+  if sum(isfinite(delta_mu0)), 
   dGFE_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','GibbsEnergyOfReaction','TableType','Quantity','Unit','kJ/mol','StandardConcentration','1mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value','OriginalValue','SumFormula'},{repmat({'standard Gibbs energy of reaction'},nr,1),network.actions, network.reaction_KEGGID, delta_mu0, delta_mu0_orig, formulae});
+  if save_single_tables,
   sbtab_table_save(dGFE_table, struct('filename',[ filename '_StandardReactionGFE.tsv'])); 
+  end
   sbtab_document = sbtab_document_add_table(sbtab_document,'GibbsEnergyOfReaction',dGFE_table);
+  end
 end
 
 % metabolite concentration table
 if length(c_data), 
-  concentration_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Concentration', 'TableType','Quantity','Unit','mM'),...
-                                              {'QuantityType','Compound','Compound:Identifiers:kegg.compound','Concentration'},...
+  concentration_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationData', 'TableType','Quantity','Unit','mM'),...
+                                              {'QuantityType','Compound','Compound:Identifiers:kegg.compound','Value'},...
                                               {repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, c_data(:,1)});
+  if save_single_tables,
   sbtab_table_save(concentration_table, struct('filename',[ filename '_Concentration.tsv'])); 
+  end
 end
 
 % enzyme concentration table
 if length(u_data),
-  enzyme_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeConcentration','TableType','Quantity','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','EnzymeConcentration'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID, u_data(:,1)});
-  sbtab_table_save(enzyme_table, struct('filename',[ filename '_EnzymeConcentration.tsv']));  
+  if sum(isfinite(u_data(:,1))),
+  enzyme_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeData','TableType','Quantity','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID, u_data(:,1)});
+  if save_single_tables,
+    sbtab_table_save(enzyme_table, struct('filename',[ filename '_EnzymeConcentration.tsv']));
+  end
+  end
 end
 
 % enzyme cost weight table
 if length(enzyme_cost_weights),
-  enzyme_cost_weight_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeCostWeight','TableType','Quantity','Unit','ArbitraryUnits'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','EnzymeConcentration'},{repmat({'enzyme cost weight'},nr,1),network.actions, network.reaction_KEGGID, enzyme_cost_weights(:,1)});
-  sbtab_table_save(enzyme_cost_weight_table, struct('filename',[ filename '_EnzymeCostWeight.tsv']));  
+  enzyme_cost_weight_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeCostWeight','TableType','Quantity','Unit','ArbitraryUnits'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme cost weight'},nr,1),network.actions, network.reaction_KEGGID, enzyme_cost_weights(:,1)});
+  if save_single_tables,
+    sbtab_table_save(enzyme_cost_weight_table, struct('filename',[ filename '_EnzymeCostWeight.tsv']));  
+  end
   sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeCostWeight',enzyme_cost_weight_table);
+end
+
+if length(met_fix),
+  ind = label_names(met_fix,network.metabolite_names);
+  conc_min(ind) = conc_fix;
+  conc_max(ind) = conc_fix;
 end
 
 % metabolite constraint table
 if length(conc_min),
   constraint_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationConstraint', 'TableType','Quantity','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','Concentration:Min','Concentration:Max'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
+  if save_single_tables,
   sbtab_table_save(constraint_table, struct('filename',[ filename '_ConcentrationConstraint.tsv']));
+  end
   sbtab_document = sbtab_document_add_table(sbtab_document,'ConcentrationConstraint',constraint_table);
 end
 
+
 % position table
-x = network.graphics_par.x(1,:)';
-y = network.graphics_par.x(2,:)';
-position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Position', 'TableType','Position'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
-sbtab_table_save(position_table, struct('filename',[ filename '_Position.tsv']));
-sbtab_document = sbtab_document_add_table(sbtab_document,'Position',position_table);
+if isfield(network,'graphics_par'),
+  x = network.graphics_par.x(1,:)';
+  y = network.graphics_par.x(2,:)';
+  position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Position', 'TableType','Position'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
+  if save_single_tables,
+  sbtab_table_save(position_table, struct('filename',[ filename '_Position.tsv']));
+  end
+  sbtab_document = sbtab_document_add_table(sbtab_document,'Position',position_table);
+end
 
-% sbtab_document_validation_data = sbtab_document_add_table(sbtab_document,'Concentration',concentration_table);
-% sbtab_document_validation_data = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',enzyme_table);
+% Include validation data to model itself?
 
-sbtab_document_validation_data = sbtab_document_construct(struct,{'Concentration','EnzymeConcentration'},{concentration_table,enzyme_table});
-
-
-% --------------------------------
+if exist('concentration_table','var'),
+  sbtab_document = sbtab_document_add_table(sbtab_document,'Concentration',concentration_table);
+end
+if exist('enzyme_table','var'),
+  sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',enzyme_table);
+end
 
 sbtab_document_save_to_one(sbtab_document,[filename, '_ModelData.tsv']);
-sbtab_document_save_to_one(sbtab_document_validation_data,[filename, '_ValidationData.tsv']);
 
-display(sprintf('Wrote model files (sbtab format) with basename\n%s', filename))
+% Separate file for validation data
+% 
+% if exist('concentration_table','var'),
+%   if exist('enzyme_table','var'),
+%     sbtab_document_validation_data = sbtab_document_construct(struct,{'Concentration','EnzymeConcentration'},{concentration_table,enzyme_table});
+%   else
+%     sbtab_document_validation_data = sbtab_document_construct(struct,{'Concentration'},{concentration_table});
+%   end
+%   sbtab_document_save_to_one(sbtab_document_validation_data,[filename, '_ValidationData.tsv']);
+% end
 
+%display(sprintf('Wrote model files (sbtab format) with basename\n%s', filename))

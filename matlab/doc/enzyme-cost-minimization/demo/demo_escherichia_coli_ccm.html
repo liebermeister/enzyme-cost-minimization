@@ -44,51 +44,14 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../.././enzyme-cost-minimization/ecm_BASEDIR.html" class="code" title="function d = ecm_BASEDIR()">ecm_BASEDIR</a>	</li><li><a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(infile, outdir, options)">ecm_simple</a>	[report, errors] = ecm_simple(infile, outdir, options)</li></ul>
+<li><a href="../.././enzyme-cost-minimization/ecm_functions/ecm_BASEDIR.html" class="code" title="function d = ecm_BASEDIR()">ecm_BASEDIR</a>	</li><li><a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(model_data_file, outdir, options)">ecm_simple</a>	[report, errors] = ecm_simple(model_data_file, outdir, options)</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
 </ul>
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <span class="comment">% --------------------------------------------------------</span>
-0002 <span class="comment">% Demo script for Parameter Balancing and Enzyme Cost Minimization</span>
-0003 <span class="comment">%</span>
-0004 <span class="comment">% Prepared model files for E coli central metabolism.are used.</span>
-0005 <span class="comment">%</span>
-0006 <span class="comment">% The MATLAB function 'ecm_simple' is a wrapper function</span>
-0007 <span class="comment">% that reads the data, sets some default parameters, and calls</span>
-0008 <span class="comment">% dedicated functions for Parameter Balancing or Enzyme Cost Minimization.</span>
-0009 <span class="comment">%</span>
-0010 <span class="comment">% The input files (in SBtab format) are given in the subdirectory 'data'</span>
-0011 <span class="comment">% The results (in SBtab format) are written to the subdirectory 'results'</span>
-0012 <span class="comment">% --------------------------------------------------------</span>
-0013 
-0014 
-0015 <span class="comment">% --------------------------------------------------------</span>
-0016 <span class="comment">% Set file names</span>
-0017 
-0018 
-0019 data_DIR   = [<a href="../.././enzyme-cost-minimization/ecm_BASEDIR.html" class="code" title="function d = ecm_BASEDIR()">ecm_BASEDIR</a> <span class="string">'demo/data/'</span>];
-0020 
-0021 result_DIR = [<a href="../.././enzyme-cost-minimization/ecm_BASEDIR.html" class="code" title="function d = ecm_BASEDIR()">ecm_BASEDIR</a> <span class="string">'demo/results/'</span>];
-0022 
-0023 infile_pb  = [data_DIR <span class="string">'pb_ecoli_aerobic_minimal.tsv'</span>];
-0024 
-0025 infile_ecm = [data_DIR <span class="string">'ecm_ecoli_aerobic.tsv'</span>];
-0026   
-0027 
-0028 <span class="comment">% --------------------------------------------------------</span>
-0029 <span class="comment">% Run Parameter Balancing</span>
-0030 
-0031 [report, errors] = <a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(infile, outdir, options)">ecm_simple</a>(infile_pb, result_DIR, struct(<span class="string">'actions'</span>,<span class="string">'parameter_balancing'</span>));
-0032 
-0033 
-0034 <span class="comment">% --------------------------------------------------------</span>
-0035 <span class="comment">% Run Enzyme Cost Minimization</span>
-0036 
-0037 [report,errors] = <a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(infile, outdir, options)">ecm_simple</a>(infile_ecm, result_DIR, struct(<span class="string">'actions'</span>,<span class="string">'ecm_standard'</span>));</pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

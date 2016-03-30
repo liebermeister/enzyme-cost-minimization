@@ -40,21 +40,7 @@ This function is called by:
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function names = ecm_kegg_compound_id_to_name(ids,kegg_conversion_file)</a>
-0002 
-0003 <span class="keyword">if</span> ~exist(<span class="string">'kegg_conversion_file'</span>,<span class="string">'var'</span>),
-0004   ecm_info = <a href="ecm_setup.html" class="code" title="function ecm_info = ecm_setup()">ecm_setup</a>;
-0005   kegg_conversion_file = [ecm_info.data_dir <span class="string">'name-conversion/kegg_compound_names.tsv'</span>];
-0006 <span class="keyword">end</span>
-0007   
-0008 T = sbtab_table_load(kegg_conversion_file);
-0009 
-0010 kegg_id   = sbtab_table_get_column(T, <span class="string">'!Identifiers:kegg.compound'</span>);
-0011 kegg_name = sbtab_table_get_column(T, <span class="string">'!Compound:Name'</span>);
-0012 ll = label_names(ids,kegg_id);
-0013 names = repmat({<span class="string">''</span>},length(ids),1);
-0014 names(find(ll)) = kegg_name(ll(find(ll)));</pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

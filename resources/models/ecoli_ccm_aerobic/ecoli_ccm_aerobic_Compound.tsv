@@ -1,5 +1,5 @@
 !!SBtab TableName='Compound' TableType='Compound' Document='Model'			
-!Compound	!Name	!Identifiers:kegg.compound	!IsConstant
+!ID	!Name	!Identifiers:kegg.compound	!IsConstant
 _S__Malate	(S)-Malate	C00149	False
 Acetyl_CoA	Acetyl-CoA	C00024	False
 Fumarate	Fumarate	C00122	False

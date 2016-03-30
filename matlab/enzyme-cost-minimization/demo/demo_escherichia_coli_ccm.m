@@ -16,17 +16,15 @@
 % Set file names
 
 
-data_DIR   = [ecm_BASEDIR 'demo/data/'];
+data_DIR   = [ecm_BASEDIR 'demo' filesep 'data' filesep];
 
-result_DIR = [ecm_BASEDIR 'demo/results/'];
+result_DIR = [ecm_BASEDIR 'demo' filesep 'results' filesep];
 
-infile_pb  = [data_DIR 'pb_ecoli_aerobic_minimal.tsv'];
-
-infile_ecm = [data_DIR 'ecm_ecoli_aerobic.tsv'];
-  
 
 % --------------------------------------------------------
 % Run Parameter Balancing
+
+infile_pb  = [data_DIR 'ecoli_aerobic_parameter_balancing_input.tsv'];
 
 [report, errors] = ecm_simple(infile_pb, result_DIR, struct('actions','parameter_balancing'));
 
@@ -34,4 +32,10 @@ infile_ecm = [data_DIR 'ecm_ecoli_aerobic.tsv'];
 % --------------------------------------------------------
 % Run Enzyme Cost Minimization
 
-[report,errors] = ecm_simple(infile_ecm, result_DIR, struct('actions','ecm_standard'));
+infile_ecm = [data_DIR 'ecoli_aerobic_ecm_input.tsv'];
+
+% to generate graphics, set 'make_report' to 1 instead:
+
+[report,errors] = ecm_simple(infile_ecm, result_DIR, struct('actions','ecm_standard','make_report',1));
+
+

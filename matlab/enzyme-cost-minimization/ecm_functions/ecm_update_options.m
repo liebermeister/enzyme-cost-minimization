@@ -1,6 +1,6 @@
-function ecm_options = ecm_update_options(network, ecm_options, r_orig);
+function ecm_options = ecm_update_options(network, ecm_options);
 
-% ecm_options = ecm_update_options(network, ecm_options, r_orig)
+% ecm_options = ecm_update_options(network, ecm_options, Keq)
 %
 % Update ECM options for a given network:
 %  - adapt metabolite constraints
@@ -96,15 +96,6 @@ ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ec
 median_cost =  nanmedian(ecm_options.enzyme_cost_weights);
 if isnan(median_cost), median_cost = 1; end 
 ecm_options.lambda_regularisation = ecm_options.lambda_reg_factor * median_cost;
-
-% -----------------------------
-% if desired, insert original Keq values
-
-if ecm_options.insert_Keq_from_data,
-  display('  Using predefined equilibrium constants exactly'); 
-  r.Keq = r_orig.Keq;
-end
-
 
 % Adapt print_graphics
 

@@ -41,25 +41,7 @@ This function is called by:
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [u_tot, u, w] = ecm_ecf4geom(x,pp)</a>
-0002 
-0003 <span class="comment">% [u_tot, u] = ecm_ecf4geom(x,pp)</span>
-0004 <span class="comment">% geometric mean of cs and ds rate law</span>
-0005 
-0006 delta_G_by_RT =  pp.N_forward' * x - pp.log_Keq_forward;
-0007 
-0008 [u_tot, u_ds, w_ds] = <a href="ecm_ecf3sp.html" class="code" title="function [u_tot, u, w] = ecm_ecf3sp(x,pp)">ecm_ecf3sp</a>(x,pp);
-0009 [u_tot, u_cs, w_cs] = <a href="ecm_ecf4cmr.html" class="code" title="function [u_tot, u, w] = ecm_ecf4cmr(x,pp)">ecm_ecf4cmr</a>(x,pp);
-0010 
-0011 w = sqrt(w_ds .* w_cs);
-0012 u = sqrt(u_ds .* u_cs);
-0013 
-0014 u_tot = sum(pp.enzyme_cost_weights .* u(pp.ind_scored_enzymes));
-0015 
-0016 <span class="keyword">if</span> sum(delta_G_by_RT&gt;0),
-0017   u_tot = 10^20*max(delta_G_by_RT);
-0018 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Tue 29-Mar-2016 12:27:24 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

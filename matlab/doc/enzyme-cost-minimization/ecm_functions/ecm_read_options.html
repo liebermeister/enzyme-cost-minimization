@@ -40,21 +40,7 @@ This function is called by:
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function options = ecm_read_options(options_file, default_options)</a>
-0002 
-0003 eval(default(<span class="string">'default_options'</span>,<span class="string">'struct'</span>));
-0004 
-0005 options = struct(<span class="string">'model_name'</span>,<span class="string">''</span>);
-0006 fid     = fopen(options_file);
-0007 c       = fgetl(fid);
-0008 
-0009 <span class="keyword">while</span> c ~= -1,
-0010   eval(c);
-0011   c = fgetl(fid);
-0012 <span class="keyword">end</span>
-0013 
-0014 options = join_struct(default_options, options);</pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

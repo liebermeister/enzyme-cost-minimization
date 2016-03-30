@@ -4,7 +4,7 @@
 <head>
   <title>Description of ecm_update_options</title>
   <meta name="keywords" content="ecm_update_options">
-  <meta name="description" content="ecm_options = ecm_update_options(network, ecm_options, r_orig)">
+  <meta name="description" content="ecm_options = ecm_update_options(network, ecm_options, Keq)">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -21,13 +21,13 @@
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>ecm_options = ecm_update_options(network, ecm_options, r_orig)</strong></div>
+<div class="box"><strong>ecm_options = ecm_update_options(network, ecm_options, Keq)</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function ecm_options = ecm_update_options(network, ecm_options, r_orig); </strong></div>
+<div class="box"><strong>function ecm_options = ecm_update_options(network, ecm_options); </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> ecm_options = ecm_update_options(network, ecm_options, r_orig)
+<div class="fragment"><pre class="comment"> ecm_options = ecm_update_options(network, ecm_options, Keq)
 
  Update ECM options for a given network:
   - adapt metabolite constraints
@@ -41,130 +41,11 @@ This function calls:
 <li><a href="ecm_default_options.html" class="code" title="function ecm_options = ecm_default_options(network, model_name)">ecm_default_options</a>	ecm_options = ecm_default_options(network, model_name)</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(infile, outdir, options)">ecm_simple</a>	[report, errors] = ecm_simple(infile, outdir, options)</li></ul>
+<li><a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(model_data_file, outdir, options)">ecm_simple</a>	[report, errors] = ecm_simple(model_data_file, outdir, options)</li></ul>
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ecm_options = ecm_update_options(network, ecm_options, r_orig);</a>
-0002 
-0003 <span class="comment">% ecm_options = ecm_update_options(network, ecm_options, r_orig)</span>
-0004 <span class="comment">%</span>
-0005 <span class="comment">% Update ECM options for a given network:</span>
-0006 <span class="comment">%  - adapt metabolite constraints</span>
-0007 <span class="comment">%  - insert protein cost weights</span>
-0008 <span class="comment">%  - adjust Keq values</span>
-0009 
-0010 display(<span class="string">'Updating the model parameters'</span>);
-0011 ecm_options_default = <a href="ecm_default_options.html" class="code" title="function ecm_options = ecm_default_options(network, model_name)">ecm_default_options</a>(network);
-0012 ecm_options         = join_struct(ecm_options_default,ecm_options);
-0013 
-0014 <span class="comment">% Adjust concentration constraints</span>
-0015 
-0016 conc_min = ecm_options.conc_min;
-0017 conc_max = ecm_options.conc_max;
-0018 c_data   = ecm_options.c_data  ;
-0019 
-0020 [nm,nr] = size(network.N);
-0021 <span class="keyword">if</span> isempty(conc_min), conc_min = ecm_options.conc_min_default * ones(nm,1); <span class="keyword">end</span>
-0022 <span class="keyword">if</span> isempty(conc_max), conc_max = ecm_options.conc_max_default * ones(nm,1); <span class="keyword">end</span>
-0023 
-0024 <span class="comment">% Replace cofactor concentrations</span>
-0025 
-0026 <span class="keyword">if</span> 1,
-0027   display(<span class="string">'  Replacing cofactor concentrations'</span>);
-0028   <span class="keyword">if</span> 1,
-0029     display(<span class="string">'  Using first data values'</span>);
-0030     c_data_median = c_data(:,1);
-0031   <span class="keyword">else</span>
-0032     display(<span class="string">'  Using median data values'</span>);
-0033     c_data_median = nanmedian(c_data,2);
-0034   <span class="keyword">end</span>    
-0035   ll = label_names(ecm_options.replace_cofactors,network.metabolites);
-0036   ll = ll(find(ll));
-0037   ll = ll(find(isfinite(c_data_median(ll))));
-0038   conc_min(ll) = c_data_median(ll);
-0039   conc_max(ll) = c_data_median(ll);
-0040 <span class="keyword">else</span>
-0041   display(<span class="string">'  NOT replacing any cofactor concentrations'</span>);
-0042 <span class="keyword">end</span>  
-0043 
-0044 <span class="comment">% Fix predefined concentrations</span>
-0045 
-0046 <span class="keyword">if</span> length(ecm_options.fix_metabolites),
-0047   display(<span class="string">'  Fixing some metabolite concentrations'</span>);
-0048   <span class="keyword">for</span> it = 1:length(ecm_options.fix_metabolites),
-0049     ll = label_names(ecm_options.fix_metabolites(it),network.metabolites);
-0050     conc_min(ll) = ecm_options.fix_metabolite_values(it);    
-0051     conc_max(ll) = ecm_options.fix_metabolite_values(it);
-0052     ecm_options.conc_min(ll) = ecm_options.fix_metabolite_values(it);    
-0053     ecm_options.conc_max(ll) = ecm_options.fix_metabolite_values(it);
-0054   <span class="keyword">end</span>
-0055 <span class="keyword">else</span>
-0056   display(<span class="string">'  NOT fixing any metabolite concentrations'</span>);
-0057 <span class="keyword">end</span>
-0058 
-0059 ind_conc_fix = find(ecm_options.conc_min == ecm_options.conc_max);
-0060 met_fix      = network.metabolites(ind_conc_fix);
-0061 conc_fix     = ecm_options.conc_min(ind_conc_fix);
-0062 
-0063 ind_met_fix = label_names(met_fix, network.metabolites);
-0064 
-0065 <span class="keyword">if</span> setdiff(find(network.external),ind_met_fix),
-0066   display(<span class="string">'  Some external metabolites in network will not be treated as fixed'</span>);
-0067 <span class="keyword">end</span>
-0068 
-0069 <span class="comment">%</span>
-0070 
-0071 ecm_options.conc_min    = conc_min;
-0072 ecm_options.conc_max    = conc_max;
-0073 ecm_options.conc_fix    = conc_fix;
-0074 ecm_options.met_fix     = met_fix;
-0075 ecm_options.ind_met_fix = ind_met_fix;
-0076 
-0077 
-0078 <span class="comment">% -------------------------------------------</span>
-0079 <span class="comment">% set enzyme cost weights</span>
-0080 
-0081 <span class="keyword">switch</span> ecm_options.use_cost_weights,
-0082   <span class="keyword">case</span> <span class="string">'none'</span>,
-0083     ecm_options.enzyme_cost_weights = ones(length(ecm_options.ind_scored_enzymes),1);
-0084   <span class="keyword">case</span> <span class="string">'protein_size'</span>,
-0085     ecm_options.enzyme_cost_weights = network.enzyme_size(ecm_options.ind_scored_enzymes);
-0086   <span class="keyword">case</span> <span class="string">'aa_composition'</span>,
-0087     ecm_options.enzyme_cost_weights = network.akashi_protein_cost(ecm_options.ind_scored_enzymes);
-0088 <span class="keyword">end</span>  
-0089 
-0090 <span class="comment">% scale to median = 1</span>
-0091 ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ecm_options.enzyme_cost_weights);
-0092 
-0093 <span class="comment">% -----------------------------</span>
-0094 <span class="comment">% adapt lambda_regularistion to typical magnitude of enzyme cost</span>
-0095 
-0096 ecm_options.lambda_regularisation = ecm_options.lambda_reg_factor * nanmedian(ecm_options.enzyme_cost_weights);
-0097 
-0098 <span class="comment">% -----------------------------</span>
-0099 <span class="comment">% if desired, insert original Keq values</span>
-0100 
-0101 <span class="keyword">if</span> ecm_options.insert_Keq_from_data,
-0102   display(<span class="string">'  Using predefined equilibrium constants exactly'</span>); 
-0103   r.Keq = r_orig.Keq;
-0104 <span class="keyword">end</span>
-0105 
-0106 
-0107 <span class="comment">% Adapt print_graphics</span>
-0108 
-0109 <span class="keyword">if</span> ecm_options.show_graphics == 0, ecm_options.print_graphics = 0;         <span class="keyword">end</span>
-0110 <span class="keyword">if</span> ecm_options.compute_tolerance,  ecm_options.tolerance_from_hessian = 0; <span class="keyword">end</span>
-0111 
-0112 <span class="comment">% -----------------------------</span>
-0113 
-0114 <span class="keyword">if</span> ~isfield(ecm_options,<span class="string">'N_subunits_in_complex'</span>),
-0115   ecm_options.N_subunits_in_complex  = ones(size(ecm_options.enzyme_cost_weights));
-0116 <span class="keyword">end</span>
-0117 <span class="keyword">if</span> ~isfield(ecm_options,<span class="string">'N_cat_sites_in_complex'</span>),
-0118   ecm_options.N_cat_sites_in_complex = ones(size(ecm_options.enzyme_cost_weights));
-0119 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

@@ -40,21 +40,7 @@ This function is called by:
 <!-- crossreference -->
 
 
-<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [u_tot, u, w ] = ecm_ecf2sp(x,pp)</a>
-0002 
-0003 <span class="comment">% [u_tot, u] = ecm_ecf2sp(x,pp)</span>
-0004 
-0005 delta_G_by_RT =  pp.N_forward' * x - pp.log_Keq_forward;
-0006 
-0007 w = [ pp.kc_forward .* [1 - exp(delta_G_by_RT)] ./ [1 + exp(pp.log_Keq_forward) .* exp(delta_G_by_RT)] ];
-0008 u = abs(pp.v) ./ w;
-0009 
-0010 u_tot = sum(pp.enzyme_cost_weights .* u(pp.ind_scored_enzymes));
-0011 
-0012 <span class="keyword">if</span> sum(delta_G_by_RT&gt;0),
-0013   u_tot = 10^20 * max(delta_G_by_RT);
-0014 <span class="keyword">end</span></pre></div>
-<hr><address>Generated on Thu 12-Feb-2015 14:18:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+
+<hr><address>Generated on Tue 29-Mar-2016 12:27:24 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>
