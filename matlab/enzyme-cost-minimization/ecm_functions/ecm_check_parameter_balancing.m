@@ -1,3 +1,7 @@
+% ECM_CHECK_PARAMETER_BALANCING - Checks for balanced parameters
+%
+% ecm_check_parameter_balancing(r, r_orig, network, show_graphics)
+
 function ecm_check_parameter_balancing(r, r_orig, network, show_graphics)
 
 eval(default('show_graphics','1'));

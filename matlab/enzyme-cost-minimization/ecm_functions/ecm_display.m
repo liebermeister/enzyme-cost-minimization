@@ -1,5 +1,7 @@
 function ecm_display(ecm_options,graphics_options,network,v,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation)
 
+% ECM_DISPLAY - Display results of ECM
+%
 % ecm_display(network,options,ecm_options,v,c,u,u_tot,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max)
 %
 % ECM_DISPLAY - Display results of Enzyme Cost Minimization
@@ -227,7 +229,6 @@ my_xticklabel([],ecm_options.conc_min_default,[],6);
 title('Comparison: log10 Concentration profiles (mM)');
 
 
-
 % --------------------------------------
 % reaction affinity predictions
 
@@ -244,7 +245,7 @@ for it = 1:length(my_ecm_scores),
 end
 line_colors(h,'sunrise_colors');
 
-legend(my_ecm_scores,'Location','NorthEast','FontSize',16);
+legend(my_ecm_scores,'Location','NorthEast','FontSize',12);
 axis tight; set(gca,'XTick',xtick,'XTickLabel',[{''};strrep(network.actions,'_', ' ')]);
 my_xticklabel([],[],[],10);
 title('Cumulative entropy production (v * A)');
@@ -385,7 +386,7 @@ if length(ind_finite),
   [cc, pvalue] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))));
   [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))),'type','Spearman');
   rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(v(ind_finite))].^2));
-  %title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  %title(sprintf('RMSE=%2.2f, r^2=%2.2f',rmse, cc^2));
   display('Flux vs enzyme levels:')
   sprintf('RMSE: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear);
   %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
@@ -423,9 +424,9 @@ if length(ind_finite),
   [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))./kcat_forward(ind_finite)),'type','Spearman');
   rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(v(ind_finite)./kcat_forward(ind_finite))].^2));
   text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
-  text(0.02,50,sprintf('r=%2.2f', cc),'Fontsize',18);
-  text(0.02,27,sprintf('Fold error=%2.2f', 10^rmse),'Fontsize',18);
-  %title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  text(0.02,50,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
+  text(0.02,27,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
+  %title(sprintf('RMSE=%2.2f, r^2=%2.2f',rmse, cc^2));
   display('Fluxes vs enzyme levels/kcat');
   sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
   %%  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
@@ -605,13 +606,13 @@ for it_method = 1:length(ecm_options.ecm_scores),
     [cc, pvalue] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)));
     [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(u.(this_ecm_score)(ind_finite,1)),'type','Spearman');
     rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(u.(this_ecm_score)(ind_finite,1))].^2));
-  %title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  %title(sprintf('RMSE=%2.2f, r^2=%2.2f',rmse, cc^2));
   text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
-  text(0.02,50,sprintf('r=%2.2f', cc),'Fontsize',18);
-  text(0.02,27,sprintf('Fold error=%2.2f', 10^rmse),'Fontsize',18);
+  text(0.02,50,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
+  text(0.02,27,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
 
   display(sprintf('Score: %s',this_ecm_score))
-  sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
+  % sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
   %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
 
   end  
@@ -651,10 +652,10 @@ if length(ind_finite),
   [cc, pvalue] = corr(log(my_nanmean_c_data(ind_finite)),log(c.(this_ecm_score)(ind_finite,1)));
   [cc_spear, pvalue_spear] = corr(log(my_nanmean_c_data(ind_finite)),log(c.(this_ecm_score)(ind_finite,1)),'type','Spearman');
   rmse = sqrt(mean([log10(my_nanmean_c_data(ind_finite)) - log10(c.(this_ecm_score)(ind_finite,1))].^2));
- title(sprintf('RMSE=%2.2f, r=%2.2f',rmse, cc));
+  title(sprintf('RMSE=%2.2f, r^2=%2.2f, Typical fold error=%f',rmse, cc^2, 10^rmse));
  display(sprintf('Concentration prediction %s',this_ecm_score))
- sprintf('RMS error (log10 scale): %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
- %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
+ %sprintf('RMS error (log10 scale): %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear);
+ % [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
 
 end
 

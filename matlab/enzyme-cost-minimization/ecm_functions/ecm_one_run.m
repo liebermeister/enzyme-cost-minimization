@@ -1,3 +1,7 @@
+% ECM_ONE_RUN - Perform one ECM run
+% 
+% function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt)
+
 function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt)
 
 %% optimize log concentration profile

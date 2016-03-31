@@ -1,5 +1,7 @@
 function ecm_options = ecm_update_options(network, ecm_options);
 
+% ECM_UPDATE_OPTIONS - Helper function for ECM options (struct 'ecm_options')
+%
 % ecm_options = ecm_update_options(network, ecm_options, Keq)
 %
 % Update ECM options for a given network:

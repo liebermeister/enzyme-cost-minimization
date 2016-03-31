@@ -1,3 +1,5 @@
+% ECM_DEPENDENCIES - Check whether dependencies of ECM toolbox are satisfied
+
 function ecm_dependencies()
 
 if ~exist('mnt_version','file'),

@@ -1,7 +1,9 @@
 function [report, errors] = ecm_simple(model_data_file, outdir, options)
 
+% ECM_SIMPLE - Wrapper script for Parameter Balancing or Enzyme Cost Minimisation
+%
 % [report, errors] = ecm_simple(model_data_file, outdir, options)
-
+%
 % This function reads an input file [model_data_file] in SBtab format, performs either
 % Parameter Balancing or ECM, and saves the results to an SBtab file in [outdir]
 %

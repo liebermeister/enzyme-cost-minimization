@@ -4,7 +4,7 @@
 <head>
   <title>Description of ecm_get_one_u</title>
   <meta name="keywords" content="ecm_get_one_u">
-  <meta name="description" content="function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)">
+  <meta name="description" content="ECM_GET_ONE_U - Helper function for enzyme variability calculation after enzyme cost minimization:">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -21,15 +21,16 @@
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)</strong></div>
+<div class="box"><strong>ECM_GET_ONE_U - Helper function for enzyme variability calculation after enzyme cost minimization:</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 <div class="box"><strong>function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"> function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)
+<div class="fragment"><pre class="comment"> ECM_GET_ONE_U - Helper function for enzyme variability calculation after enzyme cost minimization:
 
- function needed for enzyme variability calculation after enzyme cost minimization:
+ function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)
+
  given log metabolite profile xx, evaluate enzyme levels 
  and return the levels of the it'th enzyme</pre></div>
 
@@ -37,7 +38,7 @@
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	</li></ul>
+<li><a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	ECM_GET_SCORE - Helper function</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
 <li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li></ul>
@@ -45,6 +46,6 @@ This function is called by:
 
 
 
-<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+<hr><address>Generated on Thu 31-Mar-2016 19:38:09 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

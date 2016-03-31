@@ -1,3 +1,7 @@
+%ECM_TOLERANCES - Compute approximate tolerance ranges for metabolites and enzymes
+% 
+%[c_min, c_max, u_min, u_max] = ecm_tolerances(c,u,v,ecm_options,mca_info)
+
 function [c_min, c_max, u_min, u_max] = ecm_tolerances(c,u,v,ecm_options,mca_info)
 
 % rough estimate, assuming that 1/2 deltaxi^2 Hii = ytolerance

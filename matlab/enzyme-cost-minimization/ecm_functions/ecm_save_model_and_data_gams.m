@@ -1,5 +1,7 @@
 function ecm_save_model_and_data_gams(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
 
+% ECM_SAVE_MODEL_AND_DATA_GAMS - Save input files for ECM by GAMS solvers
+% 
 % ecm_save_model_and_data_gams(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
 % 
 % Convert data for Enzyme Cost Minimization (model and data) from SBtab format to GAMS input format

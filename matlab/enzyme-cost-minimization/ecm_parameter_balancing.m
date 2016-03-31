@@ -1,8 +1,8 @@
 function [r, r_orig, kinetic_data, r_samples, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 
-% [r, r_orig, kinetic_data, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
-%
 % ECM_PARAMETER_BALANCING - Prepare and run parameter balancing
+%
+% [r, r_orig, kinetic_data, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 %
 % Output
 %   r        Kinetic constants (used as input in parameter balancing)

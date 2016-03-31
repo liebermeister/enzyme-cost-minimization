@@ -1,3 +1,7 @@
+% ECM_GET_SPECIFIC_RATES - Helper function
+%
+% function rates = ecm_get_specific_rates(ecm_score,x,pp,ind)
+
 function rates = ecm_get_specific_rates(ecm_score,x,pp,ind)
 
 switch ecm_score,

@@ -4,7 +4,7 @@
 <head>
   <title>Description of ecm_one_run</title>
   <meta name="keywords" content="ecm_one_run">
-  <meta name="description" content="% optimize log concentration profile">
+  <meta name="description" content="ECM_ONE_RUN - Perform one ECM run">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -21,19 +21,21 @@
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong>% optimize log concentration profile</strong></div>
+<div class="box"><strong>ECM_ONE_RUN - Perform one ECM run</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 <div class="box"><strong>function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment">% optimize log concentration profile</pre></div>
+<div class="fragment"><pre class="comment"> ECM_ONE_RUN - Perform one ECM run
+ 
+ function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 This function calls:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	</li><li><a href="ecm_inequalities.html" class="code" title="function [delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)">ecm_inequalities</a>	[delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)</li><li><a href="ecm_regularisation.html" class="code" title="function f = ecm_regularisation(x,x_min,x_max,lambda)">ecm_regularisation</a>	</li></ul>
+<li><a href="ecm_get_score.html" class="code" title="function [u_cost, u] = ecm_get_score(ecm_score,x,pp)">ecm_get_score</a>	ECM_GET_SCORE - Helper function</li><li><a href="ecm_inequalities.html" class="code" title="function [delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)">ecm_inequalities</a>	MEASURES_FOR_ENZYME_COSTS_INEQUALITIES - Helper function</li><li><a href="ecm_regularisation.html" class="code" title="function f = ecm_regularisation(x,x_min,x_max,lambda)">ecm_regularisation</a>	ECM_REGULARISATION - Regularisation term for ECM</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
 <li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li></ul>
@@ -41,6 +43,6 @@ This function is called by:
 
 
 
-<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+<hr><address>Generated on Thu 31-Mar-2016 19:38:09 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

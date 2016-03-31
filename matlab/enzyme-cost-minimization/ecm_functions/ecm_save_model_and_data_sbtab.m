@@ -1,8 +1,8 @@
 function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
 
-%ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
+%ECM_SAVE_MODEL_AND_DATA_SBTAB - Write SBtab file containing (model and data) information for Enzyme Cost Minimization
 %
-%Write SBtab file containing (model and data) information for Enzyme Cost Minimization
+%ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
 %
 %For loading an SBtab file, see 'help ecm_load_model_and_data_sbtab'
 %
@@ -73,7 +73,7 @@ if length(r),
     delta_mu0_orig = nan*delta_mu0;
   end
   if sum(isfinite(delta_mu0)), 
-  dGFE_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','GibbsEnergyOfReaction','TableType','Quantity','Unit','kJ/mol','StandardConcentration','1mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value','OriginalValue','SumFormula'},{repmat({'standard Gibbs energy of reaction'},nr,1),network.actions, network.reaction_KEGGID, delta_mu0, delta_mu0_orig, formulae});
+  dGFE_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','GibbsEnergyOfReaction','TableType','Quantity','Unit','kJ/mol','StandardConcentration','1mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value','OriginalValue','ReactionFormula'},{repmat({'standard Gibbs energy of reaction'},nr,1),network.actions, network.reaction_KEGGID, delta_mu0, delta_mu0_orig, formulae});
   if save_single_tables,
   sbtab_table_save(dGFE_table, struct('filename',[ filename '_StandardReactionGFE.tsv'])); 
   end

@@ -1,5 +1,7 @@
 function ecm_options = ecm_default_options(network, model_name)
 
+% ECM_DEFAULT_OPTIONS -  Defaults for ECM
+% 
 % ecm_options = ecm_default_options(network, model_name)
 %
 % Argument 'model_name' is optional

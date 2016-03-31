@@ -4,7 +4,7 @@
 <head>
   <title>Description of ecm_get_score</title>
   <meta name="keywords" content="ecm_get_score">
-  <meta name="description" content="">
+  <meta name="description" content="ECM_GET_SCORE - Helper function">
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta name="generator" content="m2html &copy; 2003 Guillaume Flandin">
   <meta name="robots" content="index, follow">
@@ -21,13 +21,15 @@
 </h1>
 
 <h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="box"><strong></strong></div>
+<div class="box"><strong>ECM_GET_SCORE - Helper function</strong></div>
 
 <h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
 <div class="box"><strong>function [u_cost, u] = ecm_get_score(ecm_score,x,pp) </strong></div>
 
 <h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
-<div class="fragment"><pre class="comment"></pre></div>
+<div class="fragment"><pre class="comment"> ECM_GET_SCORE - Helper function
+ 
+ function [u_cost, u] = ecm_get_score(ecm_score,x,pp)</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
@@ -36,11 +38,11 @@ This function calls:
 <li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc1.html" class="code" title="function [u_tot, u, w] = ecm_emc1(x,pp)">ecm_emc1</a>	[u_tot, u] = ecm_emc1(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc2s.html" class="code" title="function [u_tot, u, w] = ecm_emc2s(x,pp)">ecm_emc2s</a>	[u_tot, u] = ecm_emc2s(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc2sp.html" class="code" title="function [u_tot, u, w ] = ecm_emc2sp(x,pp)">ecm_emc2sp</a>	[u_tot, u] = ecm_emc2sp(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc3s.html" class="code" title="function [u_tot, u, w] = ecm_emc3s(x,pp)">ecm_emc3s</a>	[u_tot, u] = ecm_emc3s(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc3sp.html" class="code" title="function [u_tot, u, w] = ecm_emc3sp(x,pp)">ecm_emc3sp</a>	[u_tot, u] = ecm_emc3sp(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc4cm.html" class="code" title="function [u_tot, u, w] = ecm_emc4cmr(x,pp)">ecm_emc4cm</a>	[u_tot, u] = ecm_emc4cmr(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc4dm.html" class="code" title="function [u_tot, u, w] = ecm_emc4cmr(x,pp)">ecm_emc4dm</a>	[u_tot, u] = ecm_emc4cmr(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc4geom.html" class="code" title="function [u_tot, u, w] = ecm_emc4geom(x,pp)">ecm_emc4geom</a>	[u_tot, u] = ecm_emc4geom(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_emc4sm.html" class="code" title="function [u_tot, u, w] = ecm_emc4cmr(x,pp)">ecm_emc4sm</a>	[u_tot, u] = ecm_emc4cmr(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_mdf.html" class="code" title="function [f,u,w] = ecm_mdf(x,pp)">ecm_mdf</a>	[f,u] = ecm_mdf(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_memc2s.html" class="code" title="function [f, u, w] = ecm_emc2s(x,pp)">ecm_memc2s</a>	[f, u] = ecm_emc2s(x,pp)</li><li><a href="../.././enzyme-cost-minimization/ecm_scores/ecm_memc2sp.html" class="code" title="function [f, u, w] = ecm_min_emc2sp(x,pp)">ecm_memc2sp</a>	[f, u] = ecm_min_emc2sp(x,pp)</li></ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li><li><a href="ecm_below_threshold.html" class="code" title="function [ineq_constraints, eq_constraints] = ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)">ecm_below_threshold</a>	function needed for enzyme cost minimization</li><li><a href="ecm_get_one_u.html" class="code" title="function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)">ecm_get_one_u</a>	function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)</li><li><a href="ecm_one_run.html" class="code" title="function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt)">ecm_one_run</a>	% optimize log concentration profile</li></ul>
+<li><a href="../.././enzyme-cost-minimization/ecm_enzyme_cost_minimization.html" class="code" title="function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)">ecm_enzyme_cost_minimization</a>	ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution</li><li><a href="ecm_below_threshold.html" class="code" title="function [ineq_constraints, eq_constraints] = ecm_below_threshold(ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)">ecm_below_threshold</a>	ECM_BELOW_THRESHOLD - Helper function for enzyme cost minimization</li><li><a href="ecm_get_one_u.html" class="code" title="function my_u_it = ecm_get_one_u(it,ecm_score,xx,pp,u_threshold,x_min,x_max,ecm_options)">ecm_get_one_u</a>	ECM_GET_ONE_U - Helper function for enzyme variability calculation after enzyme cost minimization:</li><li><a href="ecm_one_run.html" class="code" title="function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,ecm_options,opt)">ecm_one_run</a>	ECM_ONE_RUN - Perform one ECM run</li></ul>
 <!-- crossreference -->
 
 
 
-<hr><address>Generated on Wed 30-Mar-2016 18:45:01 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+<hr><address>Generated on Thu 31-Mar-2016 19:38:09 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

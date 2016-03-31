@@ -1,3 +1,7 @@
+% ECM_GET_SCORE - Helper function
+% 
+% function [u_cost, u] = ecm_get_score(ecm_score,x,pp)
+
 function [u_cost, u] = ecm_get_score(ecm_score,x,pp)
 
 switch ecm_score,

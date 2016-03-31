@@ -1,3 +1,7 @@
+%ECM_SAVE_RESULT_SBTAB - Save ECM results in SBtab format
+% 
+%ecm_save_result_sbtab(filename,network,c,u,A_forward,options,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation)
+
 function ecm_save_result_sbtab(filename,network,c,u,A_forward,options,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation)
 
 eval(default('options','struct'));

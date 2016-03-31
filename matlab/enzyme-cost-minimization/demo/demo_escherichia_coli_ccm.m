@@ -1,4 +1,3 @@
-% --------------------------------------------------------
 % Demo script for Parameter Balancing and Enzyme Cost Minimization
 %
 % Prepared model files for E coli central metabolism.are used.
@@ -9,7 +8,6 @@
 %
 % The input files (in SBtab format) are given in the subdirectory 'data'
 % The results (in SBtab format) are written to the subdirectory 'results'
-% --------------------------------------------------------
 
 
 % --------------------------------------------------------

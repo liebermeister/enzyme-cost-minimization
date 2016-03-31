@@ -1,3 +1,7 @@
+% ECM_KEGG_COMPOUND_ID_TO_NAME - Name conversion for compounds
+%
+% function names = ecm_kegg_compound_id_to_name(ids,kegg_conversion_file)
+
 function names = ecm_kegg_compound_id_to_name(ids,kegg_conversion_file)
 
 if ~exist('kegg_conversion_file','var'),
