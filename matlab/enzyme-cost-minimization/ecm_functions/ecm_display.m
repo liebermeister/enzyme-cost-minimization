@@ -25,6 +25,7 @@ graphics_options_default.show_proteomaps    = 1;
 graphics_options_default.show_original_data = 1;
 graphics_options_default.show_network_graphics = 1;
 graphics_options_default.show_matrix_graphics = 1;
+graphics_options_default.show_metabolite_graphics = 1;
 
 graphics_options = join_struct(graphics_options_default,graphics_options);
 
@@ -33,6 +34,7 @@ if graphics_options.few_graphics,
   graphics_options.show_original_data    = 0;
   graphics_options.show_network_graphics = 0;
   graphics_options.show_matrix_graphics  = 0;
+  graphics_options.show_metabolite_graphics = 0;
 end
 
 %----------------------------------------------------------------------------------
@@ -199,6 +201,8 @@ end
 
 % everything in one picture
 
+if graphics_options.show_metabolite_graphics,
+
 figure(18); clf; hold on;
 set(gcf,'Position',[100 300 1000 500])
 xtick = 0:length(ind_show_met)-1;
@@ -228,9 +232,12 @@ axis tight; set(gca,'XTick',xtick,'XTickLabel',metnames_show,'YScale','Log');
 my_xticklabel([],ecm_options.conc_min_default,[],6);
 title('Comparison: log10 Concentration profiles (mM)');
 
+end
 
 % --------------------------------------
 % reaction affinity predictions
+
+if graphics_options.show_metabolite_graphics,
 
 figure(19); clf; hold on;
 set(gcf,'Position',[200 400 1000 500])
@@ -249,7 +256,7 @@ legend(my_ecm_scores,'Location','NorthEast','FontSize',12);
 axis tight; set(gca,'XTick',xtick,'XTickLabel',[{''};strrep(network.actions,'_', ' ')]);
 my_xticklabel([],[],[],10);
 title('Cumulative entropy production (v * A)');
-
+end
 
 % --------------------------------------
 % c over KM
@@ -484,8 +491,10 @@ if graphics_options.print_graphics,
   end
   print([ ecm_options.model_id '_' ecm_options.run_id '_barplot.eps'],'-f33','-depsc');
   print([ ecm_options.model_id '_' ecm_options.run_id '_barplot_legend.eps'],'-f34','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_all_conc_profiles.eps'],'-f18','-depsc');
-  print([ ecm_options.model_id '_' ecm_options.run_id '_affinity_profiles.eps'],'-f19','-depsc');
+  if graphics_options.show_metabolite_graphics,
+    print([ ecm_options.model_id '_' ecm_options.run_id '_all_conc_profiles.eps'],'-f18','-depsc');
+    print([ ecm_options.model_id '_' ecm_options.run_id '_affinity_profiles.eps'],'-f19','-depsc');
+  end
   if graphics_options.show_matrix_graphics,
     print([ ecm_options.model_id '_' ecm_options.run_id '_c_by_KM_initial.eps'],'-f20','-depsc');
     print([ ecm_options.model_id '_' ecm_options.run_id '_KM_balanced.eps'],'-f22','-depsc');
@@ -539,6 +548,8 @@ for it_method = 1:length(ecm_options.ecm_scores),
 
   % --------------------------------------------------------
 
+if graphics_options.show_metabolite_graphics,
+
   figure(101); clf; hold on;
   set(gcf,'Position',[100 300 1000 500])
   xtick      = 0:length(ind_show_met)-1;
@@ -570,7 +581,7 @@ for it_method = 1:length(ecm_options.ecm_scores),
   % for itttt = 1:length(xtick),
   %   plot([xtick(itttt),xtick(itttt)],[a(3),a(4)],'-');
   % end
-  
+end  
   
   % --------------------------------------
   % enzyme predictions scatter plot
@@ -685,6 +696,8 @@ end
   % --------------------------------------
 % c over KM
 
+if    graphics_options.show_matrix_graphics,
+
 figure(105); subplot('Position',[0.15 0.05 0.8 0.7]);
 c_over_KM = repmat(c.(this_ecm_score)(:,1)',length(network.actions),1)./r.KM;
 c_over_KM(r.KM==0) = nan;
@@ -692,6 +705,7 @@ im(log10(c_over_KM(:,ind_show_met)),[-3,3],network.actions,metnames_show); color
 my_xticklabel
 %title('log10 c (initial solution) / KM');
 
+end
 
 % --------------------------------------------------------
 %% arrow cost diagram
@@ -728,18 +742,23 @@ set(gca,'Ytick',0:6,'YTicklabel',{'0.00001','0.0001','0.001','0.01','0.1','1','1
 subplot('Position',[0.15,0.1,0.8,0.65]); set(gca, 'Fontsize',12); 
 hold on;
 M = [5+log10(my_u_capacity), -log10(my_eta_energetic), -log10(my_eta_saturation)];
-bar(M,'stacked'); colormap([0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2;]);
+h = bar(M,'stacked'); colormap([0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2;]);
 hold on; 
-plot(5+log10(my_u_data),'.','Color',[1 0.7 0],'Markersize',20);
+h(4) = plot(5+log10(my_u_data),'.','Color',[1 0.7 0],'Markersize',20);
 for itt = 1:length(my_v),
   my_xticklabel(itt,-0.5,strrep(network.genes(ecm_options.ind_scored_enzymes(itt)),'_','-')',12,graphics_options.enzyme_colors(itt,:))
 end
-fill([0.1,length(my_v)+0.9,length(my_v)+0.9,0.1],[0.01,0.01,.5,.5],'w','EdgeColor','w')
-plot([0,length(my_v)+1],[.5,.5],'k--')
-text(21,0.3,'Arbitrary baseline capacity');
+%fill([0.1,length(my_v)+0.9,length(my_v)+0.9,0.1],[0.01,0.01,.5,.5],'w','EdgeColor','w')
+%plot([0,length(my_v)+1],[.5,.5],'k--')
+%text(21,0.3,'Arbitrary baseline capacity');
 axis([0,length(my_u_capacity)+1,0,4.1])
 ylabel('Enzyme demand [uM]'); set(gca,'Ytick',0:4,'YTicklabel',{'0.01','0.1','1','10','100'});
-legend('Capacity','Energetic','Saturation','Data','Location','SouthWest');
+
+switch this_ecm_score,
+  case 'emc4cm',
+    legend(h([4 3 2 1]),'Data','Saturation','Reversibility','Capacity','Location','SouthWest');
+end
+
 %title(this_ecm_score)
 
 if graphics_options.show_network_graphics,
@@ -763,11 +782,15 @@ end
       print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_cost_diagram_eta_therm.eps'],'-depsc','-f1502');
       print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_cost_diagram_eta_kin.eps'],'-depsc','-f1503');
     end
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_conc_prediction.eps'],  '-f101','-depsc');
+    if graphics_options.show_metabolite_graphics,
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_conc_prediction.eps'],  '-f101','-depsc');
+    end
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_enzyme_scatter.eps'], '-f102','-depsc');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_conc_scatter.eps'], '-f103','-depsc');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_enzyme_prediction.eps'],'-f104','-depsc');
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_c_by_KM.eps'],'-f105','-depsc');
+    if    graphics_options.show_matrix_graphics,
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_c_by_KM.eps'],'-f105','-depsc');
+    end
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram.eps'],'-depsc','-f1500');
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram_bar.eps'],'-depsc','-f1501');
   end

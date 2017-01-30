@@ -2,7 +2,7 @@ function ecm_options = ecm_update_options(network, ecm_options);
 
 % ECM_UPDATE_OPTIONS - Helper function for ECM options (struct 'ecm_options')
 %
-% ecm_options = ecm_update_options(network, ecm_options, Keq)
+% ecm_options = ecm_update_options(network, ecm_options)
 %
 % Update ECM options for a given network:
 %  - adapt metabolite constraints
@@ -25,7 +25,7 @@ if isempty(conc_max), conc_max = ecm_options.conc_max_default * ones(nm,1); end
 
 % Replace cofactor concentrations
 
-if 1,
+if length(c_data),
   display('  Replacing cofactor concentrations');
   if 1,
     display('  Using first data values');
@@ -41,7 +41,7 @@ if 1,
   conc_max(ll) = c_data_median(ll);
 else
   display('  NOT replacing any cofactor concentrations');
-end  
+end
 
 % Fix predefined concentrations
 

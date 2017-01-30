@@ -31,7 +31,72 @@
  
  ecm_options = ecm_default_options(network, model_name)
 
- Argument 'model_name' is optional</pre></div>
+ ecm options and their default values
+
+ model
+   ecm_options.model_name               = model_name         ; 
+   ecm_options.run_id                   = 'RUN';
+   ecm_options.model_id                 = 'MODEL';
+   ecm_options.network_CoHid            = network;
+ 
+ metabolite constraints
+   ecm_options.fix_metabolites          = {}; % metabolites with fixed concentrations (overrides values from input model)
+   ecm_options.fix_metabolite_values    = [];
+   ecm_options.conc_min_default         = 0.001              ; % mM
+   ecm_options.conc_max_default         = 10                 ; % mM
+   ecm_options.conc_min                 = [];% 0.001 * ones(nm,1) ; % mM
+   ecm_options.conc_max                 = [];% 10 * ones(nm,1);   ; % mM
+   ecm_options.conc_fix                 = [];
+   ecm_options.met_fix                  = [];
+   ecm_options.replace_cofactors        = {};
+ 
+ given data
+   ecm_options.c_data                   = [];
+   ecm_options.u_data                   = [];
+   ecm_options.kinetic_data             = [];
+ 
+ kinetic data
+   ecm_options.reaction_column_names    = []; % column names (in data file) for loading of kinetic data
+   ecm_options.compound_column_names    = [];
+   ecm_options.KM_lower                 = []; % mM
+   ecm_options.Keq_upper                = [];
+   ecm_options.flag_given_kinetics      = 0;
+   ecm_options.kcat_usage               = 'use';
+   ecm_options.kcat_upper               = 10000;  % 1/s
+   ecm_options.kcat_lower               = 0.1;    % 1/s
+   ecm_options.kcatr_lower              = 0.0001; % 1/s
+   ecm_options.kcat_prior_median        = 10;     % for ccm this value need to be modified
+   ecm_options.kcat_prior_log10_std     = 0.2;   % reduce spread of kcat values
+   ecm_options.GFE_fixed                = 1;     % flag
+   ecm_options.insert_Keq_from_data     = 0;     % flag
+ 
+ parameter balancing
+   ecm_options.n_samples = 0;
+   ecm_options.use_pseudo_values = 1;
+ 
+ enzyme cost weights
+   ecm_options.ind_scored_enzymes       = 1:length(network.actions);
+   ecm_options.enzyme_cost_weights      = ones(length(ecm_options.ind_scored_enzymes),1);
+   ecm_options.use_cost_weights         = 'none';
+ 
+ ecm
+   ecm_options.initial_choice           = 'mdf'; 
+   ecm_options.multiple_starting_points = 0;
+   ecm_options.ecm_scores               = {'emc3sp'}           ;
+   ecm_options.lambda_regularisation    = 10^-3; 
+   ecm_options.lambda_reg_factor        = 0.01;
+   ecm_options.quantity_info_file       = [];
+   ecm_options.compute_hessian          = 0;
+   ecm_options.compute_elasticities     = 0;
+   ecm_options.compute_tolerance        = 0;
+   ecm_options.cost_tolerance_factor    = 1.01; % one percent
+   ecm_options.tolerance_from_hessian   = 0;
+   ecm_options.fix_Keq_in_sampling      = 0;
+ 
+ graphics
+   ecm_options.print_graphics           = 0;
+   ecm_options.show_graphics            = 1;
+   ecm_options.show_metabolites         = network.metabolites;</pre></div>
 
 <!-- crossreference -->
 <h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
@@ -40,11 +105,11 @@ This function calls:
 </ul>
 This function is called by:
 <ul style="list-style-image:url(../../matlabicon.gif)">
-<li><a href="ecm_update_options.html" class="code" title="function ecm_options = ecm_update_options(network, ecm_options);">ecm_update_options</a>	ECM_UPDATE_OPTIONS - Helper function for ECM options (struct 'ecm_options')</li><li><a href="../.././enzyme-cost-minimization/ecm_parameter_balancing.html" class="code" title="function [r, r_orig, kinetic_data, r_samples, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);">ecm_parameter_balancing</a>	ECM_PARAMETER_BALANCING - Prepare and run parameter balancing</li><li><a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(model_data_file, outdir, options)">ecm_simple</a>	ECM_SIMPLE - Wrapper script for Parameter Balancing or Enzyme Cost Minimisation</li></ul>
+<li><a href="ecm_update_options.html" class="code" title="function ecm_options = ecm_update_options(network, ecm_options);">ecm_update_options</a>	ECM_UPDATE_OPTIONS - Helper function for ECM options (struct 'ecm_options')</li><li><a href="../.././enzyme-cost-minimization/ecm_parameter_balancing.html" class="code" title="function [r, r_orig, kinetic_data, r_samples, ecm_options, quantity_info_used, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);">ecm_parameter_balancing</a>	ECM_PARAMETER_BALANCING - Prepare and run parameter balancing</li><li><a href="../.././enzyme-cost-minimization/ecm_simple.html" class="code" title="function [report, errors] = ecm_simple(model_data_file, outdir, options)">ecm_simple</a>	ECM_SIMPLE - Wrapper script for Parameter Balancing or Enzyme Cost Minimisation</li></ul>
 <!-- crossreference -->
 
 
 
-<hr><address>Generated on Thu 31-Mar-2016 19:38:09 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
+<hr><address>Generated on Mon 30-Jan-2017 18:21:00 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003</address>
 </body>
 </html>

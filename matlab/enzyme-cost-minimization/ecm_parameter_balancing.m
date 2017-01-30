@@ -1,12 +1,13 @@
-function [r, r_orig, kinetic_data, r_samples, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+function [r, r_orig, kinetic_data, r_samples, ecm_options, quantity_info_used, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 
 % ECM_PARAMETER_BALANCING - Prepare and run parameter balancing
 %
-% [r, r_orig, kinetic_data, ecm_options] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+% [r, r_orig, kinetic_data, ecm_options, quantity_info_used, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 %
 % Output
-%   r        Kinetic constants (used as input in parameter balancing)
+%   r        Kinetic constants (posterior model values; used as input in parameter balancing)
 %   r_orig   Original kinetic constants (used as input in parameter balancing)
+%   r_std    Kinetic constants (posterior standard deviations)
 % 
 % Uses (potentially) the following options from ecm_options.
 %  ecm_options.flag_given_kinetics
@@ -23,6 +24,7 @@ function [r, r_orig, kinetic_data, r_samples, ecm_options] = ecm_parameter_balan
 %  ecm_options.quantity_info_file
 %  ecm_options.GFE_fixed
 %  ecm_options.use_pseudo_values
+%  ecm_options.fix_Keq_in_sampling
 
 ecm_options_def = ecm_default_options(network);
 ecm_options     = join_struct(ecm_options_def,ecm_options);
@@ -36,6 +38,40 @@ if ecm_options.flag_given_kinetics == 0,
   end
 end
 
+% --------------------------------------------------------------------------------------
+% make sure important fields in kinetic_data are considered
+
+
+if sum(isfinite( kinetic_data.Keq.lower_ln )) == 0, 
+  kinetic_data.Keq.lower_ln = log(kinetic_data.Keq.lower);
+end
+
+if sum(isfinite( kinetic_data.Keq.upper_ln )) == 0, 
+  kinetic_data.Keq.upper_ln = log(kinetic_data.Keq.upper);
+end
+
+
+if sum(isfinite( kinetic_data.Kcatf.lower_ln )) == 0, 
+  kinetic_data.Kcatf.lower_ln = log(kinetic_data.Kcatf.lower);
+end
+
+if sum(isfinite( kinetic_data.Kcatf.upper_ln )) == 0, 
+  kinetic_data.Kcatf.upper_ln = log(kinetic_data.Kcatf.upper);
+end
+
+
+
+if sum(isfinite( kinetic_data.Kcatr.lower_ln )) == 0, 
+  kinetic_data.Kcatr.lower_ln = log(kinetic_data.Kcatr.lower);
+end
+
+if sum(isfinite( kinetic_data.Kcatr.upper_ln )) == 0, 
+  kinetic_data.Kcatr.upper_ln = log(kinetic_data.Kcatr.upper);
+end
+
+
+
+
 
 % --------------------------------------------------------------------------------------
 % run parameter balancing for kinetic constants
@@ -44,7 +80,7 @@ if ecm_options.flag_given_kinetics,
 
   switch network.kinetics.type 
     case {'cs','ms','ds'},
-      display('Using kinetic constants found in network.kinetics');
+      display('  Using kinetic constants found in network.kinetics');
       r.Keq     = network.kinetics.Keq;
       r.KM      = network.kinetics.KM;
       [r.Kcatf, r.Kcatr] = modular_KV_Keq_to_kcat(network.N,network.kinetics);
@@ -107,11 +143,12 @@ else
                    'Keq_upper',            ecm_options.Keq_upper,...
                    'GFE_fixed',            ecm_options.GFE_fixed,...
                    'quantity_info_file',   ecm_options.quantity_info_file,...
-                   'use_pseudo_values',    ecm_options.use_pseudo_values);
+                   'use_pseudo_values',    ecm_options.use_pseudo_values,...
+                   'fix_Keq_in_sampling',  ecm_options.fix_Keq_in_sampling);
 
   options.n_samples = ecm_options.n_samples;
   
-  [r, r_orig, kinetic_data, r_samples] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
+  [r, r_orig, kinetic_data, r_samples, quantity_info_used, r_std] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
 
 end
 

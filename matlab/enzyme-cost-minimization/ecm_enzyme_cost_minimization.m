@@ -140,7 +140,7 @@ epsilon = 10^-10 * double(v~=0) * 1/RT;  % minimal reaction GFE of 10^-10 kJ/mol
 try
   [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max, 0*x_min);
 catch
-  error(sprintf('*** No polytope centre found (where driving forces > %f RT were required) - maybe the concentration constraints are infeasible? ***',epsilon));
+  error(sprintf('*** No polytope centre found in search for initial solution (required driving forces > %f RT) - maybe the concentration constraints are too tight? ***\n',epsilon));
   c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
   return
 end
@@ -227,7 +227,9 @@ u_max = [];
 for it_method = 1:length(ecm_scores),
 
   ecm_score = ecm_scores{it_method};
-  display(sprintf('   %s',ecm_score));
+  if ecm_options.multiple_starting_points + ecm_options.compute_tolerance,
+    display(sprintf('   %s',ecm_score));
+  end
 
   %% -------------------------------------------------------------------------
   %% run more optimisations starting from extreme points

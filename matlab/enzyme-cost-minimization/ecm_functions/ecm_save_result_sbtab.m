@@ -53,7 +53,7 @@ sbtab_document_save_to_one(sbtab_document,[filename '_ModelState.tsv'],0);
 
 fn = fieldnames(c); 
 
-c_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted concentations','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound'},{repmat({'concentration'},nm,1),network.metabolites, network.Identifiers_kegg_compound});
+c_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted concentations','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID});
 
 for it = 1:length(fn),
   c_table = sbtab_table_add_column(c_table,fn{it}, c.(fn{it})(:,1), 0);
@@ -74,7 +74,7 @@ end
 
 fn = fieldnames(u); 
 
-u_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted enzyme levels','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.Identifiers_kegg_reaction});
+u_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted enzyme levels','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID});
 
 for it = 1:length(fn),
   u_table = sbtab_table_add_column(u_table,fn{it}, u.(fn{it})(:,1),0);
@@ -95,7 +95,7 @@ end
 
 fn = fieldnames(A_forward); 
 
-A_forward_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted driving forces','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'Gibbs energy of reaction'},nr,1),network.actions, network.Identifiers_kegg_reaction});
+A_forward_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted driving forces','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'Gibbs energy of reaction'},nr,1),network.actions, network.reaction_KEGGID});
 
 for it = 1:length(fn),
   A_forward_table = sbtab_table_add_column(A_forward_table,fn{it}, A_forward.(fn{it})(:,1),0);
@@ -104,11 +104,11 @@ end
 % -----------------------------------------------
 % predicted enzyme capacity (v/kcat) and efficiencies
 
-u_capacity_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted enzyme capacities','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme capacity'},nr,1),network.actions, network.Identifiers_kegg_reaction,u_capacity});
+u_capacity_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted enzyme capacities','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme capacity'},nr,1),network.actions, network.reaction_KEGGID,u_capacity});
 
 fn = fieldnames(eta_energetic); 
 
-eta_energetic_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted energetic efficiencies','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'energetic efficiency'},nr,1),network.actions, network.Identifiers_kegg_reaction});
+eta_energetic_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted energetic efficiencies','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'energetic efficiency'},nr,1),network.actions, network.reaction_KEGGID});
 
 for it = 1:length(fn),
   eta_energetic_table = sbtab_table_add_column(eta_energetic_table,fn{it}, eta_energetic.(fn{it})(:,1),0);
@@ -116,7 +116,7 @@ end
 
 fn = fieldnames(eta_saturation); 
 
-eta_saturation_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted saturation efficiencies','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'saturation efficiency'},nr,1),network.actions, network.Identifiers_kegg_reaction});
+eta_saturation_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted saturation efficiencies','Document','ECM metabolic state','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'saturation efficiency'},nr,1),network.actions, network.reaction_KEGGID});
 
 for it = 1:length(fn),
   eta_saturation_table = sbtab_table_add_column(eta_saturation_table,fn{it}, eta_saturation.(fn{it})(:,1),0);
