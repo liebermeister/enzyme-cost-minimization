@@ -1,10 +1,10 @@
-function ecm_save_model_and_data_gams(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
+function ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
 
-% ECM_SAVE_MODEL_AND_DATA_GAMS - Save input files for ECM by GAMS solvers
+% ECM_SAVE_MODEL_AND_DATA_NEOS - Save input files for ECM by NEOS solvers
 % 
-% ecm_save_model_and_data_gams(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
+% ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
 % 
-% Convert data for Enzyme Cost Minimization (model and data) from SBtab format to GAMS input format
+% Convert data for Enzyme Cost Minimization (model and data) from SBtab format to NEOS input format
 % 
 % For generating the input file (SBtab format), see 'help ecm_save_model_and_data_sbtab'
 
@@ -28,10 +28,10 @@ compound      = network_sbtab.tables.Quantity.column.column.Compound;
 reaction      = network_sbtab.tables.Quantity.column.column.Reaction;
 
 [compound,reaction] = network_adjust_names_for_sbml_export(compound,reaction,1);
-%display('Writing GAMS files');
+%display('Writing NEOS files');
 
 % -----------------------------------------------------------
-% Write gams input files
+% Write neos input files
 
 % write table stoich.csv
 
@@ -125,9 +125,9 @@ display(sprintf('To run an optimisation with these files, please use the NEOS se
 
 
 % -----------------------------------------------------------------
-% Build gams sbtab file
+% Build neos sbtab file
 
-document_name = 'GAMS input file';
+document_name = 'NEOS input file';
 
 % write table stoich.csv
 ind = find(strcmp('Michaelis constant', quantity_type));
@@ -176,10 +176,10 @@ table_boundsx = sbtab_table_construct(struct('TableName','boundsx','TableType','
 
 
 %sbtab_table_show(stoichiometry_table)
-gams_sbtab = sbtab_document_construct(struct,{'stoich','metfixed','kcats', 'keqs','kms', 'weights', 'rates', 'boundse', 'boundsx'},{table_stoich,table_metfixed, table_kcats, table_keqs, table_kms, table_weights, table_rates, table_boundse, table_boundsx});
+neos_sbtab = sbtab_document_construct(struct,{'stoich','metfixed','kcats', 'keqs','kms', 'weights', 'rates', 'boundse', 'boundsx'},{table_stoich,table_metfixed, table_kcats, table_keqs, table_kms, table_weights, table_rates, table_boundse, table_boundsx});
 
-% sbtab_document_show(gams_sbtab)
+% sbtab_document_show(neos_sbtab)
 
-sbtab_document_save_to_one(gams_sbtab,[filename 'GAMS_input_sbtab.tsv']);
+sbtab_document_save_to_one(neos_sbtab,[filename 'NEOS_input_sbtab.tsv']);
 
 

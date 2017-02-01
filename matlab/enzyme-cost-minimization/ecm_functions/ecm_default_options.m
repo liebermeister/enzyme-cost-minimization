@@ -92,6 +92,7 @@ ecm_options.conc_max_default         = 10                 ; % mM
 ecm_options.conc_min                 = [];% 0.001 * ones(nm,1) ; % mM
 ecm_options.conc_max                 = [];% 10 * ones(nm,1);   ; % mM
 ecm_options.conc_fix                 = [];
+ecm_options.ind_met_fix              = [];
 ecm_options.met_fix                  = [];
 ecm_options.replace_cofactors        = {};
 
