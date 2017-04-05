@@ -47,8 +47,10 @@ end
 % -----------------------------------
 % info
 
-display('Fixed concentrations')
-pm(ecm_options.conc_fix,ecm_options.met_fix)
+if length(ecm_options.met_fix),
+  display('Fixed concentrations')
+  pm(ecm_options.conc_fix,ecm_options.met_fix)
+end
 
 % -----------------------------------
 
@@ -66,6 +68,15 @@ if ~isfield(graphics_options,'psfile_dir'),
       graphics_options.print_graphics = 0;
     end
 end
+
+if isempty(c.data),
+  c.data = nan * ones(nm,1);
+end
+
+if isempty(u.data),
+  u.data = nan * ones(nr,1);
+end
+
 
 % -----------------------------------
 
@@ -98,6 +109,7 @@ ind_enzymes_scored    = ecm_options.ind_scored_enzymes(ind_enzymes_rev(find(ind_
 my_colors  = ones(nr,3);
 my_colors(ecm_options.ind_scored_enzymes,:) = graphics_options.enzyme_colors(ind_enzymes_rev,:);
 
+
 % -----------------------------------
 
 if ~isfield(ecm_options,'metabolite_order'),
@@ -114,6 +126,7 @@ for it = 1:length(ecm_options.metabolite_order),
   end
 end
 ind_show_met = ind_show_met(find(ind_show_met));
+
 
 % -----------------------------------
 % GENERAL PLOTS 
