@@ -1,8 +1,8 @@
-function ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
+function ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_cost_weights,conc_min,conc_max, met_fix,conc_fix)
 
 % ECM_SAVE_MODEL_AND_DATA_NEOS - Save input files for ECM by NEOS solvers
 % 
-% ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_cost_weights,ecm_options)
+% ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_cost_weights,conc_min,conc_max, met_fix,conc_fix)
 % 
 % Convert data for Enzyme Cost Minimization (model and data) from SBtab format to NEOS input format
 % 
@@ -54,7 +54,7 @@ mytable([reaction(ind), compound(ind), num2cell([value(ind)])],'comma',[filename
 
 % write table metfixed.csv
 
-mytable([column(ecm_options.met_fix), num2cell(column(ecm_options.conc_fix))],'comma',[filename 'metfixed.csv']);
+mytable([column(met_fix), num2cell(column(conc_fix))],'comma',[filename 'metfixed.csv']);
 
 % write table boundse.csv
 
@@ -65,8 +65,8 @@ mytable([[network.actions, repmat({'lo','0'},nr,1)]; ...
 
 % write table boundsx.csv
 
-mytable([[network.metabolites, repmat({'lo'},nm,1), num2cell(ecm_options.conc_min)]; ...
-         [network.metabolites, repmat({'up'},nm,1), num2cell(ecm_options.conc_max)]],'comma',[filename 'boundsx.csv']);
+mytable([[network.metabolites, repmat({'lo'},nm,1), num2cell(conc_min)]; ...
+         [network.metabolites, repmat({'up'},nm,1), num2cell(conc_max)]],'comma',[filename 'boundsx.csv']);
 
 % write table rates.csv
 
@@ -134,8 +134,8 @@ ind = find(strcmp('Michaelis constant', quantity_type));
 table_stoich = sbtab_table_construct(struct('TableName','stoich','TableType','Stoichiometries','Document',document_name),{'Reaction','Compound','StoichiometricCoefficient'},{reaction(ind), compound(ind), num2cell([stoich])});
 
 % write table metfixed.csv
-%mytable([column(ecm_options.met_fix), num2cell(column(ecm_options.conc_fix))],'comma',[filename 'metfixed.csv']);
-table_metfixed = sbtab_table_construct(struct('TableName','metfixed','TableType','Compound','Document',document_name),{'Compound','IsFixed'},{column(ecm_options.met_fix), num2cell(column(ecm_options.conc_fix))});
+%mytable([column(met_fix), num2cell(column(conc_fix))],'comma',[filename 'metfixed.csv']);
+table_metfixed = sbtab_table_construct(struct('TableName','metfixed','TableType','Compound','Document',document_name),{'Compound','IsFixed'},{column(met_fix), num2cell(column(conc_fix))});
 
 % write table kcats.csv
 ind = find(strcmp('substrate catalytic rate constant', quantity_type));
@@ -170,9 +170,9 @@ end
 table_boundse = sbtab_table_construct(struct('TableName','boundse','TableType','Enzyme','Document',document_name),{'Reaction','BoundType','Value'},{[network.actions; network.actions], [repmat({'lo'},nr,1);repmat({'up'},nr,1)], [repmat({'0'},nr,1);repmat({'100'},nr,1)]});
 
 % write table boundsx.csv
-%mytable([[network.metabolites, repmat({'lo'},nm,1), num2cell(ecm_options.conc_min)]; ...
-%         [network.metabolites, repmat({'up'},nm,1), num2cell(ecm_options.conc_max)]],'comma',[filename 'boundsx.csv']);
-table_boundsx = sbtab_table_construct(struct('TableName','boundsx','TableType','Compound','Document',document_name),{'Compound','BoundType','Value'},{[network.metabolites; network.metabolites], [repmat({'lo'},nm,1); repmat({'up'},nm,1)] , [num2cell(ecm_options.conc_min); num2cell(ecm_options.conc_max)] });
+%mytable([[network.metabolites, repmat({'lo'},nm,1), num2cell(conc_min)]; ...
+%         [network.metabolites, repmat({'up'},nm,1), num2cell(conc_max)]],'comma',[filename 'boundsx.csv']);
+table_boundsx = sbtab_table_construct(struct('TableName','boundsx','TableType','Compound','Document',document_name),{'Compound','BoundType','Value'},{[network.metabolites; network.metabolites], [repmat({'lo'},nm,1); repmat({'up'},nm,1)] , [num2cell(conc_min); num2cell(conc_max)] });
 
 
 %sbtab_table_show(stoichiometry_table)

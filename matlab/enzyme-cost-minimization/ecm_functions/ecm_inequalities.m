@@ -5,9 +5,9 @@
 
 function [delta_G_by_RT,eq_cons] = measures_for_enzyme_costs_inequalities(x,N_forward,log_Keq_forward)
 
-% numerical accuracy for positivity constraints
+% numerical accuracy for negativity constraints
 
-epsilon = 10^-10;
+epsilon = -10^-15;
 
 delta_G_by_RT = N_forward' * x - log_Keq_forward + epsilon;
 

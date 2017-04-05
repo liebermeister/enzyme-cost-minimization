@@ -54,6 +54,8 @@ function ecm_options = ecm_default_options(network, model_name)
 % 
 % ecm
 %   ecm_options.initial_choice           = 'mdf'; 
+%   ecm_options.multiple_conditions      = 0;
+%   ecm_options.multiple_conditions_n    = 1;
 %   ecm_options.multiple_starting_points = 0;
 %   ecm_options.ecm_scores               = {'emc3sp'}           ;
 %   ecm_options.lambda_regularisation    = 10^-3; 
@@ -127,6 +129,8 @@ ecm_options.use_cost_weights         = 'none';
 
 % ecm
 ecm_options.initial_choice           = 'mdf'; 
+ecm_options.multiple_conditions      = 0;
+ecm_options.multiple_conditions_n    = 1;
 ecm_options.multiple_starting_points = 0;
 ecm_options.ecm_scores               = {'emc3sp'}           ;
 ecm_options.lambda_regularisation    = 10^-3; 

@@ -56,15 +56,17 @@ fn = fieldnames(c);
 c_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted concentations','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID});
 
 for it = 1:length(fn),
-  c_table = sbtab_table_add_column(c_table,fn{it}, c.(fn{it})(:,1), 0);
+  if length(c.(fn{it})),
+    c_table = sbtab_table_add_column(c_table,fn{it}, c.(fn{it})(:,1), 0);
+  end
 end
 
 % predicted concentration tolerance ranges
 if options.save_tolerance_ranges,
   for it = 1:length(fn),
    if isfield(c_min,fn{it}),
-    c_table = sbtab_table_add_column(c_table,[fn{it} ':Lower'], c_min.(fn{it})(:,1), 0);
-    c_table = sbtab_table_add_column(c_table,[fn{it} ':Upper'], c_max.(fn{it})(:,1), 0);
+     c_table = sbtab_table_add_column(c_table,[fn{it} ':Lower'], c_min.(fn{it})(:,1), 0);
+     c_table = sbtab_table_add_column(c_table,[fn{it} ':Upper'], c_max.(fn{it})(:,1), 0);
    end
   end
 end
@@ -77,7 +79,9 @@ fn = fieldnames(u);
 u_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted enzyme levels','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID});
 
 for it = 1:length(fn),
-  u_table = sbtab_table_add_column(u_table,fn{it}, u.(fn{it})(:,1),0);
+  if length(u.(fn{it})),
+    u_table = sbtab_table_add_column(u_table,fn{it}, u.(fn{it})(:,1),0);
+  end
 end
 
 % predicted concentration tolerance ranges
