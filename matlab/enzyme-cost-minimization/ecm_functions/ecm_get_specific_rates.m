@@ -17,7 +17,8 @@ switch ecm_score,
   case 'emc4sm',   [~, ~, rates] = ecm_emc4sm(x,pp);
   case 'emc4cm',   [~, ~, rates] = ecm_emc4cm(x,pp);
   case 'emc4geom', [~, ~, rates] = ecm_emc4geom(x,pp);
-  otherwise,       rates = nan * ones(nr,1);
+  case 'fitting_emc3sp', [~, ~, rates] = ecm_fitting_emc3sp(x,pp);
+  otherwise,       error('Unknown ecm score');
 end
 
 if exist('ind','var'),  rates = rates(ind);  end

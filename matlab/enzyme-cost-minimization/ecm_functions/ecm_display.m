@@ -621,6 +621,7 @@ end
     end
   end
 
+  title(this_ecm_score,'Fontsize',18);
   xlabel('Measured enzyme level (uM)','Fontsize',18);
   ylabel(sprintf('Predicted enzyme level (uM)'),'Fontsize',16); %  %s',this_ecm_score
   set(gca,'XScale','Log','YScale','Log','Fontsize',18);

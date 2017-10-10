@@ -85,6 +85,8 @@ switch ecm_options.use_cost_weights,
     ecm_options.enzyme_cost_weights = ones(length(ecm_options.ind_scored_enzymes),1);
   case 'protein_size',
     ecm_options.enzyme_cost_weights = network.enzyme_size(ecm_options.ind_scored_enzymes);
+  case 'protein_mass',
+    ecm_options.enzyme_cost_weights = network.enzyme_mass(ecm_options.ind_scored_enzymes);
   case 'aa_composition',
     ecm_options.enzyme_cost_weights = network.akashi_protein_cost(ecm_options.ind_scored_enzymes);
 end  

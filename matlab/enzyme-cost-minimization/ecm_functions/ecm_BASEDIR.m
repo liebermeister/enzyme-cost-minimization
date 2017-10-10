@@ -2,7 +2,6 @@
 %
 % d = ecm_BASEDIR()
 
-
 function d = ecm_BASEDIR()
 
 d = [fileparts(which(mfilename)) filesep '..' filesep];

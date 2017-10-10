@@ -1,83 +1,42 @@
-function [r, r_orig, kinetic_data, r_samples, ecm_options, quantity_info_used, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+function [r, r_orig, kinetic_data, r_samples, ecm_options, parameter_prior, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 
-% ECM_PARAMETER_BALANCING - Prepare and run parameter balancing
+% ECM_PARAMETER_BALANCING - Prepare and run parameter balancing with standard options
 %
-% [r, r_orig, kinetic_data, ecm_options, quantity_info_used, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+% [r, r_orig, kinetic_data, r_samples, ecm_options, parameter_prior, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
 %
 % Output
 %   r        Kinetic constants (posterior model values; used as input in parameter balancing)
 %   r_orig   Original kinetic constants (used as input in parameter balancing)
 %   r_std    Kinetic constants (posterior standard deviations)
 % 
-% Uses (potentially) the following options from ecm_options.
-%  ecm_options.flag_given_kinetics
-%  ecm_options.reaction_column_name (only if no kinetic data are given)
-%  ecm_options.compound_column_name (only if no kinetic data are given)
-%  ecm_options.kcat_usage  {'use','none','forward'} (default: 'use')
-%  ecm_options.kcat_prior_median
-%  ecm_options.kcat_prior_log10_std
-%  ecm_options.kcat_lower
-%  ecm_options.kcatr_lower
-%  ecm_options.kcat_upper
-%  ecm_options.KM_lower
-%  ecm_options.Keq_upper
-%  ecm_options.quantity_info_file
-%  ecm_options.GFE_fixed
-%  ecm_options.use_pseudo_values
-%  ecm_options.fix_Keq_in_sampling
+% Uses (potentially) the following options from options.
+%   options.flag_given_kinetics
+%   options.reaction_column_name  (only if no kinetic data are given)
+%   options.compound_column_name  (only if no kinetic data are given)
+%   options.kcat_usage            {'use','none','forward'} (default: 'use')
+%   options.kcat_prior_median
+%   options.kcat_prior_log10_std
+%   options.kcat_lower
+%   options.kcatr_lower
+%   options.kcat_upper
+%   options.KM_lower
+%   options.Keq_upper
+%   options.parameter_prior_file
+%   options.GFE_fixed
+%   options.use_pseudo_values
+%   options.fix_Keq_in_sampling
 
-ecm_options_def = ecm_default_options(network);
-ecm_options     = join_struct(ecm_options_def,ecm_options);
+ecm_options = join_struct(ecm_default_options(network),ecm_options);
 
-% -------------------------------------------------
-% ecm_options
-
-if ecm_options.flag_given_kinetics == 0,
-  if isempty(kinetic_data),
-    kinetic_data = data_integration_load_kinetic_data({'standard chemical potential','standard chemical potential difference','Michaelis constant','activation constant',  'inhibitory constant','equilibrium constant','substrate catalytic rate constant', 'product catalytic rate constant'}, [], network, [], 0, 1, ecm_options.reaction_column_name, ecm_options.compound_column_name);
-  end
-end
-
-% --------------------------------------------------------------------------------------
-% make sure important fields in kinetic_data are considered
-
-
-if sum(isfinite( kinetic_data.Keq.lower_ln )) == 0, 
-  kinetic_data.Keq.lower_ln = log(kinetic_data.Keq.lower);
-end
-
-if sum(isfinite( kinetic_data.Keq.upper_ln )) == 0, 
-  kinetic_data.Keq.upper_ln = log(kinetic_data.Keq.upper);
-end
-
-
-if sum(isfinite( kinetic_data.Kcatf.lower_ln )) == 0, 
-  kinetic_data.Kcatf.lower_ln = log(kinetic_data.Kcatf.lower);
-end
-
-if sum(isfinite( kinetic_data.Kcatf.upper_ln )) == 0, 
-  kinetic_data.Kcatf.upper_ln = log(kinetic_data.Kcatf.upper);
-end
-
-
-
-if sum(isfinite( kinetic_data.Kcatr.lower_ln )) == 0, 
-  kinetic_data.Kcatr.lower_ln = log(kinetic_data.Kcatr.lower);
-end
-
-if sum(isfinite( kinetic_data.Kcatr.upper_ln )) == 0, 
-  kinetic_data.Kcatr.upper_ln = log(kinetic_data.Kcatr.upper);
-end
-
-
-
+% legacy: this has been used in EFM paper and elsewhere!
+ecm_options.use_pseudo_values = 0; 
 
 
 % --------------------------------------------------------------------------------------
-% run parameter balancing for kinetic constants
 
 if ecm_options.flag_given_kinetics,
-
+  
+  %% If desired, use kinetic parameters directly from the model
   switch network.kinetics.type 
     case {'cs','ms','ds'},
       display('  Using kinetic constants found in network.kinetics');
@@ -86,79 +45,21 @@ if ecm_options.flag_given_kinetics,
       [r.Kcatf, r.Kcatr] = modular_KV_Keq_to_kcat(network.N,network.kinetics);
     otherwise error('Kinetics cannot be handled');
   end
-  
+
 else
   
-  switch ecm_options.kcat_usage
-    case 'use',
-    
-    case 'none',
-
-      %% do not use any kcat data
-      kk = kinetic_data;
-      em = nan * kk.KM.median;
-      kk.KM.median = em; kk.KM.mean = em; kk.KM.std = em; kk.KM.mean_ln = em; kk.KM.std_ln = em;
-      em = nan * kk.KM.median;
-      kk.KA.median = em; kk.KA.mean = em; kk.KA.std = em; kk.KA.mean_ln = em; kk.KA.std_ln = em;
-      em = nan * kk.KI.median;
-      kk.KI.median = em; kk.KI.mean = em; kk.KI.std = em; kk.KI.mean_ln = em; kk.KI.std_ln = em;
-      em = nan * kk.Kcatf.median;
-      kk.Kcatf.median = em; kk.Kcatf.mean = em; kk.Kcatf.std = em; kk.Kcatf.mean_ln= em; kk.Kcatf.std_ln = em;
-      em = nan * kk.Kcatr.median;
-      kk.Kcatr.median = em; kk.Kcatr.mean = em; kk.Kcatr.std = em; kk.Kcatr.mean_ln= em; kk.Kcatr.std_ln = em;
-      kinetic_data = kk;
-      
-    case 'forward',
-      %% invent kcat data such that forward values (along flux) ~= 
-      %% match the standard value
-      ind_p = find([v>=0]+isnan(v));
-      ind_m = find(v<0);
-      emp   = ones(size(ind_p));
-      emm   = ones(size(ind_m));
-      
-      if isempty(ecm_options.kcat_prior_median), error('Kcat standard value missing'); end
-      kcat_forward_value      = ecm_options.kcat_prior_median; % unit: 1/s
-      kk                      = kinetic_data;
-      kk.Kcatf.median(ind_p)  =     kcat_forward_value  * emp; 
-      kk.Kcatr.median(ind_m)  =     kcat_forward_value  * emm; 
-      kk.Kcatf.mean_ln(ind_p) = log(kcat_forward_value) * emp; 
-      kk.Kcatr.mean_ln(ind_m) = log(kcat_forward_value) * emm; 
-      kk.Kcatf.std_ln(ind_p)  = 0.1 * emp;
-      kk.Kcatr.std_ln(ind_m)  = 0.1 * emm;
-      [kk.Kcatf.mean(ind_p),kk.Kcatf.std(ind_p)] = lognormal_log2normal(kk.Kcatf.mean_ln(ind_p),kk.Kcatf.std_ln(ind_p));
-      [kk.Kcatr.mean(ind_m),kk.Kcatr.std(ind_m)] = lognormal_log2normal(kk.Kcatr.mean_ln(ind_m),kk.Kcatr.std_ln(ind_m));
-      kk.Kcatf.mean(ind_m) = nan;
-      kk.Kcatr.mean(ind_p) = nan;
-      kk.Kcatf.std(ind_m)  = nan;
-      kk.Kcatr.std(ind_p)  = nan;
-      kinetic_data         = kk;
-  end
-  
-  options = struct('kcat_prior_median',    ecm_options.kcat_prior_median,...
-                   'kcat_prior_log10_std', ecm_options.kcat_prior_log10_std,...
-                   'kcat_lower',           ecm_options.kcat_lower,...
-                   'kcatr_lower',          ecm_options.kcatr_lower,...
-                   'kcat_upper',           ecm_options.kcat_upper,...
-                   'KM_lower',             ecm_options.KM_lower,...
-                   'Keq_upper',            ecm_options.Keq_upper,...
-                   'GFE_fixed',            ecm_options.GFE_fixed,...
-                   'quantity_info_file',   ecm_options.quantity_info_file,...
-                   'use_pseudo_values',    ecm_options.use_pseudo_values,...
-                   'fix_Keq_in_sampling',  ecm_options.fix_Keq_in_sampling);
-
-  options.n_samples = ecm_options.n_samples;
-  
-  [r, r_orig, kinetic_data, r_samples, quantity_info_used, r_std] = parameter_balancing_kinetic(network, kinetic_data,[],[],options);
+  %% Use kinetic parameters from "kinetic_data" function argument and run parameter balancing
+  [r, r_orig, kinetic_data, r_samples, parameter_prior, r_std] = parameter_balancing_kinetic(network, kinetic_data,ecm_options);
 
 end
 
 % -----------------------------
 % if desired, insert original Keq values
 
-if exist('Keq','var'),
-  if ecm_options.insert_Keq_from_data,
-    display('  Using predefined equilibrium constants exactly'); 
-    r.Keq = r_orig.Keq;
+if ecm_options.insert_Keq_from_data,
+  if length(Keq_given),
+    display('Using predefined equilibrium constants exactly'); 
+    ind_finite = find(isfinite(Keq_given));
+    r.Keq(ind_finite) = r_orig.Keq(ind_finite);
   end
 end
-

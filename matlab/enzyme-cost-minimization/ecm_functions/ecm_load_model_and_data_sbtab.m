@@ -1,16 +1,18 @@
-function [network,v,c_data,u_data, conc_min, conc_max, met_fix, conc_fix,positions, enzyme_cost_weights, warnings] = ecm_load_model_and_data_sbtab(filename, tmp_dir)
+function [network,v,c_data,u_data, conc_min, conc_max, met_fix, conc_fix,positions, enzyme_cost_weights, warnings] = ecm_load_model_and_data_sbtab(filename)
 
 % ECM_LOAD_MODEL_AND_DATA_SBTAB - Load data from SBtab file
 %
-% [network,v,c_data,u_data, conc_min, conc_max, positions, warnings] = ecm_load_model_and_data_sbtab(filename, tmp_dir)
+% [network,v,c_data,u_data, conc_min, conc_max, positions, warnings] = ecm_load_model_and_data_sbtab(filename)
 %
 %Load SBtab file containing (model and data) information for Enzyme Cost Minimization
 %
 %For saving an SBtab file, see 'help ecm_save_model_and_data_sbtab'
 %
 %Arguments
-% filename               filename for SBtab output
-% tmp_dir                a directory to which a temporary file can be written (needed for technical reasons)
+% filename               filename for SBtab intput
+%                        if the filename has the extension '.tsv', the file is expected to contain model and validation data
+%                        otherwise, the data are read from separate files [filename]_ModelData.tsv and [filename]_ValidationData.tsv 
+%
 %
 %Output
 % network                (struct describing model, see mnt toolbox)
@@ -26,18 +28,19 @@ function [network,v,c_data,u_data, conc_min, conc_max, met_fix, conc_fix,positio
 % enzyme_cost_weights    ( nr x 1 vector of enzyme cost weights; default [])
 % save_single_tables     (flag for saving SBtab tables in single files; default 0)
 
-
-my_sbtab = sbtab_document_load_from_one(filename);
+if strcmp(filename(end-3:end),'.tsv'),
+  my_sbtab_model      = sbtab_document_load_from_one(filename);
+  my_sbtab_validation = sbtab_document_load_from_one(filename);  
+else,
+  my_sbtab_model      = sbtab_document_load_from_one([filename '_ModelData.tsv']);
+  my_sbtab_validation = sbtab_document_load_from_one([filename '_ValidationData.tsv']);
+end
 
 options = struct;
 
-if exist('outdir','var'),
-  options.my_matlab_tmp = tmp_dir;
-end
-
 warnings = '';
 
-network   = sbtab_to_network(my_sbtab,options);
+network   = sbtab_to_network(my_sbtab_model,options);
 
 [nm,nr] = size(network.N);
 
@@ -50,44 +53,42 @@ positions = [];
 enzyme_cost_weights = ones(nr,1);
 
 try
-  v        = sbtab_table_get_column(my_sbtab.tables.Flux,'Value',1);
+  v        = sbtab_table_get_column(my_sbtab_model.tables.Flux,'Value',1);
 catch err
   warnings = 'Flux table missing';
 end
 
 try
-  c_data    = sbtab_table_get_column(my_sbtab.tables.ConcentrationData,'Value',1);
+  c_data    = sbtab_table_get_column(my_sbtab_validation.tables.ConcentrationData,'Value',1);
 catch err
   warnings = [warnings, '; Concentration table missing'];
 end
 
 try
-  u_data    = sbtab_table_get_column(my_sbtab.tables.EnzymeData,'Value',1);
+  u_data    = sbtab_table_get_column(my_sbtab_validation.tables.EnzymeData,'Value',1);
 catch err
   warnings = [warnings, '; Enzyme concentration table missing'];
 end
 
 try
-  conc_min  = sbtab_table_get_column(my_sbtab.tables.ConcentrationConstraint,'Concentration:Min',1);
-  conc_max  = sbtab_table_get_column(my_sbtab.tables.ConcentrationConstraint,'Concentration:Max',1);
+  conc_min  = sbtab_table_get_column(my_sbtab_model.tables.ConcentrationConstraint,'Concentration:Min',1);
+  conc_max  = sbtab_table_get_column(my_sbtab_model.tables.ConcentrationConstraint,'Concentration:Max',1);
   catch err
     warnings = [warnings, '; Concentration constraint table missing'];
 end
 
 try
-  enzyme_cost_weight  = sbtab_table_get_column(my_sbtab.tables.EnzymeCostWeight,'Value',1);
+  enzyme_cost_weight  = sbtab_table_get_column(my_sbtab_model.tables.EnzymeCostWeight,'Value',1);
   catch err
     warnings = [warnings, '; Enzyme cost weight table missing'];
 end
 
 try
-  positions = my_sbtab.tables.Position;
+  positions = my_sbtab_model.tables.Position;
 catch err
   warnings = [warnings, '; Position table missing'];
 end
 
-ind = find(conc_min == conc_max);
-met_fix = network.metabolites(ind);
+ind      = find(conc_min == conc_max);
+met_fix  = network.metabolites(ind);
 conc_fix = conc_min(ind);
-%conc_min(ind) = nan;
-%conc_max(ind) = nan;

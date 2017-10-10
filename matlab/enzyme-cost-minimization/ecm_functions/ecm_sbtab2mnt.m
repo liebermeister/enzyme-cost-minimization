@@ -1,17 +1,17 @@
-function [network, v, conc_min, conc_max, kinetic_data] = ecm_sbtab2mnt(model_filename, filenames,kinetic_data_file_names,options,organism_long,kegg_conversion_file,position_file,reaction_column_name,compound_column_name,use_kegg_ids)
+function [network, v, conc_min, conc_max, kinetic_data] = ecm_sbtab2mnt(model_filename, filenames,kinetic_data_file_names,options,organism_long,kegg_conversion_file,layout_file,reaction_column_name,compound_column_name,use_kegg_ids)
 
 % [network, v, conc_fix, kinetic_data] = ecm_sbtab2mnt(model_filename, model_dir, matlab_dir,kinetic_data_file_names)
 %
 % Read network structure (from SBtab files), collect dG0' values (from network_thermo)
 % and convert them into MNT network format
-% the arguments kegg_conversion_file, position_file can be given 
+% the arguments kegg_conversion_file, layout_file can be given 
 % explicitly, or as fields of "filenames" (which can remain empty otherwise)
 
 % I use mM and convert everything from Elad's convention within this script
 
 % if organism_long is given, the kinetic data are filtered for the organism
 
-eval(default('options','struct','filenames.kegg_conversion_file','position_file','filenames.position_file'));
+eval(default('options','struct','filenames.kegg_conversion_file','layout_file','filenames.layout_file'));
 
 if ~exist('reaction_column_name','var'),  reaction_column_name = []; end
 if ~exist('compound_column_name','var'),  compound_column_name = []; end
@@ -62,7 +62,7 @@ network.graphics_par.metnames = network.metabolite_names;
 
 network.reaction_formula_KEGGID = strrep(network.formulae,' ','_');
 
-network = netgraph_read_positions(network,position_file,[0,0],1,1,network.reaction_formula_KEGGID);
+network = netgraph_read_positions(network,layout_file,[0,0],1,1,network.reaction_formula_KEGGID);
 
 
 % -----------------------------------------------------------

@@ -74,7 +74,7 @@ _2_Phospho_D_glycerate	2-Phospho-D-glycerate	C00631	False
 Succinate	Succinate	C00042	False				
 Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate	C05382	False				
 %							
-!!SBtab TableName='RateConstant' TableType='Quantity' Document='E. coli central carbon metabolism' SBtabVersion='0.9'							
+!!SBtab TableName='Parameter' TableType='Quantity' Document='E. coli central carbon metabolism' SBtabVersion='0.9'							
 !QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
 equilibrium constant	PTS_RPTSsy		2000000	dimensionless	RPTSsy		kEQ_R1
 equilibrium constant	PGI_R02740		0.36576352	dimensionless	R02740		kEQ_R2
@@ -304,7 +304,7 @@ product catalytic rate constant	FUM_R01082		133.28522	1/s	R01082		kcrr_R28
 product catalytic rate constant	MDH_R00342		758.53927	1/s	R00342		kcrr_R29
 product catalytic rate constant	PPC_R00345		1358.8889	1/s	R00345		kcrr_R30
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism' TableName='Position' TableType='Position' SBtabVersion='0.9'							
+!!SBtab DocumentName='E. coli central carbon metabolism' TableName='Layout' TableType='Position' SBtabVersion='0.9'							
 !Element	!PositionX	!PositionY					
 _S__Malate	0.32772	0.095058					
 Acetyl_CoA	0.359426	0.22902					

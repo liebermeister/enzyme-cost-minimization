@@ -32,14 +32,20 @@ end
 formulae = network_print_formulae(network);
 
 % try to insert results from enzyme prediction with common modular rate law
+[nm,nr] = size(network.N);
+network.kinetics      = options.r;
 if isfield(c,'emc4cm'),
-  [nm,nr] = size(network.N);
-  network.kinetics      = options.r;
   network.kinetics.type = 'cs';
   network.kinetics.c    = c.emc4cm;
   network.kinetics.u    = u.emc4cm;
   sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'write_enzyme_concentrations',1,'c',c.emc4cm,'modular_rate_law_parameter_id', 1,'document_name', options.document_name));
+elseif isfield(c,'emc3sp'),
+  network.kinetics.type = 'ds';
+  network.kinetics.c    = c.emc3sp;
+  network.kinetics.u    = u.emc3sp;
+  sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'write_enzyme_concentrations',1,'c',c.emc3sp,'modular_rate_law_parameter_id', 1,'document_name', options.document_name));
 else
+  network.kinetics.type = 'cs';
   sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'document_name', options.document_name));
 end
 

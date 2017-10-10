@@ -35,8 +35,8 @@ PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate	R00345	Tr
 !ID	!Name	!Identifiers:kegg.compound	!IsConstant	!InitialConcentration			
 _S__Malate	(S)-Malate	C00149	False	4.14			
 Acetyl_CoA	Acetyl-CoA	C00024	False	8.91			
-Fumarate	Fumarate	C00122	False	8.92			
-cis_Aconitate	cis-Aconitate	C00417	False	0.00134			
+Fumarate	Fumarate	C00122	False	7.17			
+cis_Aconitate	cis-Aconitate	C00417	False	0.00116			
 _6_Phospho_D_gluconate	6-Phospho-D-gluconate	C00345	False	8.91			
 Orthophosphate	Orthophosphate	C00009	True	10			
 Pyruvate	Pyruvate	C00022	False	0.00112			
@@ -56,26 +56,26 @@ Isocitrate	Isocitrate	C00311	False	0.00108
 D_Ribulose_5_phosphate	D-Ribulose 5-phosphate	C00199	False	8.02			
 D_Xylulose_5_phosphate	D-Xylulose 5-phosphate	C00231	False	7.15			
 D_Glucose_6_phosphate	D-Glucose 6-phosphate	C00092	True	9.03			
-_3_Phospho_D_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate	C00236	False	0.00133			
+_3_Phospho_D_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate	C00236	False	0.00519			
 CoA	CoA	C00010	False	1			
 CO2	CO2	C00011	True	0.01			
 D_Ribose_5_phosphate	D-Ribose 5-phosphate	C00117	False	7.29			
-Glycerone_phosphate	Glycerone phosphate	C00111	False	0.29			
+Glycerone_phosphate	Glycerone phosphate	C00111	False	1.1			
 D_Glucose	D-Glucose	C00031	True	12			
-D_Fructose_1_6_bisphosphate	D-Fructose 1,6-bisphosphate	C00354	True	9.28			
-D_Glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate	C00118	True	0.03			
+D_Fructose_1_6_bisphosphate	D-Fructose 1,6-bisphosphate	C00354	True	9.63			
+D_Glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate	C00118	True	0.117			
 Phosphoenolpyruvate	Phosphoenolpyruvate	C00074	True	0.00113			
-Citrate	Citrate	C00158	False	0.0378			
-Succinyl_CoA	Succinyl-CoA	C00091	False	7.99			
-_3_Phospho_D_glycerate	3-Phospho-D-glycerate	C00197	False	0.0068			
+Citrate	Citrate	C00158	False	0.615			
+Succinyl_CoA	Succinyl-CoA	C00091	False	8.94			
+_3_Phospho_D_glycerate	3-Phospho-D-glycerate	C00197	False	0.182			
 D_Glucono_1_5_lactone_6_phosphate	D-Glucono-1,5-lactone 6-phosphate	C01236	False	0.00112			
 D_Fructose_6_phosphate	D-Fructose 6-phosphate	C00085	True	0.00111			
-_2_Phospho_D_glycerate	2-Phospho-D-glycerate	C00631	False	0.00129			
-Succinate	Succinate	C00042	False	6.26			
+_2_Phospho_D_glycerate	2-Phospho-D-glycerate	C00631	False	0.00114			
+Succinate	Succinate	C00042	False	0.0791			
 Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate	C05382	False	5.62			
 %							
-!!SBtab TableName='RateConstant' TableType='Quantity' Document='Model' SBtabVersion='1.0'							
-!QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
+!!SBtab TableName='Parameter' TableType='Quantity' Document='Model' SBtabVersion='1.0'							
+!QuantityType	!Reaction	!Compound	!Median	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
 equilibrium constant	PTS_RPTSsy		2e+06	dimensionless	RPTSsy		kEQ_R1
 equilibrium constant	PGI_R02740		0.366	dimensionless	R02740		kEQ_R2
 equilibrium constant	PFK_R04779		1.69e+03	dimensionless	R04779		kEQ_R3
@@ -305,13 +305,13 @@ product catalytic rate constant	MDH_R00342		759	1/s	R00342		kcrr_R29
 product catalytic rate constant	PPC_R00345		1.36e+03	1/s	R00345		kcrr_R30
 concentration of enzyme	PTS_RPTSsy		0.000545	mM	RPTSsy		u_R1
 concentration of enzyme	PGI_R02740		0.00111	mM	R02740		u_R2
-concentration of enzyme	PFK_R04779		0.105	mM	R04779		u_R3
-concentration of enzyme	ALD_R01070		0.00133	mM	R01070		u_R4
-concentration of enzyme	TIM_R01015		0.21	mM	R01015		u_R5
-concentration of enzyme	GAP_R01061		1.28e+06	mM	R01061		u_R6
-concentration of enzyme	PGK_R01512		0.162	mM	R01512		u_R7
-concentration of enzyme	PGM_R01518		1.78e+05	mM	R01518		u_R8
-concentration of enzyme	PGH_R00658		0.821	mM	R00658		u_R9
+concentration of enzyme	PFK_R04779		0.116	mM	R04779		u_R3
+concentration of enzyme	ALD_R01070		0.00162	mM	R01070		u_R4
+concentration of enzyme	TIM_R01015		0.153	mM	R01015		u_R5
+concentration of enzyme	GAP_R01061		3.18e+06	mM	R01061		u_R6
+concentration of enzyme	PGK_R01512		0.0727	mM	R01512		u_R7
+concentration of enzyme	PGM_R01518		0.0111	mM	R01518		u_R8
+concentration of enzyme	PGH_R00658		0.959	mM	R00658		u_R9
 concentration of enzyme	PYK_R00200		0.0159	mM	R00200		u_R10
 concentration of enzyme	PDH_R00209		0.00145	mM	R00209		u_R11
 concentration of enzyme	ZWF_R00835		0.00111	mM	R00835		u_R12
@@ -320,21 +320,21 @@ concentration of enzyme	PGD_R01528		0.00128	mM	R01528		u_R14
 concentration of enzyme	RPI_R01056		0.000171	mM	R01056		u_R15
 concentration of enzyme	RPE_R01529		0.000267	mM	R01529		u_R16
 concentration of enzyme	TXT_R01641		0.00115	mM	R01641		u_R17
-concentration of enzyme	TAL_R08575		0.0189	mM	R08575		u_R18
+concentration of enzyme	TAL_R08575		0.01	mM	R08575		u_R18
 concentration of enzyme	TXT_R01067		0.12	mM	R01067		u_R19
 concentration of enzyme	FBP_R00762		0	mM	R00762		u_R20
-concentration of enzyme	CSN_R00351		0.000316	mM	R00351		u_R21
-concentration of enzyme	ACN_R01325		1.22e+05	mM	R01325		u_R22
-concentration of enzyme	ACN_R01900		0.148	mM	R01900		u_R23
+concentration of enzyme	CSN_R00351		0.000344	mM	R00351		u_R21
+concentration of enzyme	ACN_R01325		0.00928	mM	R01325		u_R22
+concentration of enzyme	ACN_R01900		0.226	mM	R01900		u_R23
 concentration of enzyme	ICD_R00709		0.104	mM	R00709		u_R24
 concentration of enzyme	KGD_R08549		0.0525	mM	R08549		u_R25
-concentration of enzyme	SCS_R00405		1.29e+04	mM	R00405		u_R26
-concentration of enzyme	SDH_R02164		0.000153	mM	R02164		u_R27
-concentration of enzyme	FUM_R01082		0.000331	mM	R01082		u_R28
-concentration of enzyme	MDH_R00342		0.24	mM	R00342		u_R29
+concentration of enzyme	SCS_R00405		0.00129	mM	R00405		u_R26
+concentration of enzyme	SDH_R02164		0.00124	mM	R02164		u_R27
+concentration of enzyme	FUM_R01082		0.000366	mM	R01082		u_R28
+concentration of enzyme	MDH_R00342		0.161	mM	R00342		u_R29
 concentration of enzyme	PPC_R00345		0.339	mM	R00345		u_R30
 %							
-!!SBtab TableName='Positions' TableType='Position' Document='Model' SBtabVersion='1.0'							
+!!SBtab TableName='Layout' TableType='Position' Document='Model' SBtabVersion='1.0'							
 !Element	!PositionX	!PositionY					
 _S__Malate	0.328	0.0951					
 Acetyl_CoA	0.359	0.229					

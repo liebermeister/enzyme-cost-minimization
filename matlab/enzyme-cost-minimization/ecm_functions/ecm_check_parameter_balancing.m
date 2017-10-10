@@ -1,33 +1,36 @@
 % ECM_CHECK_PARAMETER_BALANCING - Checks for balanced parameters
 %
-% ecm_check_parameter_balancing(r, r_orig, network, quantity_info_used, show_graphics)
+% ecm_check_parameter_balancing(r, r_orig, network, parameter_prior, show_graphics, show_concentrations)
 
-function ecm_check_parameter_balancing(r, r_orig, network, quantity_info_used, show_graphics)
+function ecm_check_parameter_balancing(r, r_orig, network, parameter_prior, show_graphics, show_concentrations)
 
-eval(default('show_graphics','1','quantity_info_used','[]'));
+eval(default('show_graphics','1','parameter_prior','[]','show_concentrations','0'));
 
-  i_mu0   = label_names('mu0', quantity_info_used.Symbol);
-  i_Keq   = label_names('Keq', quantity_info_used.Symbol);
-  i_Kcatf = label_names('Kcatf', quantity_info_used.Symbol);
-  i_Kcatr = label_names('Kcatr', quantity_info_used.Symbol);
-  i_KM    = label_names('KM', quantity_info_used.Symbol);
-  i_KA    = label_names('KA', quantity_info_used.Symbol);
-  i_KI    = label_names('KI', quantity_info_used.Symbol);
-  
-  lower_bound  = cell_string2num(quantity_info_used.LowerBound);
-  upper_bound  = cell_string2num(quantity_info_used.UpperBound);
-  prior_median = cell_string2num(quantity_info_used.PriorMedian);
-  prior_std    = cell_string2num(quantity_info_used.PriorStd);
+i_mu0   = label_names('mu0', parameter_prior.Symbol);
+i_Keq   = label_names('Keq', parameter_prior.Symbol);
+i_Kcatf = label_names('Kcatf', parameter_prior.Symbol);
+i_Kcatr = label_names('Kcatr', parameter_prior.Symbol);
+i_KM    = label_names('KM', parameter_prior.Symbol);
+i_KA    = label_names('KA', parameter_prior.Symbol);
+i_KI    = label_names('KI', parameter_prior.Symbol);
+i_c     = label_names('c', parameter_prior.Symbol);
+i_u     = label_names('u', parameter_prior.Symbol);
 
+lower_bound  = cell_string2num(parameter_prior.LowerBound);
+upper_bound  = cell_string2num(parameter_prior.UpperBound);
+prior_median = cell_string2num(parameter_prior.PriorMedian);
+prior_std    = cell_string2num(parameter_prior.PriorStd);
 
 threshold_mu = 5; % kJ/mol
-threshold = 2;
+threshold    = 2;
 
+if isfield(r,'mu0'), 
 mu0_change = r.mu0-r_orig.mu0; 
 ind_change = find(isfinite(mu0_change) .* abs(mu0_change)>0);
 if length(ind_change),
  display(sprintf('Changes of mu0 values (additive change > %f kK/mol shown',threshold_mu));
  print_matrix(mu0_change(ind_change), network.metabolites(ind_change))
+end
 end
 
 log_Keq_change = log10(r.Keq./r_orig.Keq); 
@@ -50,13 +53,13 @@ if find(r.Kcatf < 1.01 * lower_bound(i_Kcatf)),
 else
   display('No Kcatf values close to lower bound');
 end
+
 if find(r.Kcatf > 0.99 * upper_bound(i_Kcatf)),
   display('Kcatf values close to upper bound');
   mytable(network.actions(find(r.Kcatf > 0.99 * upper_bound(i_Kcatf))),0)
 else
   display('No Kcatf values close to upper bound');
 end
-
 
 log_Kcatr_change = log10(r.Kcatr./r_orig.Kcatr); 
 ind_change = find(isfinite(log_Kcatr_change) .* abs(log_Kcatr_change) > log10(threshold));
@@ -104,6 +107,29 @@ for it = 1:length(indices),
 end
 end
 
+if isfield(r,'c'), 
+if isfield(r_orig,'c'), 
+  c_change = r.c-r_orig.c; 
+  ind_change = find(isfinite(c_change) .* abs(c_change)>0);
+  if length(ind_change),
+    display(sprintf('Changes of c values (fold change > %f shown)',threshold));
+    print_matrix(c_change(ind_change), network.metabolites(ind_change))
+  end
+end
+end
+
+
+if isfield(r,'u'), 
+if isfield(r_orig,'u'), 
+  u_change = r.u-r_orig.u; 
+  ind_change = find(isfinite(u_change) .* abs(u_change)>0);
+  if length(ind_change),
+    display(sprintf('Changes of u values (fold change > %f shown)',threshold));
+    print_matrix(u_change(ind_change), network.actions(ind_change))
+  end
+end
+end
+
 if show_graphics,
 
   figure(1);
@@ -144,10 +170,13 @@ if show_graphics,
   end
   
   figure(2); clf 
+
+  %% blue bars:     original 
+  %% beige bars: balanced
   
   subplot(2,3,1); hold on;
   edges = log10(lower_bound(i_Keq)):1:log10(upper_bound(i_Keq));
-  bar(edges+0.5,[histc(log10(r.Keq), edges), histc(log10(r_orig.Keq), edges)],'grouped'); colormap([1 0 1; 1 0 0]);
+  bar(edges+0.5,[histc(log10(r.Keq), edges), histc(log10(r_orig.Keq), edges)],'grouped');
   title('log10 Keq'); a = axis; 
   plot(log10(lower_bound(i_Keq)) *[1 1],[0,a(4)],'k-');
   plot(log10(upper_bound(i_Keq)) *[1 1],[0,a(4)],'k-');
@@ -157,7 +186,7 @@ if show_graphics,
   
   subplot(2,3,2); hold on;
   edges = log10(lower_bound(i_Kcatf)):0.5:log10(upper_bound(i_Kcatf));
-  bar(edges+0.25,[histc(log10(r.Kcatf), edges), histc(log10(r_orig.Kcatf), edges)],'grouped'); colormap([1 0 1; 1 0 0]);
+  bar(edges+0.25,[histc(log10(r.Kcatf), edges), histc(log10(r_orig.Kcatf), edges)],'grouped'); 
   title('log10 Kcatf'); a = axis; 
   plot(log10(lower_bound(i_Kcatf)) *[1 1],[0,a(4)],'k-');
   plot(log10(upper_bound(i_Kcatf)) *[1 1],[0,a(4)],'k-');
@@ -167,7 +196,7 @@ if show_graphics,
 
   subplot(2,3,3); hold on;
   edges = log10(lower_bound(i_Kcatr)):0.5:log10(upper_bound(i_Kcatr));
-  bar(edges+0.25,[histc(log10(r.Kcatr), edges), histc(log10(r_orig.Kcatr), edges)],'grouped'); colormap([1 0 1; 1 0 0]);
+  bar(edges+0.25,[histc(log10(r.Kcatr), edges), histc(log10(r_orig.Kcatr), edges)],'grouped');
   title('log10 Kcatr'); a = axis; 
   plot(log10(lower_bound(i_Kcatr)) *[1 1],[0,a(4)],'k-');
   plot(log10(upper_bound(i_Kcatr)) *[1 1],[0,a(4)],'k-');
@@ -177,7 +206,7 @@ if show_graphics,
 
   subplot(2,3,4); hold on;
   edges = log10(lower_bound(i_KM)):0.5:log10(upper_bound(i_KM));
-  bar(edges+0.25,[histc(full(log10(r.KM(r.KM~=0))), edges), histc(log10(full(r_orig.KM(r_orig.KM~=0))), edges)],'grouped'); colormap([1 0 1; 1 0 0]);
+  bar(edges+0.25,[histc(full(log10(r.KM(r.KM~=0))), edges), histc(log10(full(r_orig.KM(r_orig.KM~=0))), edges)],'grouped');
   title('log10 KM'); a = axis; 
   plot(log10(lower_bound(i_KM)) *[1 1],[0,a(4)],'k-');
   plot(log10(upper_bound(i_KM)) *[1 1],[0,a(4)],'k-');
@@ -187,7 +216,7 @@ if show_graphics,
     
   subplot(2,3,5); hold on;
   edges = log10(lower_bound(i_KA)):0.5:log10(upper_bound(i_KA));
-  bar(edges+0.25,[histc(full(log10(r.KA(r.KA~=0))), edges), histc(full(log10(r_orig.KA(r_orig.KA~=0))), edges)],'grouped'); colormap([1 0 1; 1 0 0]);
+  bar(edges+0.25,[histc(full(log10(r.KA(r.KA~=0))), edges), histc(full(log10(r_orig.KA(r_orig.KA~=0))), edges)],'grouped');
   title('log10 KA'); a = axis; 
   plot(log10(lower_bound(i_KA)) *[1 1],[0,a(4)],'k-');
   plot(log10(upper_bound(i_KA)) *[1 1],[0,a(4)],'k-');
@@ -197,7 +226,7 @@ if show_graphics,
     
   subplot(2,3,6); hold on;
   edges = log10(lower_bound(i_KI)):0.5:log10(upper_bound(i_KI));
-  bar(edges+0.25,[histc(full(log10(r.KI(r.KI~=0))), edges), histc(full(log10(r_orig.KI(r_orig.KI~=0))), edges)],'grouped'); colormap([1 0 1; 1 0 0]);
+  bar(edges+0.25,[histc(full(log10(r.KI(r.KI~=0))), edges), histc(full(log10(r_orig.KI(r_orig.KI~=0))), edges)],'grouped');
   title('log10 KI'); a = axis; 
   plot(log10(lower_bound(i_KI)) *[1 1],[0,a(4)],'k-');
   plot(log10(upper_bound(i_KI)) *[1 1],[0,a(4)],'k-');
@@ -205,5 +234,37 @@ if show_graphics,
   plot([log10(prior_median(i_KI)) + prior_std(i_KI) *[-1,1] ], 0.95*a(4)*[1,1],'b-','Linewidth',2);
   axis([log10(lower_bound(i_KI))-1,log10(upper_bound(i_KI))+1,0,a(4)]);
 
+  colormap([0.86, 0.797, 0.625; 0.6,0.6, 1.0]);
 
 end 
+
+if show_concentrations,
+  
+  figure(3); clf 
+
+  %% blue bars:     original 
+  %% beig bars: balanced
+  
+  subplot(1,2,1); hold on;
+  edges = log10(lower_bound(i_c)):1:log10(upper_bound(i_c));
+  bar(edges+0.5,[histc(log10(r.c), edges), histc(log10(r_orig.c), edges)],'grouped');
+  title('log10 c'); a = axis; 
+  plot(log10(lower_bound(i_c)) *[1 1],[0,a(4)],'k-');
+  plot(log10(upper_bound(i_c)) *[1 1],[0,a(4)],'k-');
+  plot(log10(prior_median(i_c)) *[1 1],[0,a(4)],'b-');
+  plot([log10(prior_median(i_c)) + prior_std(i_c) *[-1,1] ], 0.95*a(4)*[1,1],'b-','Linewidth',2);
+  axis([log10(lower_bound(i_c))-1,log10(upper_bound(i_c))+1,0,a(4)]);
+  
+  subplot(1,2,2); hold on;
+  edges = log10(lower_bound(i_u)):0.5:log10(upper_bound(i_u));
+  bar(edges+0.25,[histc(log10(r.u), edges), histc(log10(r_orig.u), edges)],'grouped'); 
+  title('log10 u'); a = axis; 
+  plot(log10(lower_bound(i_u)) *[1 1],[0,a(4)],'k-');
+  plot(log10(upper_bound(i_u)) *[1 1],[0,a(4)],'k-');
+  plot(log10(prior_median(i_u)) *[1 1],[0,a(4)],'b-');
+  plot([log10(prior_median(i_u)) + prior_std(i_u) * [-1,1] ], 0.95*a(4)*[1,1],'b-','Linewidth',2);
+  axis([log10(lower_bound(i_u))-1,log10(upper_bound(i_u))+1,0,a(4)]);
+
+  colormap([0.86, 0.797, 0.625; 0.6,0.6, 1.0]);
+
+end

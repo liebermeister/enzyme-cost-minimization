@@ -41,7 +41,7 @@ switch options.actions,
     errors   = '';
 
     %% Load model and data from input file
-    [my_network, v, c_data, u_data, conc_min, conc_max, met_fix, conc_fix, my_positions,enzyme_cost_weights, errors] = ecm_load_model_and_data_sbtab(model_data_file,outdir);
+    [my_network, v, c_data, u_data, conc_min, conc_max, met_fix, conc_fix, my_positions,enzyme_cost_weights, errors] = ecm_load_model_and_data_sbtab(model_data_file);
     % if length(errors),
     %   report = sprintf('An error occurred while parsing the SBtab file // No result file saved');
     %   errors = sprintf('An error occurred while parsing the SBtab file: %s', error);
@@ -97,7 +97,7 @@ switch options.actions,
       options.make_report  = 0;
       options.use_kegg_ids = [1];
       report               = '';
-      errors                = '';
+      errors               = '';
 
       %try
         my_sbtab = sbtab_document_load_from_one(model_data_file);
@@ -133,7 +133,7 @@ switch options.actions,
                               'product catalytic rate constant'};
           use_kegg_ids  = 1;
           organism_long = [];% 'Escherichia coli';
-          sbtab_table_save(my_sbtab.tables.RateConstant,struct('filename','/tmp/my_pb_data.tsv'));
+          sbtab_table_save(my_sbtab.tables.Parameter,struct('filename','/tmp/my_pb_data.tsv'));
           %% store input rate constants in intermediate file '/tmp/my_pb_data.tsv'
           my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', 0, options.use_kegg_ids, 0, 1, 'Organism',organism_long);
           
@@ -141,8 +141,10 @@ switch options.actions,
           ecm_options.insert_Keq_from_data = 0;
           ecm_options.GFE_fixed = 0;
           ecm_options.show_graphics = 0;
+          ecm_options.kcat_usage= 'use';
           
           [r, r_orig, kinetic_data] = ecm_parameter_balancing(my_network, ecm_options, my_kinetic_data);
+
           my_network.kinetics = r;
           my_network.kinetics.type = 'cs';
           network_to_sbtab(my_network,struct('filename',outfile,'write_concentrations',0,'save_in_one_file',1,'write_enzyme_concentrations',0));

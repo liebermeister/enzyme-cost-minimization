@@ -13,6 +13,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 % Output
 %   c                 metabolite concentrations
 %   c.data            data vector (if provided)
+%   c.std             data standard deviations vector (if provided)
 %   c.fixed           fixed concentration vector
 %   c.initial         initial solution vector 
 %   c.[SCORE]         1st column: result from optimising the score [SCORE]
@@ -20,6 +21,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %                     
 %   u                 enzyme levels (all enzymes)
 %   u.data            data vector
+%   u.std             data standard deviations vector (if provided)
 %   u.[SCORE]         1st column: result from optimising the score [SCORE]
 %                     other columns: possible sampled solutions
 %
@@ -70,13 +72,20 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %    ecm_options.compute_elasticities
 %    ecm_options.compute_tolerance,
 %    ecm_options.cost_tolerance_factor
-  
+
   
 % --------------------------------------------------------------------------------------
 % Enzyme cost minimization
 % --------------------------------------------------------------------------------------
 
-opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','sqp');
+% for MATLAB 2009
+opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
+
+% for MATLAB 2011
+%opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','sqp');
+
+% for MATLAB 2016
+%opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
 
 network.kinetics = set_kinetics(network,'cs',r);
 
@@ -92,6 +101,16 @@ ecm_options.ind_scored_enzymes   = ecm_options.ind_scored_enzymes(find(v(ecm_opt
 
 c_data                = ecm_options.c_data             ;
 u_data                = ecm_options.u_data             ;  
+if isfield(ecm_options,'c_std'),
+  c_std = ecm_options.c_std;
+else
+  c_std = nan * c_data;
+end
+if isfield(ecm_options,'u_std'),
+  u_std = ecm_options.u_std;
+else
+  u_std = nan * u_data;
+end
 conc_min_default      = ecm_options.conc_min_default   ;
 conc_max_default      = ecm_options.conc_max_default   ;
 conc_min              = ecm_options.conc_min;
@@ -174,6 +193,19 @@ pp.enzyme_cost_weights   = enzyme_cost_weights;
 pp.ind_not_scored        = ind_not_scored     ;
 pp.multiple_conditions   = multiple_conditions;
 pp.multiple_conditions_n = multiple_conditions_n;
+[pp.ln_c_data, pp.ln_c_std] = lognormal_normal2log(c_data, c_std,'arithmetic'); 
+pp.u_data                = u_data;
+pp.u_std                 = u_std;
+if isfield(network,'metabolite_mass'),
+  pp.metabolite_mass       = network.metabolite_mass;
+else
+  pp.metabolite_mass       = ones(size(network.metabolites));
+end
+if isfield(network,'enzyme_mass'),
+  pp.enzyme_mass       = network.enzyme_mass;
+else
+  pp.enzyme_mass       = ones(size(network.actions));
+end
 
 if multiple_conditions_n < 2, 
   pp.multiple_conditions = 0;
@@ -206,10 +238,10 @@ switch ecm_options.initial_choice,
     display('  Choosing polytope center as starting point'); 
   case 'interval_center',
     display('  Choosing point close to center of allowed intervals as starting point'); 
-    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max,1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
+    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max, 1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
   case 'mdf',
     x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
-    if ecm_mdf(x_start,pp) >0, error('Thermodynamically infeasible reaction'); end
+    if ecm_mdf(x_start,pp) > 0, error('Thermodynamically infeasible reaction'); end
     display('  Choosing MDF solution as starting point'); 
 end
 
