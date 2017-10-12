@@ -67,6 +67,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %    ecm_options.lambda_regularisation
 %    ecm_options.ecm_scores         
 %    ecm_options.initial_choice
+%    ecm_options.x_start
 %    ecm_options.multiple_starting_points   flag
 %    ecm_options.compute_hessian
 %    ecm_options.compute_elasticities
@@ -79,10 +80,10 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 % --------------------------------------------------------------------------------------
 
 % for MATLAB 2009
-opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
+%opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
 
 % for MATLAB 2011
-%opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','sqp');
+opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','sqp');
 
 % for MATLAB 2016
 %opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
@@ -214,18 +215,27 @@ end
 % --------------------------------------------------------------------------------------
 % find feasible initial solution (as a test for feasibility) and extreme metabolite profiles
 
-%epsilon = 10^-10;   % flux directions must be possible at least
-%epsilon = 1 * 1/RT;  % minimal reaction GFE of 1 kJ/mol is required  
+% minimal reaction GFE of 10^-10 RT kJ/mol is required;
+Theta_min = 10^-10 * double(v~=0);  
 
-epsilon = 10^-10 * double(v~=0) * 1/RT;  % minimal reaction GFE of 10^-10 kJ/mol is required;
+if ecm_options.use_linear_cost_constraints,
+  if isempty(ecm_options.maximal_u_cost),
+    ecm_options.maximal_u_cost = 100 * nansum(ecm_options.enzyme_cost_weights .* v(ecm_options.ind_scored_enzymes) ./ kc_forward(ecm_options.ind_scored_enzymes));
+    display(sprintf('Setting default upper bound %f for enzyme cost. Setting this value manually may speed up the calculation.',ecm_options.maximal_u_cost));
+  end
+  my_u_max = 10^15 * ones(nr,1); 
+  my_u_max(ecm_options.ind_scored_enzymes) = ecm_options.maximal_u_cost ./ ecm_options.enzyme_cost_weights; 
+  new_Theta_min =  abs(v) ./ my_u_max ./ kc_forward;
+  Theta_min(ecm_options.ind_scored_enzymes) = new_Theta_min(ecm_options.ind_scored_enzymes);
+end
 
-%try
-  [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - epsilon, x_min, x_max, 0*x_min);
-%catch
-%  error(sprintf('*** No polytope centre found in search for initial solution (required driving forces > %f RT) - maybe the concentration constraints are too tight? ***\n',epsilon));
-%  c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
-%  return
-%end
+try
+  [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - Theta_min, x_min, x_max, 0*x_min);
+catch
+  error(sprintf('*** No polytope centre found in search for initial solution (required driving forces > %f RT) - maybe the concentration constraints are too tight? ***\n',Theta_min));
+  c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
+  return
+end
 
 X_extreme = [x1, x2]; % matrix with extreme initial concentration vectors
 
@@ -238,16 +248,21 @@ switch ecm_options.initial_choice,
     display('  Choosing polytope center as starting point'); 
   case 'interval_center',
     display('  Choosing point close to center of allowed intervals as starting point'); 
-    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max, 1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
+    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max, 1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
   case 'mdf',
-    x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward),opt);
-    if ecm_mdf(x_start,pp) > 0, error('Thermodynamically infeasible reaction'); end
     display('  Choosing MDF solution as starting point'); 
+    x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
+    if ecm_mdf(x_start,pp) > 0, error('Thermodynamically infeasible reaction'); end
+  case 'given_x_start',
+    display('  Using given solution as a starting point');
+    x_start = ecm_options.x_start;
 end
 
 
 % --------------------------------------------------------------------------------------
 % run optimisations starting from x_start
+
+display('  Running optimisation using normal starting point');
 
 x_init         = x_start;
 c_init         = exp(x_init);
@@ -261,14 +276,12 @@ if find([A_forward.initial<0] .* [v~=0]),
   error('There is a thermodynamically infeasible reaction already in the starting point');
 end
 
-display('  Running optimisation using normal starting point');
-
 for it_method = 1:length(ecm_scores),
 
   ecm_score = ecm_scores{it_method};
   display(sprintf('   %s',ecm_score));
   
-  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation,opt);
+  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, Theta_min,opt);
 
   c.(ecm_score)         = my_c;
   u.(ecm_score)         = my_u;
@@ -321,7 +334,7 @@ for it_method = 1:length(ecm_scores),
 
   if ecm_options.multiple_starting_points,
   
-    display(sprintf('     Running optimisation from %d extreme starting points',size(X_extreme,2)));
+    display(sprintf('     Running optimisation with %d extreme starting points',size(X_extreme,2)));
     
     for itt = 1:size(X_extreme,2),
 
@@ -336,7 +349,7 @@ for it_method = 1:length(ecm_scores),
       A_forward_init(ind_not_scored) = nan;
       A_forward.initial(:,1+itt)     = A_forward_init;
       
-      [my_c, my_u, my_up, my_u_cost, my_A_forward] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation,opt);
+      [my_c, my_u, my_up, my_u_cost, my_A_forward] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, Theta_min,opt);
       
       c.(ecm_score)(:,1+itt)         = my_c;
       u.(ecm_score)(:,1+itt)         = my_u;
@@ -346,7 +359,7 @@ for it_method = 1:length(ecm_scores),
       
     end
     
-    score_from_standard_starting_point = u_cost.(ecm_score)(1)
+    score_from_standard_starting_point     = u_cost.(ecm_score)(1)
     best_score_in_multiple_starting_points = min(u_cost.(ecm_score))
     
     %% copy the best result to the first position

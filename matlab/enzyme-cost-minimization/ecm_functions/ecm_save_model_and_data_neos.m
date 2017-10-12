@@ -23,7 +23,11 @@ network.kinetics.type = 'cs';
 network_sbtab = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'write_enzyme_concentrations',0));
 
 quantity_type = network_sbtab.tables.Quantity.column.column.QuantityType;
-value         = network_sbtab.tables.Quantity.column.column.Value;
+if isfield(network_sbtab.tables.Quantity.column.column,'Value'),
+  value         = network_sbtab.tables.Quantity.column.column.Value;
+else
+  value         = network_sbtab.tables.Quantity.column.column.Mode;
+end
 compound      = network_sbtab.tables.Quantity.column.column.Compound;
 reaction      = network_sbtab.tables.Quantity.column.column.Reaction;
 

@@ -1,1 +1,0 @@
-%Demo files for Enzyme Cost Minimisation

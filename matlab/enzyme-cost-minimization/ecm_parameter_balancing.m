@@ -1,42 +1,36 @@
-function [r, r_orig, kinetic_data, r_samples, ecm_options, parameter_prior, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+function [r, r_orig, kinetic_data, r_samples, options, parameter_prior, r_mean, r_std] = ecm_parameter_balancing(network, options, kinetic_data);
 
-% ECM_PARAMETER_BALANCING - Prepare and run parameter balancing with standard options
+% ECM_PARAMETER_BALANCING - Run parameter balancing with standard options
 %
-% [r, r_orig, kinetic_data, r_samples, ecm_options, parameter_prior, r_std] = ecm_parameter_balancing(network, ecm_options, kinetic_data);
+% [r, r_orig, kinetic_data, r_samples, options, parameter_prior, r_std] = ecm_parameter_balancing(network, options, kinetic_data);
+%
+% Input
+%   network         Metabolic network data structure
+%   kinetic_data    Kinetic_data used
+%   options         Parameter balancing options used
 %
 % Output
-%   r        Kinetic constants (posterior model values; used as input in parameter balancing)
-%   r_orig   Original kinetic constants (used as input in parameter balancing)
-%   r_std    Kinetic constants (posterior standard deviations)
-% 
-% Uses (potentially) the following options from options.
-%   options.flag_given_kinetics
-%   options.reaction_column_name  (only if no kinetic data are given)
-%   options.compound_column_name  (only if no kinetic data are given)
-%   options.kcat_usage            {'use','none','forward'} (default: 'use')
-%   options.kcat_prior_median
-%   options.kcat_prior_log10_std
-%   options.kcat_lower
-%   options.kcatr_lower
-%   options.kcat_upper
-%   options.KM_lower
-%   options.Keq_upper
-%   options.parameter_prior_file
-%   options.GFE_fixed
-%   options.use_pseudo_values
-%   options.fix_Keq_in_sampling
+%   r               Kinetic constants (posterior mode values, respecting the linear constraints)
+%   r_orig          Original kinetic constants (used as input in parameter balancing)
+%   r_mean          Kinetic constants (posterior means, ignoring the  linear constraints)
+%   r_std           Kinetic constants (posterior standard deviations, ignoring the  linear constraints)
+%   r_samples       Kinetic constants sampled from the posterior
+%   options         Parameter balancing options used (for details, see parameter_balancing_kinetic.m)
+%   kinetic_data    Kinetic_data used (for details, see parameter_balancing_kinetic.m)
+%   parameter_prior Prior distributions used
 
-ecm_options = join_struct(ecm_default_options(network),ecm_options);
+options = join_struct(ecm_default_options(network),options);
 
 % legacy: this has been used in EFM paper and elsewhere!
-ecm_options.use_pseudo_values = 0; 
+
+options.use_pseudo_values = 0; 
 
 
 % --------------------------------------------------------------------------------------
 
-if ecm_options.flag_given_kinetics,
-  
-  %% If desired, use kinetic parameters directly from the model
+if options.flag_given_kinetics,
+  %% Instead of running parameter balancing, simply return the parameters found in the model
+
   switch network.kinetics.type 
     case {'cs','ms','ds'},
       display('  Using kinetic constants found in network.kinetics');
@@ -47,18 +41,18 @@ if ecm_options.flag_given_kinetics,
   end
 
 else
-  
   %% Use kinetic parameters from "kinetic_data" function argument and run parameter balancing
-  [r, r_orig, kinetic_data, r_samples, parameter_prior, r_std] = parameter_balancing_kinetic(network, kinetic_data,ecm_options);
+
+   [r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, r_std] = parameter_balancing_kinetic(network, kinetic_data, options);
 
 end
 
 % -----------------------------
 % if desired, insert original Keq values
 
-if ecm_options.insert_Keq_from_data,
+if options.insert_Keq_from_data,
   if length(Keq_given),
-    display('Using predefined equilibrium constants exactly'); 
+    display('Inserting predefined equilibrium constants'); 
     ind_finite = find(isfinite(Keq_given));
     r.Keq(ind_finite) = r_orig.Keq(ind_finite);
   end

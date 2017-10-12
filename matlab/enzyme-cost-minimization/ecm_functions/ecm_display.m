@@ -39,9 +39,11 @@ end
 
 %----------------------------------------------------------------------------------
 
+if isfield(graphics_options,'reaction_order_file'),
 if length(graphics_options.reaction_order_file),
   ecm_options.reaction_order   = load_any_table(graphics_options.reaction_order_file);
   ecm_options.metabolite_order = load_any_table(graphics_options.metabolite_order_file);
+end
 end
 
 % -----------------------------------
@@ -547,6 +549,7 @@ for it_method = 1:length(ecm_options.ecm_scores),
     gp.actvaluesmax = log10(100);
     gp.metvaluesmin = [];
     gp.metvaluesmax = [];
+    my_A_forward(my_A_forward<0) = nan;
     netgraph_concentrations(ecm_options.network_CoHid,[],log10(my_A_forward),1,gp); title('Optimised state: log10 Reaction affinities (kJ/mol)');
   
     figure(3); clf; 
@@ -600,7 +603,7 @@ end
   % enzyme predictions scatter plot
   
   figure(102); clf; hold on;
-  set(gcf,'Position',[150 350 600 600])
+  set(gcf,'Position',[50 50 600 600])
   is_finite  = isfinite(u.data) .* [v~=0];
   ind_finite = find(is_finite);
 
@@ -645,7 +648,7 @@ end
   % --------------------------------------
   % concentration predictions scatter plot
   
-  figure(103); clf; hold on; set(gcf,'Position',[150 350 600 600])
+  figure(103); clf; hold on; set(gcf,'Position',[700 50 600 600])
   
   my_c_min = min(nanmin(c.data(:)),nanmin(c.(this_ecm_score)(:)));
   my_c_max = max(nanmax(c.data(:)),nanmax(c.(this_ecm_score)(:)));

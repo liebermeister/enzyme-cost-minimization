@@ -4,7 +4,7 @@ function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinet
 %
 %ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
 %
-%For loading an SBtab file, see 'help ecm_load_model_and_data_sbtab'
+%For loading an SBtab file, see 'help load_model_and_data_sbtab'
 %
 %Arguments
 % filename               filename for SBtab output

@@ -1,15 +1,29 @@
-% Run standard version of the ECM workflow (wrapper function ecm_simple) on E coli model (from Noor et al 2016) 
-% prepared model and data files 
-%   ecoli_ccm_ProteinComposition_Haverkorn_ModelData.tsv
-%   ecoli_ccm_ProteinComposition_Haverkorn_ValidationData.tsv
+% --------------------------------------------------------------------------------------------------
+% Run ECM workflow (standard version, called by wrapper function ecm_simple) on E. coli model Noor et al 2016
+%
+% Use prepared model and data files 
+%   data/ecoli_noor_2016_ModelData.tsv
+%   data/ecoli_noor_2016_ValidationData.tsv
 %
 % Results are written to subdirectory "results"
 %
-% To see the workflow in more detail, have a look at demo_ecm_ecoli_ccm_ProteinUniform_Haverkorn.m
+% To see the workflow in more detail, have a look at demo_ecm_ecoli_noor_2016.m
+% --------------------------------------------------------------------------------------------------
 
-data_dir   = [ecm_BASEDIR filesep 'demo' filesep 'data'];
-result_dir = [ecm_BASEDIR filesep 'demo' filesep 'results'];
+data_dir        = [ecm_BASEDIR filesep 'demo' filesep 'data' filesep];
+result_dir      = [ecm_BASEDIR filesep 'demo' filesep 'results' filesep];
+model_data_file = [data_dir 'ecoli_noor_2016'];
 
-model_data_file = [data_dir '/ecoli_ccm_ProteinComposition_Haverkorn'];
+% --------------------------------------------------------
+% Run Parameter Balancing with standard settings
 
-[report, errors] = ecm_simple(model_data_file,result_dir,struct('make_report',1));
+options = struct('actions', 'parameter balancing');
+[report, errors] = ecm_simple(model_data_file, result_dir, options);
+
+% --------------------------------------------------------
+% Run Enzyme Cost Minimization with standard settings
+
+options = struct('actions', 'ecm','generate_report',1);
+options.replace_cofactors = {'ATP','ADP','Orthophosphate','NADH', 'NAD+', 'NADPH','NADP+','Ubiquinone', 'Ubiquinol'};
+
+[report, errors] = ecm_simple(model_data_file, result_dir, options);

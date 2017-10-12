@@ -1,207 +1,207 @@
-!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted concentations' Document='ECM metabolic state' Unit='mM' SBtabVersion='1.0'													
-!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	data	fixed	initial	mdf	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4geom	emc4cm
-concentration	_S__Malate	C00149	1.68	NaN	4.14	10	4.05	6.44	6.44	4.14	4.14	4.14	4.14
-concentration	Acetyl_CoA	C00024	0.505	NaN	8.91	0.133	0.1	8.91	8.91	8.91	8.91	8.92	8.91
-concentration	Fumarate	C00122	0.115	NaN	8.92	6.2	1.02	7.17	7.17	8.92	7.17	7.17	7.17
-concentration	cis_Aconitate	C00417	0.0161	NaN	0.00134	0.0584	0.03	0.00116	0.00116	0.00134	0.00116	0.00116	0.00116
-concentration	_6_Phospho_D_gluconate	C00345	3.79	NaN	8.91	0.133	0.1	8.91	0.248	8.91	8.91	8.91	8.91
-concentration	Orthophosphate	C00009	NaN	10	10	10	10	10	10	10	10	10	10
-concentration	Pyruvate	C00022	0.39	NaN	0.00112	0.0751	0.1	0.00151	0.00151	0.00112	0.00112	0.00112	0.00112
-concentration	NADPplus	C00006	0.00208	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
-concentration	NADPH	C00005	0.121	0.121	0.121	0.121	0.121	0.121	0.121	0.121	0.121	0.121	0.121
-concentration	NADH	C00004	0.0832	0.0832	0.0832	0.0832	0.0832	0.0832	0.0832	0.0832	0.0832	0.0832	0.0832
-concentration	NADplus	C00003	2.03	1	1	1	1	1	1	1	1	1	1
-concentration	ATP	C00002	5.04	5.04	5.04	5.04	5.04	5.04	5.04	5.04	5.04	5.04	5.04
-concentration	H2O	C00001	NaN	1	1	1	1	1	1	1	1	1	1
-concentration	_2_Oxoglutarate	C00026	0.454	NaN	0.00112	0.0751	0.1	0.00151	0.00151	0.00112	0.00112	0.00112	0.00112
-concentration	Oxaloacetate	C00036	NaN	NaN	0.00101	0.001	0.001	0.00101	0.00101	0.00101	0.00101	0.00101	0.00101
-concentration	Ubiquinone	C00399	NaN	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
-concentration	D_Erythrose_4_phosphate	C00279	NaN	NaN	0.00112	0.0751	0.1	0.00151	0.00179	0.00112	0.00112	0.00112	0.00112
-concentration	Ubiquinol	C00390	NaN	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
-concentration	ADP	C00008	0.676	0.676	0.676	0.676	0.676	0.676	0.676	0.676	0.676	0.676	0.676
-concentration	Isocitrate	C00311	0.02	NaN	0.00108	0.0245	0.0395	0.00119	0.00119	0.00108	0.00108	0.00108	0.00108
-concentration	D_Ribulose_5_phosphate	C00199	NaN	NaN	8.02	0.158	0.1	8.02	7.45	8.02	8.02	8.02	8.02
-concentration	D_Xylulose_5_phosphate	C00231	NaN	NaN	7.15	0.131	0.1	7.15	8.45	7.15	7.15	7.15	7.15
-concentration	D_Glucose_6_phosphate	C00092	2.65	NaN	9.03	0.284	0.165	9.03	9.5	9.03	9.03	9.03	9.03
-concentration	_3_Phospho_D_glyceroyl_phosphate	C00236	NaN	NaN	0.00133	0.00161	0.00322	0.00519	0.00519	0.00133	0.00519	0.00519	0.00519
-concentration	CoA	C00010	1.37	1	1	1	1	1	1	1	1	1	1
-concentration	CO2	C00011	NaN	0.01	0.01	0.01	0.01	0.01	0.01	0.01	0.01	0.01	0.01
-concentration	D_Ribose_5_phosphate	C00117	1.32	NaN	7.29	0.11	0.1	7.29	7.29	7.29	7.29	7.29	7.29
-concentration	Glycerone_phosphate	C00111	0.276	NaN	0.29	2.03	0.667	1.1	1.1	0.29	1.1	1.1	1.1
-concentration	D_Glucose	C00031	17.4	12	12	12	12	12	12	12	12	12	12
-concentration	D_Fructose_1_6_bisphosphate	C00354	7.6	NaN	9.28	2.36	0.253	9.63	9.63	9.28	9.63	9.63	9.63
-concentration	D_Glyceraldehyde_3_phosphate	C00118	NaN	NaN	0.03	0.0894	0.0725	0.117	0.117	0.03	0.117	0.117	0.117
-concentration	Phosphoenolpyruvate	C00074	0.178	NaN	0.00113	0.0226	0.1	0.00152	0.00152	0.00113	0.00113	0.00113	0.00113
-concentration	Citrate	C00158	3.68	NaN	0.0378	4.07	0.845	0.615	0.615	0.0378	0.615	0.615	0.615
-concentration	Succinyl_CoA	C00091	0.233	NaN	7.99	0.206	0.113	8.94	8.94	7.99	8.94	8.94	8.94
-concentration	_3_Phospho_D_glycerate	C00197	1.54	NaN	0.0068	0.152	0.229	0.182	0.182	0.0068	0.182	0.182	0.182
-concentration	D_Glucono_1_5_lactone_6_phosphate	C01236	NaN	NaN	0.00112	0.0751	0.1	0.00151	0.0692	0.00112	0.00112	0.00112	0.00112
-concentration	D_Fructose_6_phosphate	C00085	NaN	NaN	0.00111	0.0352	0.0605	0.00149	0.0637	0.00111	0.00111	0.00111	0.00111
-concentration	_2_Phospho_D_glycerate	C00631	NaN	NaN	0.00129	0.0117	0.0436	0.00114	0.00114	0.00129	0.00114	0.00114	0.00114
-concentration	Succinate	C00042	0.569	NaN	6.26	0.0596	0.0885	0.0791	0.0791	6.26	0.0791	0.0791	0.0791
-concentration	Sedoheptulose_7_phosphate	C05382	NaN	NaN	5.62	0.129	0.1	5.62	5.62	5.62	5.62	5.62	5.62
-%													
-!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted enzyme levels' Document='ECM metabolic state' Unit='mM' SBtabVersion='1.0'													
-!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	data	mdf	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4geom	emc4cm		
-concentration of enzyme	PTS_RPTSsy	RPTSsy	0.022	NaN	5.69e-05	5.69e-05	0.000101	5.73e-05	5.73e-05	0.000177	0.000545		
-concentration of enzyme	PGI_R02740	R02740	0.00764	NaN	0.0011	0.0011	0.00113	0.00111	0.00111	0.00111	0.00111		
-concentration of enzyme	PFK_R04779	R04779	0.00396	NaN	0.00126	0.0026	0.0272	0.00461	0.0363	0.0649	0.116		
-concentration of enzyme	ALD_R01070	R01070	0.0369	NaN	0.00128	0.00137	0.00139	0.00129	0.00151	0.00156	0.00162		
-concentration of enzyme	TIM_R01015	R01015	0.0124	NaN	9.88e-05	0.00413	0.00456	0.183	0.153	0.153	0.153		
-concentration of enzyme	GAP_R01061	R01061	0.0782	NaN	0.00684	4.4e+05	4.41e+05	2.16e+08	6.01e+05	1.38e+06	3.18e+06		
-concentration of enzyme	PGK_R01512	R01512	0.0665	NaN	0.0133	0.0156	4.09	0.0192	0.0278	0.0449	0.0727		
-concentration of enzyme	PGM_R01518	R01518	0.025	NaN	0.00165	0.0017	0.00171	5.83e+09	0.0111	0.0111	0.0111		
-concentration of enzyme	PGH_R00658	R00658	0.06	NaN	0.00464	0.00628	0.0147	0.82	0.959	0.959	0.959		
-concentration of enzyme	PYK_R00200	R00200	0.0179	NaN	0.000794	0.000794	0.00665	0.00254	0.00255	0.00636	0.0159		
-concentration of enzyme	PDH_R00209	R00209	0.00966	NaN	0.000131	0.000131	0.000774	0.000131	0.000132	0.000436	0.00145		
-concentration of enzyme	ZWF_R00835	R00835	0.00205	NaN	0.00104	0.00104	0.00105	0.00104	0.00104	0.00108	0.00111		
-concentration of enzyme	GLH_R02035	R02035	0.00299	NaN	0.000335	0.000479	0.00153	0.00429	0.0148	0.0148	0.0148		
-concentration of enzyme	PGD_R01528	R01528	0.0234	NaN	0.000378	0.000378	0.000532	0.000378	0.00038	0.000697	0.00128		
-concentration of enzyme	RPI_R01056	R01056	0.00458	NaN	3.55e-05	5.95e-05	0.000124	7.91e-05	0.000171	0.000171	0.000171		
-concentration of enzyme	RPE_R01529	R01529	0.00087	NaN	5.94e-05	7.72e-05	0.000179	8.36e-05	0.000267	0.000267	0.000267		
-concentration of enzyme	TXT_R01641	R01641	0.0077	NaN	0.000996	0.000998	0.00101	0.001	0.001	0.00108	0.00115		
-concentration of enzyme	TAL_R08575	R08575	0.0201	NaN	0.00696	0.00696	0.00696	0.007	0.00697	0.00836	0.01		
-concentration of enzyme	TXT_R01067	R01067	0.0077	NaN	0.000396	0.000396	0.000595	0.00715	0.00715	0.0293	0.12		
-concentration of enzyme	FBP_R00762	R00762	NaN	NaN	0	0	0	0	0	0	0		
-concentration of enzyme	CSN_R00351	R00351	0.0161	NaN	1.54e-05	1.54e-05	0.00107	1.55e-05	1.66e-05	7.53e-05	0.000344		
-concentration of enzyme	ACN_R01325	R01325	NaN	NaN	0.00522	0.00551	0.00552	1.56e+09	0.00928	0.00928	0.00928		
-concentration of enzyme	ACN_R01900	R01900	0.0136	NaN	0.00522	0.0239	0.0486	0.148	0.226	0.226	0.226		
-concentration of enzyme	ICD_R00709	R00709	0.0559	NaN	0.000219	0.000219	0.000219	0.00684	0.00684	0.0267	0.104		
-concentration of enzyme	KGD_R08549	R08549	0.00283	NaN	2.19e-05	2.19e-05	0.00013	2.33e-05	2.38e-05	0.00112	0.0525		
-concentration of enzyme	SCS_R00405	R00405	0.0103	NaN	0.000738	0.000747	0.000752	1.83e+07	0.000766	0.000995	0.00129		
-concentration of enzyme	SDH_R02164	R02164	0.00143	NaN	0.000105	0.000107	0.00977	0.000105	0.000185	0.000478	0.00124		
-concentration of enzyme	FUM_R01082	R01082	0.0031	NaN	0.000207	0.000267	0.000507	0.000239	0.000366	0.000366	0.000366		
-concentration of enzyme	MDH_R00342	R00342	0.0882	NaN	0.000354	0.000963	0.000963	0.0487	0.0556	0.116	0.161		
-concentration of enzyme	PPC_R00345	R00345	0.00603	NaN	0.000156	0.000156	0.103	0.239	0.239	0.284	0.339		
-%													
-!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted driving forces' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'													
-!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	initial	mdf	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4geom	emc4cm		
-Gibbs energy of reaction	PTS_RPTSsy	RPTSsy	36.7	42.3	46.6	36.7	36.6	36.7	36.7	36.7	36.7		
-Gibbs energy of reaction	PGI_R02740	R02740	19.8	2.69	-2.75e-15	19.1	9.92	19.8	19.8	19.8	19.8		
-Gibbs energy of reaction	PFK_R04779	R04779	1.01	13	19.8	1.65	11	1.01	0.917	0.917	0.917		
-Gibbs energy of reaction	ALD_R01070	R01070	13.2	2.24	-3.09e-10	6.59	6.59	13.2	6.59	6.59	6.59		
-Gibbs energy of reaction	TIM_R01015	R01015	0.12	2.25	1.24e-11	0.0601	0.0601	0.12	0.0601	0.0601	0.0601		
-Gibbs energy of reaction	GAP_R01061	R01061	1e-10	2.24	-3.39e-10	3.85e-08	3.85e-08	1e-10	3.85e-08	3.85e-08	3.85e-08		
-Gibbs energy of reaction	PGK_R01512	R01512	9.56	2.31	3.02	4.78	4.78	9.56	4.78	4.78	4.78		
-Gibbs energy of reaction	PGM_R01518	R01518	1e-10	2.24	5.63e-12	8.47	8.47	1e-10	8.47	8.47	8.47		
-Gibbs energy of reaction	PGH_R00658	R00658	4.38	2.44	2	3.34	3.34	4.38	4.07	4.07	4.07		
-Gibbs energy of reaction	PYK_R00200	R00200	19.7	16.7	19.7	19.7	19.7	19.7	19.7	19.7	19.7		
-Gibbs energy of reaction	PDH_R00209	R00209	28.2	49.1	50.5	28.9	28.9	28.2	28.2	28.2	28.2		
-Gibbs energy of reaction	ZWF_R00835	R00835	28.1	9.13	7.08	27.4	18	28.1	28.1	28.1	28.1		
-Gibbs energy of reaction	GLH_R02035	R02035	2.25	23.1	24.5	2.98	21.4	2.25	2.25	2.25	2.25		
-Gibbs energy of reaction	PGD_R01528	R01528	17.4	16.7	17.1	17.4	8.7	17.4	17.4	17.4	17.4		
-Gibbs energy of reaction	RPI_R01056	R01056	2.25	2.9	2.02	2.25	2.07	2.25	2.25	2.25	2.25		
-Gibbs energy of reaction	RPE_R01529	R01529	3.64	3.81	3.36	3.64	3.04	3.64	3.64	3.64	3.64		
-Gibbs energy of reaction	TXT_R01641	R01641	18	4.39	4.63	14.7	15.1	18	14.7	14.7	14.7		
-Gibbs energy of reaction	TAL_R08575	R08575	30	4.34	1.13	31.9	22.2	30	33.4	33.4	33.4		
-Gibbs energy of reaction	TXT_R01067	R01067	23.7	12.9	12.1	20.3	11.8	23.7	20.3	20.3	20.3		
-Gibbs energy of reaction	FBP_R00762	R00762	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN		
-Gibbs energy of reaction	CSN_R00351	R00351	32.4	10.4	13.6	25.5	25.5	32.4	25.5	25.5	25.5		
-Gibbs energy of reaction	ACN_R01325	R01325	1e-10	2.24	9.27e-11	7.28	7.28	1e-10	7.28	7.28	7.28		
-Gibbs energy of reaction	ACN_R01900	R01900	1.22	2.84	-1.97e-10	0.61	0.61	1.22	0.856	0.855	0.856		
-Gibbs energy of reaction	ICD_R00709	R00709	28.8	26.2	26.6	28.4	28.4	28.8	28.8	28.8	28.8		
-Gibbs energy of reaction	KGD_R08549	R08549	23.8	43.3	45.5	24.2	24.2	23.8	23.5	23.5	23.5		
-Gibbs energy of reaction	SCS_R00405	R00405	1e-10	2.47	-4.51e-10	11.1	11.1	1e-10	11.1	11.1	11.1		
-Gibbs energy of reaction	SDH_R02164	R02164	20.6	9.95	15.4	10.3	10.3	20.6	10.3	10.3	10.3		
-Gibbs energy of reaction	FUM_R01082	R01082	5.33	2.24	-2.75e-15	3.69	3.69	5.33	4.79	4.79	4.79		
-Gibbs energy of reaction	MDH_R00342	R00342	0.028	2.24	0	1.13	1.13	0.028	0.028	0.028	0.042		
-Gibbs energy of reaction	PPC_R00345	R00345	17.4	24.8	28.5	18.2	18.2	17.4	17.4	17.4	17.4		
-%													
-!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted enzyme capacities' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'													
-!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value										
-enzyme capacity	PTS_RPTSsy	RPTSsy	5.69e-05										
-enzyme capacity	PGI_R02740	R02740	0.0011										
-enzyme capacity	PFK_R04779	R04779	0.00126										
-enzyme capacity	ALD_R01070	R01070	0.00128										
-enzyme capacity	TIM_R01015	R01015	9.88e-05										
-enzyme capacity	GAP_R01061	R01061	0.00684										
-enzyme capacity	PGK_R01512	R01512	0.0133										
-enzyme capacity	PGM_R01518	R01518	0.00165										
-enzyme capacity	PGH_R00658	R00658	0.00464										
-enzyme capacity	PYK_R00200	R00200	0.000794										
-enzyme capacity	PDH_R00209	R00209	0.000131										
-enzyme capacity	ZWF_R00835	R00835	0.00104										
-enzyme capacity	GLH_R02035	R02035	0.000335										
-enzyme capacity	PGD_R01528	R01528	0.000378										
-enzyme capacity	RPI_R01056	R01056	3.55e-05										
-enzyme capacity	RPE_R01529	R01529	5.94e-05										
-enzyme capacity	TXT_R01641	R01641	0.000996										
-enzyme capacity	TAL_R08575	R08575	0.00696										
-enzyme capacity	TXT_R01067	R01067	0.000396										
-enzyme capacity	FBP_R00762	R00762	0										
-enzyme capacity	CSN_R00351	R00351	1.54e-05										
-enzyme capacity	ACN_R01325	R01325	0.00522										
-enzyme capacity	ACN_R01900	R01900	0.00522										
-enzyme capacity	ICD_R00709	R00709	0.000219										
-enzyme capacity	KGD_R08549	R08549	2.19e-05										
-enzyme capacity	SCS_R00405	R00405	0.000738										
-enzyme capacity	SDH_R02164	R02164	0.000105										
-enzyme capacity	FUM_R01082	R01082	0.000207										
-enzyme capacity	MDH_R00342	R00342	0.000354										
-enzyme capacity	PPC_R00345	R00345	0.000156										
-%													
-!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted energetic efficiencies' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'													
-!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	mdf	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4geom	emc4cm			
-energetic efficiency	PTS_RPTSsy	RPTSsy	1	1	1	1	1	1	1	1			
-energetic efficiency	PGI_R02740	R02740	1	1	1	0.982	1	1	1	1			
-energetic efficiency	PFK_R04779	R04779	1	1	0.485	0.988	0.335	0.309	0.309	0.309			
-energetic efficiency	ALD_R01070	R01070	1	1	0.93	0.93	0.995	0.93	0.93	0.93			
-energetic efficiency	TIM_R01015	R01015	1	1	0.0239	0.0239	0.0473	0.0239	0.0239	0.0239			
-energetic efficiency	GAP_R01061	R01061	1	1	1.55e-08	1.55e-08	4.03e-11	1.55e-08	1.55e-08	1.55e-08			
-energetic efficiency	PGK_R01512	R01512	1	1	0.855	0.855	0.979	0.855	0.855	0.855			
-energetic efficiency	PGM_R01518	R01518	1	1	0.967	0.967	4.03e-11	0.967	0.967	0.967			
-energetic efficiency	PGH_R00658	R00658	1	1	0.74	0.74	0.829	0.806	0.806	0.806			
-energetic efficiency	PYK_R00200	R00200	1	1	1	1	1	1	1	1			
-energetic efficiency	PDH_R00209	R00209	1	1	1	1	1	1	1	1			
-energetic efficiency	ZWF_R00835	R00835	1	1	1	0.999	1	1	1	1			
-energetic efficiency	GLH_R02035	R02035	1	1	0.699	1	0.597	0.597	0.597	0.597			
-energetic efficiency	PGD_R01528	R01528	1	1	0.999	0.97	0.999	0.999	0.999	0.999			
-energetic efficiency	RPI_R01056	R01056	1	1	0.597	0.566	0.597	0.597	0.597	0.597			
-energetic efficiency	RPE_R01529	R01529	1	1	0.77	0.707	0.77	0.77	0.77	0.77			
-energetic efficiency	TXT_R01641	R01641	1	1	0.997	0.998	0.999	0.997	0.997	0.997			
-energetic efficiency	TAL_R08575	R08575	1	1	1	1	1	1	1	1			
-energetic efficiency	TXT_R01067	R01067	1	1	1	0.992	1	1	1	1			
-energetic efficiency	FBP_R00762	R00762	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN			
-energetic efficiency	CSN_R00351	R00351	1	1	1	1	1	1	1	1			
-energetic efficiency	ACN_R01325	R01325	1	1	0.947	0.947	4.03e-11	0.947	0.947	0.947			
-energetic efficiency	ACN_R01900	R01900	1	1	0.218	0.218	0.389	0.292	0.292	0.292			
-energetic efficiency	ICD_R00709	R00709	1	1	1	1	1	1	1	1			
-energetic efficiency	KGD_R08549	R08549	1	1	1	1	1	1	1	1			
-energetic efficiency	SCS_R00405	R00405	1	1	0.989	0.989	4.03e-11	0.989	0.989	0.989			
-energetic efficiency	SDH_R02164	R02164	1	1	0.984	0.984	1	0.984	0.984	0.984			
-energetic efficiency	FUM_R01082	R01082	1	1	0.775	0.775	0.884	0.855	0.855	0.855			
-energetic efficiency	MDH_R00342	R00342	1	1	0.367	0.367	0.0112	0.0112	0.0112	0.0168			
-energetic efficiency	PPC_R00345	R00345	1	1	0.999	0.999	0.999	0.999	0.999	0.999			
-%													
-!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted saturation efficiencies' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'													
-!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	mdf	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4geom	emc4cm			
-saturation efficiency	PTS_RPTSsy	RPTSsy	1	1	1	1	0.993	0.993	0.322	0.104			
-saturation efficiency	PGI_R02740	R02740	1	1	1	1	0.989	0.988	0.988	0.988			
-saturation efficiency	PFK_R04779	R04779	1	1	1	1	0.819	0.113	0.063	0.0352			
-saturation efficiency	ALD_R01070	R01070	1	1	1	1	0.992	0.912	0.879	0.847			
-saturation efficiency	TIM_R01015	R01015	1	1	1	1	0.0114	0.027	0.027	0.027			
-saturation efficiency	GAP_R01061	R01061	1	1	1	1	0.784	0.732	0.318	0.138			
-saturation efficiency	PGK_R01512	R01512	1	1	1	1	0.71	0.561	0.347	0.215			
-saturation efficiency	PGM_R01518	R01518	1	1	1	1	0.00701	0.153	0.153	0.153			
-saturation efficiency	PGH_R00658	R00658	1	1	1	1	0.00683	0.00601	0.00601	0.00601			
-saturation efficiency	PYK_R00200	R00200	1	1	1	1	0.313	0.312	0.125	0.0501			
-saturation efficiency	PDH_R00209	R00209	1	1	1	1	0.999	0.992	0.299	0.0903			
-saturation efficiency	ZWF_R00835	R00835	1	1	1	1	0.999	0.999	0.967	0.935			
-saturation efficiency	GLH_R02035	R02035	1	1	1	1	0.131	0.0379	0.0379	0.0379			
-saturation efficiency	PGD_R01528	R01528	1	1	1	1	1	0.996	0.543	0.295			
-saturation efficiency	RPI_R01056	R01056	1	1	1	1	0.753	0.349	0.349	0.349			
-saturation efficiency	RPE_R01529	R01529	1	1	1	1	0.923	0.289	0.289	0.289			
-saturation efficiency	TXT_R01641	R01641	1	1	1	1	0.995	0.995	0.928	0.866			
-saturation efficiency	TAL_R08575	R08575	1	1	1	1	0.994	0.999	0.832	0.694			
-saturation efficiency	TXT_R01067	R01067	1	1	1	1	0.0553	0.0553	0.0135	0.00329			
-saturation efficiency	FBP_R00762	R00762	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN			
-saturation efficiency	CSN_R00351	R00351	1	1	1	1	0.993	0.93	0.205	0.0447			
-saturation efficiency	ACN_R01325	R01325	1	1	1	1	0.0831	0.594	0.594	0.594			
-saturation efficiency	ACN_R01900	R01900	1	1	1	1	0.0908	0.0791	0.079	0.0791			
-saturation efficiency	ICD_R00709	R00709	1	1	1	1	0.032	0.032	0.00821	0.00211			
-saturation efficiency	KGD_R08549	R08549	1	1	1	1	0.939	0.92	0.0196	0.000418			
-saturation efficiency	SCS_R00405	R00405	1	1	1	1	1	0.975	0.75	0.577			
-saturation efficiency	SDH_R02164	R02164	1	1	1	1	0.996	0.576	0.223	0.0863			
-saturation efficiency	FUM_R01082	R01082	1	1	1	1	0.978	0.661	0.661	0.661			
-saturation efficiency	MDH_R00342	R00342	1	1	1	1	0.647	0.565	0.272	0.131			
-saturation efficiency	PPC_R00345	R00345	1	1	1	1	0.000652	0.000652	0.000547	0.00046			
+!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted concentations' Document='ECM metabolic state' Unit='mM' SBtabVersion='1.0'											
+!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	data	fixed	initial	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4cm
+concentration	_S__Malate	C00149	1.69	NaN	1.48	1.78	1.74	2.47	1.9	1.9	3.27
+concentration	Acetyl_CoA	C00024	0.606	NaN	8.91	0.1	0.1	1.02	0.1	0.119	0.408
+concentration	Fumarate	C00122	0.548	NaN	8.82	0.444	0.488	0.768	0.55	0.611	1.01
+concentration	cis_Aconitate	C00417	0.0161	NaN	0.00125	0.0298	0.0323	0.0174	0.0817	0.0756	0.0827
+concentration	_6_Phospho_D_gluconate	C00345	0.279	NaN	8.91	0.1	0.1	0.097	0.1	0.0989	0.165
+concentration	Orthophosphate	C00009	NaN	10	10	10	10	10	10	10	10
+concentration	Pyruvate	C00022	1.41	NaN	0.00112	0.1	0.1	0.0201	0.1	0.0783	0.0886
+concentration	NADPplus	C00006	0.0113	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
+concentration	NADPH	C00005	0.114	0.114	0.114	0.114	0.114	0.114	0.114	0.114	0.114
+concentration	NADH	C00004	0.0274	0.0274	0.0274	0.0274	0.0274	0.0274	0.0274	0.0274	0.0274
+concentration	NADplus	C00003	2.11	1	1	1	1	1	1	1	1
+concentration	ATP	C00002	3.45	3.45	3.45	3.45	3.45	3.45	3.45	3.45	3.45
+concentration	H2O	C00001	NaN	1	1	1	1	1	1	1	1
+concentration	_2_Oxoglutarate	C00026	0.637	NaN	0.00112	0.1	0.1	0.1	0.1	0.1	0.119
+concentration	Oxaloacetate	C00036	NaN	NaN	0.00102	0.00126	0.00118	0.00168	0.00126	0.00123	0.00202
+concentration	Ubiquinone	C00399	NaN	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
+concentration	D_Erythrose_4_phosphate	C00279	0.0266	NaN	0.00112	0.1	0.0735	0.0712	0.123	0.116	0.0947
+concentration	Ubiquinol	C00390	NaN	0.1	0.1	0.1	0.1	0.1	0.1	0.1	0.1
+concentration	ADP	C00008	0.605	0.605	0.605	0.605	0.605	0.605	0.605	0.605	0.605
+concentration	Isocitrate	C00311	0.00816	NaN	0.00108	0.0392	0.0111	0.00437	0.0202	0.0174	0.0267
+concentration	D_Ribulose_5_phosphate	C00199	0.659	NaN	7.94	0.1	0.101	0.104	0.166	0.176	0.19
+concentration	D_Xylulose_5_phosphate	C00231	0.595	NaN	7.08	0.1	0.102	0.122	0.41	0.397	0.492
+concentration	D_Glucose_6_phosphate	C00092	0.949	NaN	9.03	0.166	0.239	0.329	0.367	0.53	0.914
+concentration	_3_Phospho_D_glyceroyl_phosphate	C00236	0.0508	NaN	0.00148	0.00792	0.0041	0.0116	0.0062	0.00588	0.00784
+concentration	CoA	C00010	1.37	1	1	1	1	1	1	1	1
+concentration	CO2	C00011	NaN	0.01	0.01	0.01	0.01	0.01	0.01	0.01	0.01
+concentration	D_Ribose_5_phosphate	C00117	0.23	NaN	7.17	0.1	0.101	0.119	0.238	0.244	0.306
+concentration	Glycerone_phosphate	C00111	1.32	NaN	0.114	0.576	0.509	1.18	0.965	0.943	1.93
+concentration	D_Glucose	C00031	17.4	12	12	12	12	12	12	12	12
+concentration	D_Fructose_1_6_bisphosphate	C00354	1.16	NaN	9.04	0.188	0.373	1.49	1.09	1.44	5.54
+concentration	D_Glyceraldehyde_3_phosphate	C00118	NaN	NaN	0.0115	0.0618	0.0511	0.12	0.0854	0.0787	0.175
+concentration	Phosphoenolpyruvate	C00074	0.353	NaN	0.00115	0.1	0.0702	0.019	0.0846	0.0503	0.0889
+concentration	Citrate	C00158	0.703	NaN	0.0358	0.857	2.79	1.28	6.85	7.7	7.39
+concentration	Succinyl_CoA	C00091	0.233	NaN	8.91	0.1	0.131	0.156	0.132	0.159	0.408
+concentration	_3_Phospho_D_glycerate	C00197	0.796	NaN	0.00705	0.231	0.315	0.0529	1	1.07	1.27
+concentration	D_Glucono_1_5_lactone_6_phosphate	C01236	NaN	NaN	0.00112	0.1	0.0996	0.0994	0.1	0.102	0.103
+concentration	D_Fructose_6_phosphate	C00085	0.336	NaN	0.00111	0.0603	0.0308	0.0426	0.0365	0.0305	0.0704
+concentration	_2_Phospho_D_glycerate	C00631	NaN	NaN	0.00133	0.0434	0.0407	0.00832	0.12	0.0827	0.101
+concentration	Succinate	C00042	1.19	NaN	7.94	0.1	0.0763	0.0914	0.0767	0.0635	0.0757
+concentration	Sedoheptulose_7_phosphate	C05382	NaN	NaN	5.62	0.1	0.133	0.118	0.261	0.282	0.379
+%											
+!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted enzyme levels' Document='ECM metabolic state' Unit='mM' SBtabVersion='1.0'											
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	data	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4cm		
+concentration of enzyme	PTS_RPTSsy	RPTSsy	0.022	0.0145	0.0145	0.0149	0.0145	0.0145	0.0159		
+concentration of enzyme	PGI_R02740	R02740	0.00764	0.0102	0.0158	0.0179	0.0196	0.0242	0.0276		
+concentration of enzyme	PFK_R04779	R04779	0.00396	0.00119	0.00119	0.00847	0.00127	0.00649	0.0212		
+concentration of enzyme	ALD_R01070	R01070	0.0369	0.0142	0.0225	0.0312	0.0285	0.0374	0.0541		
+concentration of enzyme	TIM_R01015	R01015	0.0124	0.000134	0.00206	0.00302	0.00745	0.0115	0.0134		
+concentration of enzyme	GAP_R01061	R01061	0.0782	0.00745	0.0198	0.0304	0.0261	0.0333	0.0911		
+concentration of enzyme	PGK_R01512	R01512	0.0665	0.00271	0.00353	0.0739	0.00579	0.0133	0.0172		
+concentration of enzyme	PGM_R01518	R01518	0.025	0.00178	0.0057	0.0126	0.0122	0.0293	0.0296		
+concentration of enzyme	PGH_R00658	R00658	0.06	0.00477	0.00713	0.0278	0.0248	0.0406	0.0417		
+concentration of enzyme	PYK_R00200	R00200	0.0179	0.0026	0.0026	0.0183	0.00368	0.00687	0.0194		
+concentration of enzyme	PDH_R00209	R00209	0.00966	0.00464	0.00464	0.0047	0.00464	0.00464	0.00537		
+concentration of enzyme	ZWF_R00835	R00835	0.00205	0.000972	0.00101	0.00134	0.001	0.000999	0.00111		
+concentration of enzyme	GLH_R02035	R02035	0.00299	0.000326	0.000326	0.000644	0.000372	0.000513	0.000604		
+concentration of enzyme	PGD_R01528	R01528	0.0234	0.000653	0.000654	0.000662	0.000679	0.000681	0.00602		
+concentration of enzyme	RPI_R01056	R01056	0.00458	3.67e-05	6.6e-05	0.000158	0.00115	0.00113	0.00144		
+concentration of enzyme	RPE_R01529	R01529	0.00087	6.13e-05	8.26e-05	0.00019	0.000804	0.00126	0.00164		
+concentration of enzyme	TXT_R01641	R01641	0.0077	0.00103	0.0012	0.00257	0.0112	0.0113	0.0164		
+concentration of enzyme	TAL_R08575	R08575	0.0201	0.00682	0.00912	0.00987	0.0154	0.0165	0.0256		
+concentration of enzyme	TXT_R01067	R01067	0.0077	0.000406	0.000407	0.000651	0.00525	0.00573	0.00997		
+concentration of enzyme	FBP_R00762	R00762	NaN	0	0	0	0	0	0		
+concentration of enzyme	CSN_R00351	R00351	0.0161	3.14e-05	3.16e-05	0.0233	7.86e-05	0.00177	0.0143		
+concentration of enzyme	ACN_R01325	R01325	0.0136	0.0449	0.0671	0.0746	0.0727	0.0773	0.0836		
+concentration of enzyme	ACN_R01900	R01900	0.0136	0.0464	0.0627	0.0718	0.0754	0.0783	0.085		
+concentration of enzyme	ICD_R00709	R00709	0.0559	0.000298	0.000298	0.0003	0.00176	0.002	0.0188		
+concentration of enzyme	KGD_R08549	R08549	0.00283	8.04e-05	8.04e-05	8.05e-05	8.08e-05	8.08e-05	0.00199		
+concentration of enzyme	SCS_R00405	R00405	0.0103	0.000876	0.00204	0.00275	0.00206	0.00372	0.0127		
+concentration of enzyme	SDH_R02164	R02164	0.00143	0.000418	0.000419	0.00394	0.000495	0.000515	0.00138		
+concentration of enzyme	FUM_R01082	R01082	0.0031	0.000236	0.00206	0.00499	0.00259	0.00428	0.00482		
+concentration of enzyme	MDH_R00342	R00342	0.0882	7.51e-05	0.00186	0.00209	0.00301	0.00432	0.0076		
+concentration of enzyme	PPC_R00345	R00345	0.00603	9.2e-05	9.2e-05	0.00827	0.00122	0.00199	0.00231		
+%											
+!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted driving forces' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'											
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	initial	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4cm		
+Gibbs energy of reaction	PTS_RPTSsy	RPTSsy	45	54.9	53.1	53.1	52.5	50.9	50.7		
+Gibbs energy of reaction	PGI_R02740	R02740	19.8	0.00151	2.57	2.56	3.22	4.57	3.85		
+Gibbs energy of reaction	PFK_R04779	R04779	0.522	20	16.7	14	14.4	13.3	12		
+Gibbs energy of reaction	ALD_R01070	R01070	17.8	0.00209	2.47	1.7	2.27	3.23	2.81		
+Gibbs energy of reaction	TIM_R01015	R01015	0.153	1.99e-05	0.167	0.125	0.479	0.623	0.413		
+Gibbs energy of reaction	GAP_R01061	R01061	0.0011	0.0011	1.17	0.697	1.41	1.34	2.61		
+Gibbs energy of reaction	PGK_R01512	R01512	10.5	6.02	3.62	10.6	1.77	1.48	1.76		
+Gibbs energy of reaction	PGM_R01518	R01518	0.000264	0.000264	0.93	0.444	1.12	2.2	2.15		
+Gibbs energy of reaction	PGH_R00658	R00658	4.45	2.02	2.74	2.05	4.96	5.32	4.4		
+Gibbs energy of reaction	PYK_R00200	R00200	20.6	20.5	19.6	20.4	20.1	19.4	20.5		
+Gibbs energy of reaction	PDH_R00209	R00209	33.6	55.9	55.9	46.1	55.8	54.8	52.1		
+Gibbs energy of reaction	ZWF_R00835	R00835	28.3	7.28	8.19	8.99	9.24	10.1	11.4		
+Gibbs energy of reaction	GLH_R02035	R02035	2.38	24.6	24.6	24.7	24.6	24.7	23.5		
+Gibbs energy of reaction	PGD_R01528	R01528	17.6	17.3	17.3	17.1	16.1	15.9	17		
+Gibbs energy of reaction	RPI_R01056	R01056	2.28	2.03	2.01	1.71	1.13	1.22	0.849		
+Gibbs energy of reaction	RPE_R01529	R01529	3.66	3.38	3.35	2.98	1.13	1.36	1.02		
+Gibbs energy of reaction	TXT_R01641	R01641	20.4	5.05	4.88	3.9	7.51	7.51	5.88		
+Gibbs energy of reaction	TAL_R08575	R08575	27.6	0.748	3.41	4.52	4.66	5.25	6.38		
+Gibbs energy of reaction	TXT_R01067	R01067	26.1	12.6	14	11.5	17	17.4	13.4		
+Gibbs energy of reaction	FBP_R00762	R00762	NaN	NaN	NaN	NaN	NaN	NaN	NaN		
+Gibbs energy of reaction	CSN_R00351	R00351	35	16.6	13.5	22.1	11.4	11.5	15.9		
+Gibbs energy of reaction	ACN_R01325	R01325	0.00664	0.00664	2.74	2.33	2.66	3.14	2.82		
+Gibbs energy of reaction	ACN_R01900	R01900	1.04	0.00687	3.34	4.11	4.15	4.33	3.49		
+Gibbs energy of reaction	ICD_R00709	R00709	31.7	29.4	26.3	24	27.8	27.4	28.1		
+Gibbs energy of reaction	KGD_R08549	R08549	26.4	48.7	48	47.6	48	47.5	45.6		
+Gibbs energy of reaction	SCS_R00405	R00405	0.339	0.0534	1.39	1.37	1.4	2.34	4.23		
+Gibbs energy of reaction	SDH_R02164	R02164	21.3	17.9	17	16.3	16.7	16	15.2		
+Gibbs energy of reaction	FUM_R01082	R01082	7.87	3.49e-05	0.302	0.55	0.368	0.628	0.536		
+Gibbs energy of reaction	MDH_R00342	R00342	0.0607	1.11e-05	0.102	0.0908	0.165	0.234	0.34		
+Gibbs energy of reaction	PPC_R00345	R00345	17.4	28	27.3	23.1	27.6	26.3	26.5		
+%											
+!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted enzyme capacities' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'											
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value								
+enzyme capacity	PTS_RPTSsy	RPTSsy	0.0145								
+enzyme capacity	PGI_R02740	R02740	0.0102								
+enzyme capacity	PFK_R04779	R04779	0.00119								
+enzyme capacity	ALD_R01070	R01070	0.0142								
+enzyme capacity	TIM_R01015	R01015	0.000134								
+enzyme capacity	GAP_R01061	R01061	0.00745								
+enzyme capacity	PGK_R01512	R01512	0.00271								
+enzyme capacity	PGM_R01518	R01518	0.00178								
+enzyme capacity	PGH_R00658	R00658	0.00477								
+enzyme capacity	PYK_R00200	R00200	0.0026								
+enzyme capacity	PDH_R00209	R00209	0.00464								
+enzyme capacity	ZWF_R00835	R00835	0.000972								
+enzyme capacity	GLH_R02035	R02035	0.000326								
+enzyme capacity	PGD_R01528	R01528	0.000653								
+enzyme capacity	RPI_R01056	R01056	3.67e-05								
+enzyme capacity	RPE_R01529	R01529	6.13e-05								
+enzyme capacity	TXT_R01641	R01641	0.00103								
+enzyme capacity	TAL_R08575	R08575	0.00682								
+enzyme capacity	TXT_R01067	R01067	0.000406								
+enzyme capacity	FBP_R00762	R00762	0								
+enzyme capacity	CSN_R00351	R00351	3.14e-05								
+enzyme capacity	ACN_R01325	R01325	0.0449								
+enzyme capacity	ACN_R01900	R01900	0.0464								
+enzyme capacity	ICD_R00709	R00709	0.000298								
+enzyme capacity	KGD_R08549	R08549	8.04e-05								
+enzyme capacity	SCS_R00405	R00405	0.000876								
+enzyme capacity	SDH_R02164	R02164	0.000418								
+enzyme capacity	FUM_R01082	R01082	0.000236								
+enzyme capacity	MDH_R00342	R00342	7.51e-05								
+enzyme capacity	PPC_R00345	R00345	9.2e-05								
+%											
+!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted energetic efficiencies' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'											
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4cm			
+energetic efficiency	PTS_RPTSsy	RPTSsy	1	1	1	1	1	1			
+energetic efficiency	PGI_R02740	R02740	1	0.645	0.644	0.727	0.842	0.788			
+energetic efficiency	PFK_R04779	R04779	1	0.999	0.997	0.997	0.995	0.992			
+energetic efficiency	ALD_R01070	R01070	1	0.63	0.497	0.6	0.728	0.678			
+energetic efficiency	TIM_R01015	R01015	1	0.0653	0.049	0.176	0.222	0.154			
+energetic efficiency	GAP_R01061	R01061	1	0.375	0.245	0.435	0.418	0.651			
+energetic efficiency	PGK_R01512	R01512	1	0.767	0.986	0.509	0.449	0.509			
+energetic efficiency	PGM_R01518	R01518	1	0.313	0.164	0.363	0.589	0.579			
+energetic efficiency	PGH_R00658	R00658	1	0.668	0.562	0.865	0.883	0.83			
+energetic efficiency	PYK_R00200	R00200	1	1	1	1	1	1			
+energetic efficiency	PDH_R00209	R00209	1	1	1	1	1	1			
+energetic efficiency	ZWF_R00835	R00835	1	0.963	0.973	0.976	0.983	0.99			
+energetic efficiency	GLH_R02035	R02035	1	1	1	1	1	1			
+energetic efficiency	PGD_R01528	R01528	1	0.999	0.999	0.998	0.998	0.999			
+energetic efficiency	RPI_R01056	R01056	1	0.556	0.498	0.367	0.388	0.29			
+energetic efficiency	RPE_R01529	R01529	1	0.742	0.7	0.367	0.422	0.338			
+energetic efficiency	TXT_R01641	R01641	1	0.86	0.793	0.952	0.952	0.907			
+energetic efficiency	TAL_R08575	R08575	1	0.748	0.838	0.847	0.88	0.924			
+energetic efficiency	TXT_R01067	R01067	1	0.996	0.99	0.999	0.999	0.996			
+energetic efficiency	FBP_R00762	R00762	NaN	NaN	NaN	NaN	NaN	NaN			
+energetic efficiency	CSN_R00351	R00351	1	0.996	1	0.99	0.99	0.998			
+energetic efficiency	ACN_R01325	R01325	1	0.668	0.61	0.658	0.719	0.679			
+energetic efficiency	ACN_R01900	R01900	1	0.74	0.809	0.812	0.826	0.755			
+energetic efficiency	ICD_R00709	R00709	1	1	1	1	1	1			
+energetic efficiency	KGD_R08549	R08549	1	1	1	1	1	1			
+energetic efficiency	SCS_R00405	R00405	1	0.43	0.425	0.431	0.61	0.818			
+energetic efficiency	SDH_R02164	R02164	1	0.999	0.999	0.999	0.998	0.998			
+energetic efficiency	FUM_R01082	R01082	1	0.115	0.199	0.138	0.224	0.195			
+energetic efficiency	MDH_R00342	R00342	1	0.0403	0.036	0.0643	0.0902	0.128			
+energetic efficiency	PPC_R00345	R00345	1	1	1	1	1	1			
+%											
+!!SBtab DocumentName='Model' TableType='Quantity' TableName='Predicted saturation efficiencies' Document='ECM metabolic state' Unit='kJ/mol' SBtabVersion='1.0'											
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	emc1	emc2s	emc2sp	emc3s	emc3sp	emc4cm			
+saturation efficiency	PTS_RPTSsy	RPTSsy	1	1	1	1	1	0.912			
+saturation efficiency	PGI_R02740	R02740	1	1	1	0.715	0.5	0.47			
+saturation efficiency	PFK_R04779	R04779	1	1	1	0.935	0.184	0.0565			
+saturation efficiency	ALD_R01070	R01070	1	1	1	0.827	0.52	0.386			
+saturation efficiency	TIM_R01015	R01015	1	1	1	0.103	0.0525	0.0654			
+saturation efficiency	GAP_R01061	R01061	1	1	1	0.658	0.535	0.126			
+saturation efficiency	PGK_R01512	R01512	1	1	1	0.918	0.454	0.309			
+saturation efficiency	PGM_R01518	R01518	1	1	1	0.404	0.103	0.104			
+saturation efficiency	PGH_R00658	R00658	1	1	1	0.222	0.133	0.138			
+saturation efficiency	PYK_R00200	R00200	1	1	1	0.706	0.379	0.134			
+saturation efficiency	PDH_R00209	R00209	1	1	1	1	1	0.863			
+saturation efficiency	ZWF_R00835	R00835	1	1	1	0.994	0.99	0.888			
+saturation efficiency	GLH_R02035	R02035	1	1	1	0.876	0.636	0.539			
+saturation efficiency	PGD_R01528	R01528	1	1	1	0.964	0.96	0.109			
+saturation efficiency	RPI_R01056	R01056	1	1	1	0.0866	0.0838	0.0881			
+saturation efficiency	RPE_R01529	R01529	1	1	1	0.208	0.115	0.11			
+saturation efficiency	TXT_R01641	R01641	1	1	1	0.0969	0.0957	0.0692			
+saturation efficiency	TAL_R08575	R08575	1	1	1	0.522	0.469	0.288			
+saturation efficiency	TXT_R01067	R01067	1	1	1	0.0774	0.0709	0.0409			
+saturation efficiency	FBP_R00762	R00762	NaN	NaN	NaN	NaN	NaN	NaN			
+saturation efficiency	CSN_R00351	R00351	1	1	1	0.404	0.0179	0.00221			
+saturation efficiency	ACN_R01325	R01325	1	1	1	0.938	0.808	0.79			
+saturation efficiency	ACN_R01900	R01900	1	1	1	0.758	0.718	0.723			
+saturation efficiency	ICD_R00709	R00709	1	1	1	0.169	0.149	0.0158			
+saturation efficiency	KGD_R08549	R08549	1	1	1	0.996	0.996	0.0404			
+saturation efficiency	SCS_R00405	R00405	1	1	1	0.985	0.385	0.084			
+saturation efficiency	SDH_R02164	R02164	1	1	1	0.847	0.813	0.303			
+saturation efficiency	FUM_R01082	R01082	1	1	1	0.66	0.246	0.251			
+saturation efficiency	MDH_R00342	R00342	1	1	1	0.389	0.193	0.0771			
+saturation efficiency	PPC_R00345	R00345	1	1	1	0.0753	0.0462	0.0397			
