@@ -49,6 +49,7 @@ else
   sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'document_name', options.document_name));
 end
 
+display(sprintf(''));
 % model tables ('Compound', 'Reaction', 'QuantityData')
 display(sprintf('Writing model file %s',  [filename '_ModelState.tsv']));
 sbtab_document_save_to_one(sbtab_document,[filename '_ModelState.tsv'],0);
@@ -59,7 +60,7 @@ sbtab_document_save_to_one(sbtab_document,[filename '_ModelState.tsv'],0);
 
 fn = fieldnames(c); 
 
-c_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted concentations','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID});
+c_table = sbtab_table_construct(struct('DocumentName', options.document_name, 'TableType','Quantity','TableName','Predicted concentrations','Document','ECM metabolic state','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID});
 
 for it = 1:length(fn),
   if length(c.(fn{it})),

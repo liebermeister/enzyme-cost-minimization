@@ -1,13 +1,13 @@
-function [r, r_orig, kinetic_data, r_samples, options, parameter_prior, r_mean, r_std] = ecm_parameter_balancing(network, options, kinetic_data);
+function [r, r_orig, kinetic_data, r_samples, pb_options, parameter_prior, r_mean, r_std] = ecm_parameter_balancing(network, pb_options, kinetic_data);
 
 % ECM_PARAMETER_BALANCING - Run parameter balancing with standard options
 %
-% [r, r_orig, kinetic_data, r_samples, options, parameter_prior, r_std] = ecm_parameter_balancing(network, options, kinetic_data);
+% [r, r_orig, kinetic_data, r_samples, pb_options, parameter_prior, r_std] = ecm_parameter_balancing(network, pb_options, kinetic_data);
 %
 % Input
 %   network         Metabolic network data structure
 %   kinetic_data    Kinetic_data used
-%   options         Parameter balancing options used
+%   pb_options         Parameter balancing options used
 %
 % Output
 %   r               Kinetic constants (posterior mode values, respecting the linear constraints)
@@ -15,20 +15,22 @@ function [r, r_orig, kinetic_data, r_samples, options, parameter_prior, r_mean, 
 %   r_mean          Kinetic constants (posterior means, ignoring the  linear constraints)
 %   r_std           Kinetic constants (posterior standard deviations, ignoring the  linear constraints)
 %   r_samples       Kinetic constants sampled from the posterior
-%   options         Parameter balancing options used (for details, see parameter_balancing_kinetic.m)
+%   pb_options      Parameter balancing options used (for details, see parameter_balancing_kinetic.m)
 %   kinetic_data    Kinetic_data used (for details, see parameter_balancing_kinetic.m)
 %   parameter_prior Prior distributions used
 
-options = join_struct(ecm_default_options(network),options);
+pb_options = join_struct(parameter_balancing_default_options,pb_options);
 
-% legacy: this has been used in EFM paper and elsewhere!
+% extra options used only in this function  
+pb_options_default.flag_given_kinetics = 0;
+pb_options_default.insert_Keq_from_data = 0;
 
-options.use_pseudo_values = 0; 
+pb_options = join_struct(pb_options_default,pb_options);
 
 
 % --------------------------------------------------------------------------------------
 
-if options.flag_given_kinetics,
+if pb_options.flag_given_kinetics,
   %% Instead of running parameter balancing, simply return the parameters found in the model
 
   switch network.kinetics.type 
@@ -43,17 +45,18 @@ if options.flag_given_kinetics,
 else
   %% Use kinetic parameters from "kinetic_data" function argument and run parameter balancing
 
-   [r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, r_std] = parameter_balancing_kinetic(network, kinetic_data, options);
+   [r, r_orig, kinetic_data, r_samples, parameter_prior, r_mean, r_std] = parameter_balancing_kinetic(network, kinetic_data, pb_options);
 
 end
 
 % -----------------------------
 % if desired, insert original Keq values
 
-if options.insert_Keq_from_data,
-  if length(Keq_given),
+if pb_options.insert_Keq_from_data,
+  if length(pb_options.Keq_given),
     display('Inserting predefined equilibrium constants'); 
-    ind_finite = find(isfinite(Keq_given));
-    r.Keq(ind_finite) = r_orig.Keq(ind_finite);
+    ind_finite = find(isfinite(pb_options.Keq_given));
+    %r.Keq(ind_finite) = r_orig.Keq(ind_finite);
+    r.Keq(ind_finite) = pb_options.Keq_given(ind_finite);
   end
 end

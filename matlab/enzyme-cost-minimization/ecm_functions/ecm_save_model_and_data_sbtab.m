@@ -21,9 +21,9 @@ function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinet
 % enzyme_cost_weights    ( nr x 1 vector of enzyme cost weights; default [])
 % document_name          (string; document name to be mentioned in SBtab)
 % save_single_tables     (flag for saving SBtab tables in single files; default 0)
+% write_delta_G0         flag, determining whether standard reaction Gibbs free energies should be included in the file
 
-
-eval(default('v','[]','r','[]','c_data','[]','u_data','[]','kinetic_data','[]','conc_min','[]','conc_max','[]','enzyme_cost_weights','[]','document_name','[]', 'save_single_tables','0'));
+eval(default('v','[]','r','[]','c_data','[]','u_data','[]','kinetic_data','[]','conc_min','[]','conc_max','[]','enzyme_cost_weights','[]','document_name','[]', 'save_single_tables','0','write_delta_G0','0'));
 
 % -------------------------------------------------------
 % prepare data
@@ -50,7 +50,7 @@ sbtab_document.tables.Reaction  = reaction_table;
 
 % manually add column 'NameForPlots' in table 'Compound'
 compound_table = sbtab_document.tables.Compound;
-compound_names     = sbtab_table_get_column(compound_table,'Name');
+compound_names = sbtab_table_get_column(compound_table,'Name');
 compound_table = sbtab_table_add_column(compound_table,'NameForPlots',compound_names);
 sbtab_document.tables.Compound  = compound_table;
 
@@ -77,6 +77,7 @@ end
 % end
 
 % reaction GFE table
+if write_delta_G0,
 if length(r),
   delta_mu0      = network.N' * r.mu0;
   if length(kinetic_data),
@@ -87,10 +88,11 @@ if length(r),
   if sum(isfinite(delta_mu0)), 
   dGFE_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','GibbsEnergyOfReaction','TableType','Quantity','Unit','kJ/mol','StandardConcentration','1mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value','OriginalValue'},{repmat({'standard Gibbs energy of reaction'},nr,1),network.actions, network.reaction_KEGGID, delta_mu0, delta_mu0_orig});
   if save_single_tables,
-  sbtab_table_save(dGFE_table, struct('filename',[ filename '_StandardReactionGFE.tsv'])); 
+    sbtab_table_save(dGFE_table, struct('filename',[ filename '_StandardReactionGFE.tsv'])); 
   end
   sbtab_document = sbtab_document_add_table(sbtab_document,'GibbsEnergyOfReaction',dGFE_table);
   end
+end
 end
 
 % metabolite concentration table
@@ -99,7 +101,7 @@ if length(c_data),
                                               {'QuantityType','Compound','Compound:Identifiers:kegg.compound','Value'},...
                                               {repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, c_data(:,1)});
   if save_single_tables,
-  sbtab_table_save(concentration_table, struct('filename',[ filename '_Concentration.tsv'])); 
+    sbtab_table_save(concentration_table, struct('filename',[ filename '_Concentration.tsv'])); 
   end
 end
 
@@ -123,7 +125,7 @@ end
 if length(conc_min),
   constraint_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationConstraint', 'TableType','Quantity','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','Concentration:Min','Concentration:Max'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
   if save_single_tables,
-  sbtab_table_save(constraint_table, struct('filename',[ filename '_ConcentrationConstraint.tsv']));
+    sbtab_table_save(constraint_table, struct('filename',[ filename '_ConcentrationConstraint.tsv']));
   end
   sbtab_document = sbtab_document_add_table(sbtab_document,'ConcentrationConstraint',constraint_table);
 end
@@ -142,10 +144,13 @@ if isfield(network,'graphics_par'),
   x = network.graphics_par.x(1,:)';
   y = network.graphics_par.x(2,:)';
   position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Position', 'TableType','Position'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
-  if save_single_tables,
-  sbtab_table_save(position_table, struct('filename',[ filename '_Position.tsv']));
+  if isfield(network.graphics_par,'metinvisible'),
+    position_table = sbtab_table_add_column(position_table,'IsInvisible',[column(network.graphics_par.metinvisible); column(network.graphics_par.actinvisible)],1);
   end
-  sbtab_document = sbtab_document_add_table(sbtab_document,'Position',position_table);
+  if save_single_tables,
+    sbtab_table_save(position_table, struct('filename',[ filename '_Layout.tsv']));
+  end
+  sbtab_document = sbtab_document_add_table(sbtab_document,'Layout',position_table);
 end
 
 % % Include validation data to model itself?
@@ -157,7 +162,7 @@ end
 %   sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',enzyme_table);
 % end
 
-sbtab_document_save_to_one(sbtab_document,[filename, '_ModelData.tsv']);
+sbtab_document_save_to_one(sbtab_document,[filename, '_ECM_Model.tsv']);
 
 
 %% Separate file for validation data
@@ -168,7 +173,7 @@ if exist('concentration_table','var'),
   else
     sbtab_document_validation_data = sbtab_document_construct(struct,{'Concentration'},{concentration_table});
   end
-  sbtab_document_save_to_one(sbtab_document_validation_data,[filename, '_ValidationData.tsv']);
+  sbtab_document_save_to_one(sbtab_document_validation_data,[filename, '_ECM_ValidationData.tsv']);
 end
 
 display(sprintf('Wrote model files (sbtab format) with basename\n%s', filename))

@@ -10,6 +10,9 @@ function ecm_options = ecm_update_options(network, ecm_options);
 %  - adjust Keq values
 
 display('Updating the parameters for ECM');
+
+% Insert default options, if not yet specified
+
 ecm_options_default = ecm_default_options(network);
 ecm_options         = join_struct(ecm_options_default,ecm_options);
 
@@ -51,16 +54,18 @@ if length(ecm_options.fix_metabolites),
     ll = label_names(ecm_options.fix_metabolites(it),network.metabolites);
     conc_min(ll) = ecm_options.fix_metabolite_values(it);    
     conc_max(ll) = ecm_options.fix_metabolite_values(it);
-    ecm_options.conc_min(ll) = ecm_options.fix_metabolite_values(it);    
-    ecm_options.conc_max(ll) = ecm_options.fix_metabolite_values(it);
   end
 else
   display('  o Not fixing any metabolite concentrations');
 end
 
+ecm_options.conc_min = conc_min;
+ecm_options.conc_max = conc_max;
+
 ind_conc_fix = find(ecm_options.conc_min == ecm_options.conc_max);
 met_fix      = network.metabolites(ind_conc_fix);
 conc_fix     = ecm_options.conc_min(ind_conc_fix);
+if prod(size(met_fix))==0, met_fix=[]; conc_fix=[]; end
 
 ind_met_fix = label_names(met_fix, network.metabolites);
 
@@ -80,19 +85,24 @@ ecm_options.ind_met_fix = ind_met_fix;
 % -------------------------------------------
 % set enzyme cost weights
 
-switch ecm_options.use_cost_weights,
-  case 'none',
-    ecm_options.enzyme_cost_weights = ones(length(ecm_options.ind_scored_enzymes),1);
-  case 'protein_size',
-    ecm_options.enzyme_cost_weights = network.enzyme_size(ecm_options.ind_scored_enzymes);
-  case 'protein_mass',
-    ecm_options.enzyme_cost_weights = network.enzyme_mass(ecm_options.ind_scored_enzymes);
-  case 'aa_composition',
-    ecm_options.enzyme_cost_weights = network.akashi_protein_cost(ecm_options.ind_scored_enzymes);
-end  
-
-% scale to median = 1
-ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ecm_options.enzyme_cost_weights);
+if isempty(ecm_options.use_cost_weights),
+  switch ecm_options.use_cost_weights,
+    case 'none',
+      ecm_options.enzyme_cost_weights = ones(length(ecm_options.ind_scored_enzymes),1);
+    case 'protein_size',
+      ecm_options.enzyme_cost_weights = network.enzyme_size(ecm_options.ind_scored_enzymes);
+    case 'protein_mass',
+      ecm_options.enzyme_cost_weights = network.enzyme_mass(ecm_options.ind_scored_enzymes);
+    case 'aa_composition',
+      ecm_options.enzyme_cost_weights = network.akashi_protein_cost(ecm_options.ind_scored_enzymes);
+  end
+  % scale to median = 1
+  ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ecm_options.enzyme_cost_weights);
+else
+  if ecm_options.verbose,
+    display('Using predefined enzyme cost weights');
+  end
+end
 
 % -----------------------------
 % adapt lambda_regularistion to typical magnitude of enzyme cost

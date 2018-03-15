@@ -10,7 +10,6 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.model_name               = model_name         ; 
 %   ecm_options.run_id                   = 'RUN';
 %   ecm_options.model_id                 = 'MODEL';
-%   ecm_options.network_CoHid            = network;
 % 
 % metabolite constraints
 %   ecm_options.fix_metabolites          = {}; % metabolites with fixed concentrations (overrides values from input model)
@@ -21,7 +20,7 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.conc_max                 = [];% 10 * ones(nm,1);   ; % mM
 %   ecm_options.conc_fix                 = [];
 %   ecm_options.met_fix                  = [];
-%   ecm_options.replace_cofactors        = {};
+%   ecm_options.replace_cofactors        = {};  % names of cofactors; this is only used in ecm_update_options.m - bounds for cofactor concentrations are automatically set based on median value from concentration data
 % 
 % given data
 %   ecm_options.c_data                   = [];
@@ -48,13 +47,14 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.use_pseudo_values = 1;
 % 
 % enzyme cost weights
-%   ecm_options.ind_scored_enzymes       = 1:length(network.actions);
+%   ecm_options.ind_scored_enzymes       = [1:length(network.actions)]';
 %   ecm_options.enzyme_cost_weights      = ones(length(ecm_options.ind_scored_enzymes),1);
 %   ecm_options.use_cost_weights         = 'none';
 % 
 % ecm
 %   ecm_options.initial_choice           = 'mdf'; also {'polytope_center', 'interval_center', 'given_x_start'}
 %   ecm_options.x_start                  = []; 
+%   ecm_options.fix_thermodynamics_by_adjusting_Keq = 1;
 %   ecm_options.multiple_conditions      = 0;
 %   ecm_options.multiple_conditions_n    = 1;
 %   ecm_options.multiple_starting_points = 0;
@@ -75,7 +75,8 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.print_graphics           = 0;
 %   ecm_options.show_graphics            = 1;
 %   ecm_options.show_metabolites         = network.metabolites;
-
+%
+%   ecm_options.verbose                  = 0;
 
 % Argument 'model_name' is optional
 
@@ -89,7 +90,6 @@ ecm_options = struct;
 ecm_options.model_name               = model_name         ; 
 ecm_options.run_id                   = 'RUN';
 ecm_options.model_id                 = 'MODEL';
-ecm_options.network_CoHid            = network;
 
 % given data
 ecm_options.c_data                   = [];
@@ -124,13 +124,14 @@ ecm_options.flag_given_kinetics      = 0;
 ecm_options.insert_Keq_from_data     = 0;     % flag
 
 % enzyme cost weights
-ecm_options.ind_scored_enzymes       = 1:length(network.actions);
+ecm_options.ind_scored_enzymes       = [1:length(network.actions)]';
 ecm_options.enzyme_cost_weights      = ones(length(ecm_options.ind_scored_enzymes),1);
 ecm_options.use_cost_weights         = 'none';
 
 % ecm
 ecm_options.initial_choice              = 'polytope_center';
 ecm_options.x_start                     = []; 
+ecm_options.fix_thermodynamics_by_adjusting_Keq = 1;
 ecm_options.multiple_conditions         = 0;
 ecm_options.multiple_conditions_n       = 1;
 ecm_options.multiple_starting_points    = 0;
@@ -151,3 +152,6 @@ ecm_options.fix_Keq_in_sampling         = 0;
 ecm_options.print_graphics           = 0;
 ecm_options.show_graphics            = 1;
 ecm_options.show_metabolites         = network.metabolites;
+
+% general
+ecm_options.verbose                  = 0;

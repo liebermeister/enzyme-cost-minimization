@@ -2,5 +2,6 @@
 Data for ECM calculations and other kinetic metabolic models
 ------------------------------------------------------------
 
+o The data describe kinetic parameters, and omics data for E coli, B subtilis, and S cerevisiae
 o Different sorts of data are stored in different subdirectories
 o All data are given in the SBtab table format (see www.sbtab.org)

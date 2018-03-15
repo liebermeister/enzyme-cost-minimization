@@ -2,10 +2,14 @@
 Pathway collections
 -------------------
 
-This directory contains the original pathway files used in the ECM project.
+This directory contains pathway files in "KEGG-style" syntax
 
 --------------------------------------------------------------------------
 Files:
 
 obd_pathways_WL_2013-10-04.txt    Original file from Elad Noor, with pathways added by Arren B-E and Wolf L
 kegg_modules_WL_2013-10-04.txt    Original file from Elad Noor
+
+
+pathway2sbtab.py
+ -> Translate KEGG-style pathway file into SBtab files describing a pathway model

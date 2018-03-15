@@ -74,7 +74,11 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %    ecm_options.compute_tolerance,
 %    ecm_options.cost_tolerance_factor
 
-  
+if sum(isnan(v)),
+  warning('Flux vector contains nan values; replacing them by zero values');
+  v(isnan(v)) = 0;
+end
+
 % --------------------------------------------------------------------------------------
 % Enzyme cost minimization
 % --------------------------------------------------------------------------------------
@@ -129,7 +133,6 @@ ind_not_scored        = setdiff(1:nr,ind_scored_enzymes);
 multiple_conditions   = ecm_options.multiple_conditions;
 multiple_conditions_n = ecm_options.multiple_conditions_n;
 
-
 conc_min(isnan(conc_min)) = conc_min_default;
 conc_max(isnan(conc_max)) = conc_max_default;
 
@@ -141,6 +144,9 @@ c.data      = c_data;
 u.data      = u_data;
 u_cost.data = nansum(u.data);
 
+if isempty(r),
+  r = network.kinetics;
+end
 
 % --------------------------------------------------------------------------------------
 % adjust some network- and kinetics-related variables
@@ -220,7 +226,7 @@ Theta_min = 10^-10 * double(v~=0);
 
 if ecm_options.use_linear_cost_constraints,
   if isempty(ecm_options.maximal_u_cost),
-    ecm_options.maximal_u_cost = 100 * nansum(ecm_options.enzyme_cost_weights .* v(ecm_options.ind_scored_enzymes) ./ kc_forward(ecm_options.ind_scored_enzymes));
+    ecm_options.maximal_u_cost = 20 * nansum(ecm_options.enzyme_cost_weights .* abs(v(ecm_options.ind_scored_enzymes)) ./ kc_forward(ecm_options.ind_scored_enzymes));
     display(sprintf('Setting default upper bound %f for enzyme cost. Setting this value manually may speed up the calculation.',ecm_options.maximal_u_cost));
   end
   my_u_max = 10^15 * ones(nr,1); 
@@ -229,12 +235,39 @@ if ecm_options.use_linear_cost_constraints,
   Theta_min(ecm_options.ind_scored_enzymes) = new_Theta_min(ecm_options.ind_scored_enzymes);
 end
 
+
 try
   [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - Theta_min, x_min, x_max, 0*x_min);
 catch
-  error(sprintf('*** No polytope centre found in search for initial solution (required driving forces > %f RT) - maybe the concentration constraints are too tight? ***\n',Theta_min));
-  c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
-  return
+  display(sprintf('*** No M-polytope centre found in search for initial solution - maybe concentration constraints are too tight'));
+  display(sprintf('*** Flux distribution is not thermodynamically realisable'));
+  display(sprintf('*** Use "eba_feasible_lp" to check the thermo-feasibility of your flux distribution (for given bounds on driving forces)'));
+  display(sprintf('*** Note that a flux distribution may also be infeasible because of the equilibrium constants and concentration bounds'));
+  display(sprintf(''));
+  if ecm_options.fix_thermodynamics_by_adjusting_Keq,
+    %% Enforce sufficiently large driving forces!
+    Theta_min(Theta_min<1) = 1;
+    display(sprintf('*** FROM NOW ON; REQUIRING REACTION AFFINITIES LARGER THAT 1 RT - NOTE THAT THIS MAY CAUSE SOME ARBITRARY ENZYME LEVELS'));
+    display(sprintf('*** Running MDF to determine Keq adjustments to make this flux distribution feasible'));
+    x_mdf = fmincon(@(xx) ecm_mdf(xx,pp), zeros(nm,1),[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
+    Theta_mdf = log_Keq_forward-Theta_min-[N_forward' * x_mdf];
+    adjustment_log_Keq_forward = -(Theta_mdf-Theta_min);
+    adjustment_log_Keq_forward(Theta_mdf>=Theta_min) = 0;
+    adjustment_log_Keq = sign(v) .* adjustment_log_Keq_forward;
+    display(sprintf('*** Update your Keq vector to fix the problem. The maximal change in |ln Keq| is %f',max(abs(adjustment_log_Keq))));
+    display(sprintf('*** Note that the new Keq values may be unrealistic and violate the Wegscheider conditions)'));
+    display(sprintf('Please press key to continue'));
+    pause
+    log_Keq_forward = log_Keq_forward + adjustment_log_Keq_forward;
+    pp.log_Keq_forward = log_Keq_forward;
+    r.Keq = r.Keq .* exp(adjustment_log_Keq);
+    pp.network.kinetics.Keq = r.Keq;
+    [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - Theta_min, x_min, x_max, 0*x_min);
+  else
+    error('Flux distribution cannot be thermodynamically realised given the Keq values and metabolite bounds')
+    c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
+    return
+  end
 end
 
 X_extreme = [x1, x2]; % matrix with extreme initial concentration vectors
@@ -245,16 +278,16 @@ X_extreme = [x1, x2]; % matrix with extreme initial concentration vectors
 
 switch ecm_options.initial_choice,
   case 'polytope_center',
-    display('  Choosing polytope center as starting point'); 
+    display('Choosing polytope center as the starting point'); 
   case 'interval_center',
-    display('  Choosing point close to center of allowed intervals as starting point'); 
+    display('Choosing point close to center of allowed intervals as starting point'); 
     x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max, 1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
   case 'mdf',
-    display('  Choosing MDF solution as starting point'); 
+    display('Choosing MDF solution as the starting point'); 
     x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
     if ecm_mdf(x_start,pp) > 0, error('Thermodynamically infeasible reaction'); end
   case 'given_x_start',
-    display('  Using given solution as a starting point');
+    display('Using given solution as a starting point');
     x_start = ecm_options.x_start;
 end
 
@@ -262,7 +295,7 @@ end
 % --------------------------------------------------------------------------------------
 % run optimisations starting from x_start
 
-display('  Running optimisation using normal starting point');
+display('  o Running optimisation using normal starting point');
 
 x_init         = x_start;
 c_init         = exp(x_init);
@@ -276,10 +309,16 @@ if find([A_forward.initial<0] .* [v~=0]),
   error('There is a thermodynamically infeasible reaction already in the starting point');
 end
 
+if find([A_forward.initial<0.01] .* [v~=0]),
+  display('  WARNING: There is a thermodynamically problematic reaction (below 0.01 kJ/mol) already in the starting point');
+end
+
+display(sprintf('Running ECM'));
+
 for it_method = 1:length(ecm_scores),
 
   ecm_score = ecm_scores{it_method};
-  display(sprintf('   %s',ecm_score));
+  display(sprintf('  o %s',ecm_score));
   
   [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, Theta_min,opt);
 
@@ -477,6 +516,56 @@ for it_method = 1:length(ecm_options.ecm_scores),
   
 end
 
-if find([A_forward.initial<0.01] .* [v~=0]),
-  warning('There is a thermodynamically problematic reaction (below 0.01 kJ/mol) already in the starting point');
+% ------------------------------------------------------
+% postprocessing in case of multiple conditions: turn result (metabolite and enzyme) vectors into matrices
+%  ecm_options.multiple_conditions_n   -> number of conditions
+%  ecm_options.multiple_conditions ==1 -> find a single enzyme profile for all conditions
+
+if isfield(ecm_options,'multiple_conditions_n'),
+
+  n_cond = ecm_options.multiple_conditions_n;
+  
+  fn = fieldnames(c); 
+  for it = 1:length(fn),
+    if length(c.(fn{it})),
+      c.(fn{it}) = reshape(c.(fn{it}),nm/n_cond,n_cond);
+    end
+  end
+
+  fn = fieldnames(u); 
+  for it = 1:length(fn),
+    if length(u.(fn{it})),
+      u.(fn{it}) = reshape(u.(fn{it}),nr/n_cond,n_cond);
+    end
+  end
+
+  if ecm_options.multiple_conditions ==0,
+    fn = fieldnames(up); 
+    for it = 1:length(fn),
+      if length(up.(fn{it})),
+        up.(fn{it}) = reshape(up.(fn{it}),nr/n_cond,n_cond);
+      end
+    end    
+  end
+
+  fn = fieldnames(A_forward); 
+  for it = 1:length(fn),
+    if length(A_forward.(fn{it})),
+      A_forward.(fn{it}) = reshape(A_forward.(fn{it}),nr/n_cond,n_cond);
+    end
+  end
+
+  %fn = fieldnames(mca_info); 
+  %for it = 1:length(fn),
+  %  mca_info.(fn{it}).gradient = reshape(mca_info.(fn{it}).gradient,nr/n_cond,n_cond);
+  %end
+
+  u_capacity = reshape(u_capacity,nr/n_cond,n_cond);
+  fn = fieldnames(eta_energetic); 
+  for it = 1:length(fn),
+    eta_energetic.(fn{it})  = reshape(eta_energetic.(fn{it}),nr/n_cond,n_cond);
+    eta_saturation.(fn{it}) = reshape(eta_saturation.(fn{it}),nr/n_cond,n_cond);
+  end
+
+
 end

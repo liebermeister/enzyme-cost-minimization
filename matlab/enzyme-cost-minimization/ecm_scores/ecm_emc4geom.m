@@ -13,6 +13,7 @@ u = sqrt(u_ds .* u_cs);
 
 if sum(delta_G_by_RT>0),
   u(find(delta_G_by_RT>0)) = 10^20 * max(delta_G_by_RT);
+  warning('Unfeasible metabolite profile');
 end
 
 u_cost = sum(pp.enzyme_cost_weights .* u(pp.ind_scored_enzymes));

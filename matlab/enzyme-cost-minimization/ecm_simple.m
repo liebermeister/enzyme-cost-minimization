@@ -1,8 +1,8 @@
-function [report, errors] = ecm_simple(model_data_file, outdir, options)
+function [report, errors] = ecm_simple(model_data_file, validation_data_file, outdir, options)
 
 % ECM_SIMPLE - Run Parameter Balancing or Enzyme Cost Minimisation on a single SBtab Model+Data file
 %
-% [report, errors] = ecm_simple(model_data_file, outdir, options)
+% [report, errors] = ecm_simple(model_data_file, validation_data_file, outdir, options)
 %
 % This function reads an SBtab file (Model+Data), performs Parameter Balancing or ECM, and saves the results to an SBtab file in [outdir]
 %
@@ -14,86 +14,35 @@ function [report, errors] = ecm_simple(model_data_file, outdir, options)
 %
 % 'parameter_balancing': 
 %    run parameter_balancing using standard settings,
-%    input file: prepared model with data ("ModelData")
+%    input file: prepared model with data ("..ECM__Model.tsv")
 % 
 % 'ecm':
 %    run an ECM using standard settings, 
-%    input file: prepared model with data ("ModelData")
+%    input file: prepared model with data ("..ECM__Model.tsv")
 %
 % The function can be called via the python script 'ecm.py'
 
 eval(default('options','struct'));
 
-options_default = struct('actions','ecm','generate_report',0);
+options_default = struct('actions','ecm','generate_report',0,'verbose',0);
 options_default.replace_cofactors    = {'ATP','ADP','Orthophosphate','NADH', 'NAD+', 'NADPH','NADP+','Ubiquinone', 'Ubiquinol'};
-options         = join_struct(options_default, options);
+options = join_struct(options_default, options);
 
 errors = '';
 report = '';
 
+if options.verbose,
+  display(sprintf('Reading ECM model file %s\n', model_data_file));
+end
 
 switch options.actions,
-  
-  case 'ecm',
-
-    display('Running ECM');
-    outfile = [outdir filesep 'ecm_result'];
-    report  = '';
-    errors   = '';
-
-    %% Load model and data from input file
-    [my_network, v, c_data, u_data, conc_min, conc_max, met_fix, conc_fix, my_positions,enzyme_cost_weights, errors] = load_model_and_data_sbtab(model_data_file);
-    % if length(errors),
-    %   report = sprintf('An error occurred while parsing the SBtab file // No result file saved');
-    %   errors = sprintf('An error occurred while parsing the SBtab file: %s', error);
-    % end
-    errors = '';
+      
+  case 'parameter balancing',
     
-    if isempty(errors),
-      if length(my_positions),
-        my_network = netgraph_read_positions(my_network, my_positions,[],1,0,my_network.actions);
-      end
-      
-      %% ECM standard options
-
-      ecm_options                      = ecm_default_options(my_network);
-      ecm_options.initial_choice       = 'polytope_center';
-      ecm_options.conc_min             = conc_min; 
-      ecm_options.conc_max             = conc_max;
-      ecm_options.conc_min_default     = 10^-10; 
-      ecm_options.conc_max_default     = 10^10;
-      ecm_options.ecm_scores           = {'emc1', 'emc2s', 'emc2sp', 'emc3s', 'emc3sp', 'emc4cm'};
-      ecm_options.c_data               = c_data;
-      ecm_options.u_data               = u_data;
-      ecm_options.Keq_upper            = 100000000;
-      ecm_options.insert_Keq_from_data = 1;
-      ecm_options.replace_cofactors    = options.replace_cofactors;
-      ecm_options.compute_tolerance    = 0;
-      ecm_options.cost_tolerance_factor  = 1.01;  
-      ecm_options.tolerance_from_hessian = 0;
-      ecm_options = ecm_update_options(my_network, ecm_options);
-      
-      %% Run ECM      
-
-      %try
-      [c,u,u_cost,up,A_forward,mca_info,c_min,c_max,u_min,u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(my_network, my_network.kinetics, v, ecm_options);
-      
-      ecm_save_result_sbtab(outfile, my_network, c, u, A_forward, struct('flag_one_file',1,'r',my_network.kinetics),c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation);
-        
-      report = sprintf('ECM finished // Results saved to file %s', outfile);
-      errors = '';
-      %catch err
-      %  display('error!');
-      %  report = sprintf('An error occurred during ECM // No result file saved');
-      %  errors  = [ 'An error occurred during ECM: ' err.identifier];
-      %end
-    
+    if options.verbose,
+      display('Running Parameter Balancing')    
     end
-      
-  case 'parameter_balancing',
     
-      display('Running Parameter Balancing')
-
       outfile              = [outdir filesep 'pb_result_Model'];
       options.generate_report  = 0;
       options.use_kegg_ids = [1];
@@ -156,6 +105,64 @@ switch options.actions,
         %end
       end
 
+      
+  case 'ecm',
+
+    if options.verbose,
+      display('Running ECM');
+    end
+    outfile = [outdir filesep 'ecm_result'];
+    report  = '';
+    errors   = '';
+
+    %% Load model and data from input file
+    [my_network, v, c_data, u_data, conc_min, conc_max, met_fix, conc_fix, my_positions,enzyme_cost_weights, errors] = load_model_and_data_sbtab(model_data_file,validation_data_file);
+    % if length(errors),
+    %   report = sprintf('An error occurred while parsing the SBtab file // No result file saved');
+    %   errors = sprintf('An error occurred while parsing the SBtab file: %s', error);
+    % end
+    errors = '';
+    
+    if isempty(errors),
+      if length(my_positions),
+        my_network = netgraph_read_positions(my_network, my_positions,[],1,0,my_network.actions);
+      end
+      
+      %% ECM standard options
+
+      ecm_options                      = ecm_default_options(my_network);
+      ecm_options.initial_choice       = 'polytope_center';
+      ecm_options.conc_min             = conc_min; 
+      ecm_options.conc_max             = conc_max;
+      ecm_options.ecm_scores           = {'emc1', 'emc2s', 'emc2sp', 'emc3s', 'emc3sp', 'emc4cm'};
+      ecm_options.c_data               = c_data;
+      ecm_options.u_data               = u_data;
+      ecm_options.Keq_upper            = 100000000;
+      ecm_options.insert_Keq_from_data = 1;
+      ecm_options.replace_cofactors    = options.replace_cofactors;
+      ecm_options.compute_tolerance    = 0;
+      ecm_options.cost_tolerance_factor  = 1.01;  
+      ecm_options.tolerance_from_hessian = 0;
+      ecm_options = join_struct(ecm_options,options);
+      ecm_options = ecm_update_options(my_network, ecm_options);
+      
+      %% Run ECM      
+
+      %try
+      [c,u,u_cost,up,A_forward,mca_info,c_min,c_max,u_min,u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(my_network, my_network.kinetics, v, ecm_options);
+
+      ecm_save_result_sbtab(outfile, my_network, c, u, A_forward, struct('flag_one_file',1,'r',my_network.kinetics),c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation);
+        
+      report = sprintf('ECM finished // Results saved to file %s', outfile);
+      errors = '';
+      %catch err
+      %  display('error!');
+      %  report = sprintf('An error occurred during ECM // No result file saved');
+      %  errors  = [ 'An error occurred during ECM: ' err.identifier];
+      %end
+    
+    end
+  
 end
 
 % ----------------------------------------------------------
