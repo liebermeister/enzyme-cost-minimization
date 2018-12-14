@@ -1,4 +1,4 @@
-!!SBtab TableType='Reaction' !Organism='Escherichia coli'			
+!!SBtab TableType='Reaction' Organism='Escherichia coli'			
 !Reaction	!Reaction:Identifiers:kegg.reaction	!Enzyme	!Gene
 AAD		AAD	-
 ACC		ACC	-

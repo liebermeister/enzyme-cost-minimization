@@ -8,7 +8,7 @@ function ecm_save_model_and_data_neos(filename,network,v,r,c_data,u_data,enzyme_
 % 
 % For generating the input file (SBtab format), see 'help ecm_save_model_and_data_sbtab'
 
-display(sprintf('Writing input files for the NEOS optimization server to directory\n%s', filename))
+display(sprintf('\nWriting input files for the NEOS optimization server to directory %s', filename))
 
 % adjust names for sbml output
 
@@ -22,14 +22,14 @@ network.kinetics = r;
 network.kinetics.type = 'cs';
 network_sbtab = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'write_concentrations',0,'write_enzyme_concentrations',0));
 
-quantity_type = network_sbtab.tables.Quantity.column.column.QuantityType;
-if isfield(network_sbtab.tables.Quantity.column.column,'Value'),
-  value         = network_sbtab.tables.Quantity.column.column.Value;
+quantity_type = network_sbtab.tables.Parameter.column.column.QuantityType;
+if isfield(network_sbtab.tables.Parameter.column.column,'Value'),
+  value         = network_sbtab.tables.Parameter.column.column.Value;
 else
-  value         = network_sbtab.tables.Quantity.column.column.Mode;
+  value         = network_sbtab.tables.Parameter.column.column.Mode;
 end
-compound      = network_sbtab.tables.Quantity.column.column.Compound;
-reaction      = network_sbtab.tables.Quantity.column.column.Reaction;
+compound      = network_sbtab.tables.Parameter.column.column.Compound;
+reaction      = network_sbtab.tables.Parameter.column.column.Reaction;
 
 [compound,reaction] = network_adjust_names_for_sbml_export(compound,reaction,1);
 %display('Writing NEOS files');
@@ -125,7 +125,7 @@ mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'keqs.csv']);
 
 %eval(sprintf(' cd %s; zip MODEL.zip *tsv;', filename));
 
-display(sprintf('To run an optimisation with these files, please use the NEOS server at\nhttps://proto.neos-server.org/neos/solvers/application:MER/csv.html'))
+display(sprintf('To run an optimisation with these files, please use the NEOS server at https://proto.neos-server.org/neos/solvers/application:MER/csv.html'))
 
 
 % -----------------------------------------------------------------

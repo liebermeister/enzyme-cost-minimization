@@ -35,4 +35,7 @@ options = struct('actions', 'parameter balancing','verbose',1);
 options = struct('actions', 'ecm', 'generate_report',1,'verbose',1);
 options.replace_cofactors = {'ATP','ADP','Orthophosphate','NADH', 'NAD+', 'NADPH','NADP+','Ubiquinone', 'Ubiquinol'};
 
+options.fluctuations_safety_margin = 3; % safety margin (# std dev) to counter protein number fluctuations
+options.cell_volume                = 1.1*10^-18;  % in m^3, default value for E coli (needed for safety margin) 
+
 [report, errors] = ecm_simple(model_data_file, validation_data_file, result_dir, options);

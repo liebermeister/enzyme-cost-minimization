@@ -422,10 +422,6 @@ if length(ind_finite),
   %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
 end
 axis tight;% aa = axis; axis([min(aa([1,3])), max(aa([2,4])), min(aa([1,3])), max(aa([2,4]))]); 
-% amin = min([1000*u.data(is_finite); abs(v(is_finite))]);
-% amax = max([1000*u.data(is_finite); abs(v(is_finite))]);
-% if isempty(ind_finite), amin=0; amax=1; end
-% axis([amin amax amin amax]); axis square;
 
 
 % --------------------------------------------------------
@@ -454,8 +450,8 @@ if length(ind_finite),
   [cc_spear, pvalue_spear] = corr(log(u.data(ind_finite)),log(abs(v(ind_finite))./kcat_forward(ind_finite)),'type','Spearman');
   rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(v(ind_finite)./kcat_forward(ind_finite))].^2));
   text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
-  text(0.02,50,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
-  text(0.02,27,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
+  text(0.02,40,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
+  text(0.02,15,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
   %title(sprintf('RMSE=%2.2f, r^2=%2.2f',rmse, cc^2));
   %display('Fluxes vs enzyme levels/kcat');
   %sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
@@ -580,7 +576,6 @@ for it_method = 1:length(ecm_options.ecm_scores),
 if graphics_options.show_metabolite_graphics,
 
   figure(fig_offset + 101); clf; hold on;
-  set(gcf,'Position',[100 300 1000 500])
   xtick      = 0:length(ind_show_met)-1;
   this_c     = c.(this_ecm_score)(ind_show_met,1);
   if length(c_min),
@@ -606,10 +601,6 @@ if graphics_options.show_metabolite_graphics,
   legend(methods,'Location','NorthEastOutside','FontSize',10);
   ylabel('Concentration [mM]');
   axis tight; set(gca,'YScale','Log','XTick',[]); 
-  % a = axis; hold on
-  % for itttt = 1:length(xtick),
-  %   plot([xtick(itttt),xtick(itttt)],[a(3),a(4)],'-');
-  % end
 end  
   
   % --------------------------------------
@@ -620,8 +611,6 @@ end
   is_finite  = isfinite(u.data) .* [v~=0];
   ind_finite = find(is_finite);
 
-  %amin = min(1000*[u.data; u.(this_ecm_score)(ind_finite,1)]);
-  %amax = max(1000*[u.data; u.(this_ecm_score)(ind_finite,1)]);
   amin = 0.01; amax = 1000;
   plot([amin, amax],[amin,amax],'--k');
 
@@ -653,12 +642,12 @@ end
     rmse = sqrt(mean([log10(u.data(ind_finite)) - log10(u.(this_ecm_score)(ind_finite,1))].^2));
   %title(sprintf('RMSE=%2.2f, r^2=%2.2f',rmse, cc^2));
   text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
-  text(0.02,50,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
-  text(0.02,27,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
+  text(0.02,40,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
+  text(0.02,15,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
 
   %display(sprintf('Score: %s',this_ecm_score))
-  % sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
-  %  [p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
+  %sprintf('RMS error: %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear); 
+  %[p-value %2.3f]  [p-value %2.3f] pvalue, pvalue_spear
 
   end  
   
@@ -699,10 +688,11 @@ if length(ind_finite),
   [cc_spear, pvalue_spear] = corr(log(my_nanmean_c_data(ind_finite)),log(c.(this_ecm_score)(ind_finite,1)),'type','Spearman');
   rmse = sqrt(mean([log10(my_nanmean_c_data(ind_finite)) - log10(c.(this_ecm_score)(ind_finite,1))].^2));
   %%title(sprintf('RMSE=%2.2f, r^2=%2.2f, Typical fold error=%f',rmse, cc^2, 10^rmse));
-  title(sprintf('RMSE=%2.2f, r^2=%2.2f, Typical fold error=%f',rmse, cc^2, 10^rmse));
-  text(0.02,90,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
-  text(0.02,50,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
-  text(0.02,27,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
+  %%title(sprintf('RMSE=%2.2f, r^2=%2.2f, Typical fold error=%f',rmse, cc^2, 10^rmse));
+
+  text(0.005,2,sprintf('RMSE=%2.2f',rmse),'Fontsize',18);
+  text(0.005,1.1,sprintf('r^2=%2.2f', cc^2),'Fontsize',18);
+  text(0.005,0.5,sprintf('Typical fold error=%2.2f', 10^rmse),'Fontsize',18);
 
  % display(sprintf('Concentration prediction %s',this_ecm_score))
  %sprintf('RMS error (log10 scale): %2.2f\n r (Pearson correlation): %2.2f\n r (Spearman rank corr): %2.2f',rmse, cc, cc_spear);
@@ -758,7 +748,7 @@ my_eta_energetic  = eta_energetic.(this_ecm_score)(ecm_options.ind_scored_enzyme
 my_eta_saturation = eta_saturation.(this_ecm_score)(ecm_options.ind_scored_enzymes); 
 my_u_capacity     = u_capacity(ecm_options.ind_scored_enzymes);
 
-if graphics_options_default.few_graphics == 0,
+if graphics_options.few_graphics == 0,
 
   figure(fig_offset + 500); clf; set(gca,'FontSize',14);
   plot(my_v,'-','Color',[0.3 0.3 0.3],'Linewidth',2); hold on
@@ -777,6 +767,7 @@ if graphics_options_default.few_graphics == 0,
 end
 
 figure(fig_offset + 501); clf; 
+set(gcf,'Position',[1350 50 600 600])
 subplot('Position',[0.15,0.8,0.8,0.15]); set(gca, 'Fontsize',12); hold on;
 for itt = 1:length(my_v),
   plot(itt,5+log10(my_v(itt)),'k.','Markersize',15);
@@ -835,7 +826,9 @@ end
     if    graphics_options.show_matrix_graphics,
       print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_c_by_KM.eps'],sprintf('-f%d',fig_offset + 105),'-depsc');
     end
-    print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram.eps'],sprintf('-f%d',fig_offset + 500),'-depsc');
+    if graphics_options.few_graphics == 0,
+      print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram.eps'],sprintf('-f%d',fig_offset + 500),'-depsc');
+    end
     print([ ecm_options.model_id '_' ecm_options.run_id '_' this_ecm_score '_arrow_cost_diagram_bar.eps'],sprintf('-f%d',fig_offset + 501),'-depsc');
   end
   

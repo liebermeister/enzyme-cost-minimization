@@ -63,6 +63,8 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.lambda_reg_factor        = 0.01;
 %   ecm_options.parameter_prior_file     = [];
 %   ecm_options.use_linear_cost_constraints = 1; % tighter constraints derived upper bound on enzyme cost 
+%   ecm_options.fluctuations_safety_margin = 0; % safety margin (# std dev) to counter protein number fluctuations
+%   ecm_options.cell_volume              = 1.1*10^-18;  % in m^3, default value for E coli (needed for safety margin) 
 %   ecm_options.maximal_u_cost           = []; % used with option "use_linear_cost_constraints"
 %   ecm_options.compute_hessian          = 0;
 %   ecm_options.compute_elasticities     = 0;
@@ -75,7 +77,9 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.print_graphics           = 0;
 %   ecm_options.show_graphics            = 1;
 %   ecm_options.show_metabolites         = network.metabolites;
-%
+%   ecm_options.metabolite_order_file    = [];
+%   ecm_options.reaction_order_file      = [];
+% 
 %   ecm_options.verbose                  = 0;
 
 % Argument 'model_name' is optional
@@ -97,7 +101,7 @@ ecm_options.u_data                   = [];
 ecm_options.kinetic_data             = [];
 
 % add parameter balancing options
-ecm_options = join_struct(ecm_options, parameter_balancing_default_options);
+ecm_options = join_struct(ecm_options, parameter_balancing_options);
 ecm_options.kcat_prior_median        = 10;     % for ccm this value need to be modified
 ecm_options.kcat_prior_log10_std     = 0.2;   % reduce spread of kcat values
 ecm_options.kcat_upper               = 10000;  % 1/s
@@ -140,6 +144,8 @@ ecm_options.lambda_regularisation       = 10^-3;
 ecm_options.lambda_reg_factor           = 0.01;
 ecm_options.parameter_prior_file        = [];
 ecm_options.use_linear_cost_constraints = 1; 
+ecm_options.fluctuations_safety_margin  = 0; % safety margin, to counter protein number fluctuations
+ecm_options.cell_volume                 = 1.1*10^-18;  % in m^3, default value for E coli (needed for safety margin) 
 ecm_options.maximal_u_cost              = []; 
 ecm_options.compute_hessian             = 0;
 ecm_options.compute_elasticities        = 0;
@@ -152,6 +158,8 @@ ecm_options.fix_Keq_in_sampling         = 0;
 ecm_options.print_graphics           = 0;
 ecm_options.show_graphics            = 1;
 ecm_options.show_metabolites         = network.metabolites;
+ecm_options.metabolite_order_file    = [];
+ecm_options.reaction_order_file      = [];
 
 % general
 ecm_options.verbose                  = 0;

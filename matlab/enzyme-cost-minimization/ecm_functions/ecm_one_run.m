@@ -9,6 +9,13 @@ function [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad, my_lambda] 
 
 %% optimize log metabolite concentration profile
 
+%% Set global variables to speed up function modular_velocities
+global global_structure_matrices 
+global_structure_matrices = 1;
+global Mplus Mminus Wplus Wminus nm nr ind_M ind_Wp ind_Wm
+N = pp.network.N; W = pp.network.regulation_matrix; ind_ext = find(pp.network.external); h = pp.network.kinetics.h;
+[Mplus, Mminus, Wplus, Wminus, nm, nr, N_int,ind_M,ind_Wp,ind_Wm] = make_structure_matrices(N,W,ind_ext,h);
+  
 [my_x, my_fval,my_exitflag,my_output,my_lambda,my_grad] = fmincon(@(xx) ecm_get_score(ecm_score,xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_init,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,pp.N_forward,pp.log_Keq_forward, Theta_min),opt);
 
 if my_exitflag < 1, my_exitflag

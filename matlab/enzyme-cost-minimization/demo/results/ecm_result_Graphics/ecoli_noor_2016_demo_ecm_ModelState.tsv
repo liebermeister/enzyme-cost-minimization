@@ -1,4 +1,4 @@
-!!SBtab Document='Model' TableName='Reaction' TableType='Reaction' SBtabVersion='1.0' Date='2018-12-14'								
+!!SBtab Document='E. coli central carbon metabolism - ECM result' TableName='Reaction' TableType='Reaction' SBtabVersion='1.0' Date='2018-12-14'								
 !ID	!ReactionFormula	!Name	!NameForPlots	!Identifiers:kegg.reaction	!IsReversible	!Gene	!KineticLaw:Name	!KineticLaw:Formula
 PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	PTS_RPTSsy		RPTSsy	True	PTS	Common saturable (CM)	u_R1 * ( kC_R1 * sqrt( kEQ_R1  * kM_R1_D_Glucose * kM_R1_Phosphoenolpyruvate / kM_R1_Pyruvate / kM_R1_D_Glucose_6_phosphate ) * ( D_Glucose / kM_R1_D_Glucose ) * ( Phosphoenolpyruvate / kM_R1_Phosphoenolpyruvate ) - kC_R1 / sqrt( kEQ_R1  * kM_R1_D_Glucose * kM_R1_Phosphoenolpyruvate / kM_R1_Pyruvate / kM_R1_D_Glucose_6_phosphate ) * ( Pyruvate / kM_R1_Pyruvate ) * ( D_Glucose_6_phosphate / kM_R1_D_Glucose_6_phosphate ) ) / ( ( 1 + D_Glucose / kM_R1_D_Glucose ) * ( 1 + Phosphoenolpyruvate / kM_R1_Phosphoenolpyruvate ) + ( 1 + Pyruvate / kM_R1_Pyruvate ) * ( 1 + D_Glucose_6_phosphate / kM_R1_D_Glucose_6_phosphate ) - 1 )
 PGI_R02740	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate	PGI_R02740		R02740	True	PGI	Common saturable (CM)	u_R2 * ( kC_R2 * sqrt( kEQ_R2  * kM_R2_D_Glucose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) * ( D_Glucose_6_phosphate / kM_R2_D_Glucose_6_phosphate ) - kC_R2 / sqrt( kEQ_R2  * kM_R2_D_Glucose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) * ( D_Fructose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) ) / ( ( 1 + D_Glucose_6_phosphate / kM_R2_D_Glucose_6_phosphate ) + ( 1 + D_Fructose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) - 1 )
@@ -31,50 +31,50 @@ FUM_R01082	Fumarate <=> _S__Malate	FUM_R01082		R01082	True	FUM	Common saturable 
 MDH_R00342	_S__Malate + NADplus <=> NADH + Oxaloacetate	MDH_R00342		R00342	True	MDH	Common saturable (CM)	u_R29 * ( kC_R29 * sqrt( kEQ_R29  * kM_R29__S__Malate * kM_R29_NADplus / kM_R29_NADH / kM_R29_Oxaloacetate ) * ( _S__Malate / kM_R29__S__Malate ) * ( NADplus / kM_R29_NADplus ) - kC_R29 / sqrt( kEQ_R29  * kM_R29__S__Malate * kM_R29_NADplus / kM_R29_NADH / kM_R29_Oxaloacetate ) * ( NADH / kM_R29_NADH ) * ( Oxaloacetate / kM_R29_Oxaloacetate ) ) / ( ( 1 + _S__Malate / kM_R29__S__Malate ) * ( 1 + NADplus / kM_R29_NADplus ) + ( 1 + NADH / kM_R29_NADH ) * ( 1 + Oxaloacetate / kM_R29_Oxaloacetate ) - 1 )
 PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate	PPC_R00345		R00345	True	PPC	Common saturable (CM)	u_R30 * ( kC_R30 * sqrt( kEQ_R30  * kM_R30_Orthophosphate * kM_R30_Oxaloacetate / kM_R30_CO2 / kM_R30_Phosphoenolpyruvate ) * ( Orthophosphate / kM_R30_Orthophosphate ) * ( Oxaloacetate / kM_R30_Oxaloacetate ) - kC_R30 / sqrt( kEQ_R30  * kM_R30_Orthophosphate * kM_R30_Oxaloacetate / kM_R30_CO2 / kM_R30_Phosphoenolpyruvate ) * ( CO2 / kM_R30_CO2 ) * ( Phosphoenolpyruvate / kM_R30_Phosphoenolpyruvate ) ) / ( ( 1 + Orthophosphate / kM_R30_Orthophosphate ) * ( 1 + Oxaloacetate / kM_R30_Oxaloacetate ) + ( 1 + CO2 / kM_R30_CO2 ) * ( 1 + Phosphoenolpyruvate / kM_R30_Phosphoenolpyruvate ) - 1 )
 %								
-!!SBtab Document='Model' TableName='Compound' TableType='Compound' SBtabVersion='1.0' Date='2018-12-14'								
+!!SBtab Document='E. coli central carbon metabolism - ECM result' TableName='Compound' TableType='Compound' SBtabVersion='1.0' Date='2018-12-14'								
 !ID	!Name	!NameForPlots	!Identifiers:kegg.compound	!IsConstant	!InitialConcentration			
-_S__Malate	(S)-Malate		C00149	False	3.21			
-Acetyl_CoA	Acetyl-CoA		C00024	False	0.414			
-Fumarate	Fumarate		C00122	False	0.999			
-cis_Aconitate	cis-Aconitate		C00417	False	0.0827			
-_6_Phospho_D_gluconate	6-Phospho-D-gluconate		C00345	False	0.166			
-Orthophosphate	Orthophosphate		C00009	True	10			
-Pyruvate	Pyruvate		C00022	False	0.0885			
-NADPplus	NADP+		C00006	True	0.1			
-NADPH	NADPH		C00005	True	0.114			
-NADH	NADH		C00004	True	0.0274			
-NADplus	NAD+		C00003	True	1			
-ATP	ATP		C00002	True	3.45			
-H2O	H2O		C00001	True	1			
-_2_Oxoglutarate	2-Oxoglutarate		C00026	False	0.119			
-Oxaloacetate	Oxaloacetate		C00036	True	0.00209			
-Ubiquinone	Ubiquinone		C00399	True	0.1			
-D_Erythrose_4_phosphate	D-Erythrose 4-phosphate		C00279	False	0.0945			
+_S__Malate	(S)-Malate		C00149	False	0.624			
+Acetyl_CoA	Acetyl-CoA		C00024	False	0.169			
+Fumarate	Fumarate		C00122	False	0.235			
+cis_Aconitate	cis-Aconitate		C00417	False	0.0927			
+_6_Phospho_D_gluconate	6-Phospho-D-gluconate		C00345	False	0.135			
+Orthophosphate	Orthophosphate		C00009	True	6.2			
+Pyruvate	Pyruvate		C00022	False	0.092			
+NADPplus	NADP+		C00006	True	0.138			
+NADPH	NADPH		C00005	True	0.0734			
+NADH	NADH		C00004	True	0.0037			
+NADplus	NAD+		C00003	True	5.84			
+ATP	ATP		C00002	True	0.589			
+H2O	H2O		C00001	True	0.1			
+_2_Oxoglutarate	2-Oxoglutarate		C00026	False	0.123			
+Oxaloacetate	Oxaloacetate		C00036	True	0.0163			
+Ubiquinone	Ubiquinone		C00399	True	0.102			
+D_Erythrose_4_phosphate	D-Erythrose 4-phosphate		C00279	False	0.0804			
 Ubiquinol	Ubiquinol		C00390	True	0.1			
-ADP	ADP		C00008	True	0.605			
-Isocitrate	Isocitrate		C00311	False	0.0269			
-D_Ribulose_5_phosphate	D-Ribulose 5-phosphate		C00199	False	0.19			
-D_Xylulose_5_phosphate	D-Xylulose 5-phosphate		C00231	False	0.487			
-D_Glucose_6_phosphate	D-Glucose 6-phosphate		C00092	True	0.9			
-_3_Phospho_D_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate		C00236	False	0.00813			
-CoA	CoA		C00010	False	1			
-CO2	CO2		C00011	True	0.01			
-D_Ribose_5_phosphate	D-Ribose 5-phosphate		C00117	False	0.304			
-Glycerone_phosphate	Glycerone phosphate		C00111	False	1.9			
-D_Glucose	D-Glucose		C00031	True	12			
-D_Fructose_1_6_bisphosphate	D-Fructose 1,6-bisphosphate		C00354	True	5.39			
-D_Glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate		C00118	True	0.174			
-Phosphoenolpyruvate	Phosphoenolpyruvate		C00074	True	0.0902			
-Citrate	Citrate		C00158	False	7.3			
-Succinyl_CoA	Succinyl-CoA		C00091	False	0.408			
-_3_Phospho_D_glycerate	3-Phospho-D-glycerate		C00197	False	1.27			
-D_Glucono_1_5_lactone_6_phosphate	D-Glucono-1,5-lactone 6-phosphate		C01236	False	0.103			
-D_Fructose_6_phosphate	D-Fructose 6-phosphate		C00085	True	0.0699			
-_2_Phospho_D_glycerate	2-Phospho-D-glycerate		C00631	False	0.101			
-Succinate	Succinate		C00042	False	0.0759			
-Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate		C05382	False	0.379			
+ADP	ADP		C00008	True	0.244			
+Isocitrate	Isocitrate		C00311	False	0.0287			
+D_Ribulose_5_phosphate	D-Ribulose 5-phosphate		C00199	False	0.195			
+D_Xylulose_5_phosphate	D-Xylulose 5-phosphate		C00231	False	0.496			
+D_Glucose_6_phosphate	D-Glucose 6-phosphate		C00092	True	1.03			
+_3_Phospho_D_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate		C00236	False	0.0349			
+CoA	CoA		C00010	False	0.0868			
+CO2	CO2		C00011	True	0.101			
+D_Ribose_5_phosphate	D-Ribose 5-phosphate		C00117	False	0.302			
+Glycerone_phosphate	Glycerone phosphate		C00111	False	1.12			
+D_Glucose	D-Glucose		C00031	True	0.121			
+D_Fructose_1_6_bisphosphate	D-Fructose 1,6-bisphosphate		C00354	True	2.15			
+D_Glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate		C00118	True	0.0998			
+Phosphoenolpyruvate	Phosphoenolpyruvate		C00074	True	0.0957			
+Citrate	Citrate		C00158	False	8.73			
+Succinyl_CoA	Succinyl-CoA		C00091	False	0.14			
+_3_Phospho_D_glycerate	3-Phospho-D-glycerate		C00197	False	1.98			
+D_Glucono_1_5_lactone_6_phosphate	D-Glucono-1,5-lactone 6-phosphate		C01236	False	0.102			
+D_Fructose_6_phosphate	D-Fructose 6-phosphate		C00085	True	0.0863			
+_2_Phospho_D_glycerate	2-Phospho-D-glycerate		C00631	False	0.132			
+Succinate	Succinate		C00042	False	0.0997			
+Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate		C05382	False	0.503			
 %								
-!!SBtab Document='Model' TableName='Layout' TableType='Layout' SBtabVersion='1.0' Date='2018-12-14'								
+!!SBtab Document='E. coli central carbon metabolism - ECM result' TableName='Layout' TableType='Layout' SBtabVersion='1.0' Date='2018-12-14'								
 !Element	!PositionX	!PositionY						
 _S__Malate	0.328	0.0951						
 Acetyl_CoA	0.359	0.229						
@@ -147,7 +147,7 @@ FUM_R01082	0.34	0.0355
 MDH_R00342	0.334	0.141						
 PPC_R00345	0.401	0.507						
 %								
-!!SBtab Document='Model' TableName='Parameter' TableType='Quantity' SBtabVersion='1.0' Date='2018-12-14'								
+!!SBtab Document='E. coli central carbon metabolism - ECM result' TableName='Parameter' TableType='Quantity' SBtabVersion='1.0' Date='2018-12-14'								
 !QuantityType	!Reaction	!Compound	!Mode	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID	
 equilibrium constant	PTS_RPTSsy		5.21e+07	dimensionless	RPTSsy		kEQ_R1	
 equilibrium constant	PGI_R02740		0.365	dimensionless	R02740		kEQ_R2	
@@ -376,36 +376,36 @@ product catalytic rate constant	SDH_R02164		31.2	1/s	R02164		kcrr_R27
 product catalytic rate constant	FUM_R01082		117	1/s	R01082		kcrr_R28	
 product catalytic rate constant	MDH_R00342		276	1/s	R00342		kcrr_R29	
 product catalytic rate constant	PPC_R00345		2.31e+03	1/s	R00345		kcrr_R30	
-concentration of enzyme	PTS_RPTSsy		0.0169	mM	RPTSsy		u_R1	
-concentration of enzyme	PGI_R02740		0.028	mM	R02740		u_R2	
-concentration of enzyme	PFK_R04779		0.0214	mM	R04779		u_R3	
-concentration of enzyme	ALD_R01070		0.0545	mM	R01070		u_R4	
-concentration of enzyme	TIM_R01015		0.0138	mM	R01015		u_R5	
-concentration of enzyme	GAP_R01061		0.0915	mM	R01061		u_R6	
-concentration of enzyme	PGK_R01512		0.0176	mM	R01512		u_R7	
-concentration of enzyme	PGM_R01518		0.0301	mM	R01518		u_R8	
-concentration of enzyme	PGH_R00658		0.0421	mM	R00658		u_R9	
-concentration of enzyme	PYK_R00200		0.0201	mM	R00200		u_R10	
-concentration of enzyme	PDH_R00209		0.00582	mM	R00209		u_R11	
-concentration of enzyme	ZWF_R00835		0.00123	mM	R00835		u_R12	
-concentration of enzyme	GLH_R02035		0.000702	mM	R02035		u_R13	
-concentration of enzyme	PGD_R01528		0.00638	mM	R01528		u_R14	
-concentration of enzyme	RPI_R01056		0.00158	mM	R01056		u_R15	
-concentration of enzyme	RPE_R01529		0.0018	mM	R01529		u_R16	
-concentration of enzyme	TXT_R01641		0.0168	mM	R01641		u_R17	
-concentration of enzyme	TAL_R08575		0.0262	mM	R08575		u_R18	
-concentration of enzyme	TXT_R01067		0.0103	mM	R01067		u_R19	
+concentration of enzyme	PTS_RPTSsy		0.0182	mM	RPTSsy		u_R1	
+concentration of enzyme	PGI_R02740		0.0286	mM	R02740		u_R2	
+concentration of enzyme	PFK_R04779		0.0276	mM	R04779		u_R3	
+concentration of enzyme	ALD_R01070		0.0546	mM	R01070		u_R4	
+concentration of enzyme	TIM_R01015		0.0137	mM	R01015		u_R5	
+concentration of enzyme	GAP_R01061		0.09	mM	R01061		u_R6	
+concentration of enzyme	PGK_R01512		0.00628	mM	R01512		u_R7	
+concentration of enzyme	PGM_R01518		0.022	mM	R01518		u_R8	
+concentration of enzyme	PGH_R00658		0.0322	mM	R00658		u_R9	
+concentration of enzyme	PYK_R00200		0.0155	mM	R00200		u_R10	
+concentration of enzyme	PDH_R00209		0.00557	mM	R00209		u_R11	
+concentration of enzyme	ZWF_R00835		0.00107	mM	R00835		u_R12	
+concentration of enzyme	GLH_R02035		0.000567	mM	R02035		u_R13	
+concentration of enzyme	PGD_R01528		0.00394	mM	R01528		u_R14	
+concentration of enzyme	RPI_R01056		0.00131	mM	R01056		u_R15	
+concentration of enzyme	RPE_R01529		0.0016	mM	R01529		u_R16	
+concentration of enzyme	TXT_R01641		0.016	mM	R01641		u_R17	
+concentration of enzyme	TAL_R08575		0.0299	mM	R08575		u_R18	
+concentration of enzyme	TXT_R01067		0.0111	mM	R01067		u_R19	
 concentration of enzyme	FBP_R00762		0	mM	R00762		u_R20	
-concentration of enzyme	CSN_R00351		0.0148	mM	R00351		u_R21	
-concentration of enzyme	ACN_R01325		0.0848	mM	R01325		u_R22	
-concentration of enzyme	ACN_R01900		0.0859	mM	R01900		u_R23	
-concentration of enzyme	ICD_R00709		0.0195	mM	R00709		u_R24	
+concentration of enzyme	CSN_R00351		0.00528	mM	R00351		u_R21	
+concentration of enzyme	ACN_R01325		0.0799	mM	R01325		u_R22	
+concentration of enzyme	ACN_R01900		0.0814	mM	R01900		u_R23	
+concentration of enzyme	ICD_R00709		0.0167	mM	R00709		u_R24	
 concentration of enzyme	KGD_R08549		0.00217	mM	R08549		u_R25	
-concentration of enzyme	SCS_R00405		0.0132	mM	R00405		u_R26	
-concentration of enzyme	SDH_R02164		0.00157	mM	R02164		u_R27	
-concentration of enzyme	FUM_R01082		0.00507	mM	R01082		u_R28	
-concentration of enzyme	MDH_R00342		0.00786	mM	R00342		u_R29	
-concentration of enzyme	PPC_R00345		0.0025	mM	R00345		u_R30	
+concentration of enzyme	SCS_R00405		0.00494	mM	R00405		u_R26	
+concentration of enzyme	SDH_R02164		0.000938	mM	R02164		u_R27	
+concentration of enzyme	FUM_R01082		0.00313	mM	R01082		u_R28	
+concentration of enzyme	MDH_R00342		0.00511	mM	R00342		u_R29	
+concentration of enzyme	PPC_R00345		0.000416	mM	R00345		u_R30	
 protein molecular mass	PTS_RPTSsy		2.56e+05	Da	RPTSsy		em_1	
 protein molecular mass	PGI_R02740		6.15e+04	Da	R02740		em_2	
 protein molecular mass	PFK_R04779		1.39e+05	Da	R04779		em_3	

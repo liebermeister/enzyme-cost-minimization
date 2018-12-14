@@ -1,5 +1,5 @@
-!!SBtab TableType='Quantity' !Organism='Escherichia coli'
-!QuantityType	!Gene:LocusName	!Abundance	!Value	!SizeWeightedAbundance	!SizeWeightedAbundancePPM	!Size	!Gene	!Gene:Identifiers:kegg.orthology	!Pathway
+!!SBtab TableType='Quantity' Organism='Escherichia coli'
+!QuantityType	!Gene:LocusName	Abundance	!Value	SizeWeightedAbundance	SizeWeightedAbundancePPM	!Size	!Gene	!Gene:Identifiers:kegg.orthology	!Pathway
 concentration of enzyme	b3339	39226.0	18365.0576056	13729100.0	20866.0520952	350	TufA	K02358	Translation factors
 concentration of enzyme	b4015	32244.0	15096.1840982	13993896.0	21268.4999709	434	AceA	K01637	Glyoxylate and dicarboxylate metabolism
 concentration of enzyme	b3908	26458.0	12387.2608507	5450348.0	8283.6635544	206	SodA	K04564	Other enzymes

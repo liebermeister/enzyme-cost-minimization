@@ -126,6 +126,9 @@ ecm_scores            = ecm_options.ecm_scores         ;
 enzyme_cost_weights   = ecm_options.enzyme_cost_weights;
 lambda_regularisation = ecm_options.lambda_regularisation;
 ind_scored_enzymes    = ecm_options.ind_scored_enzymes ;
+pp.fluctuations_safety_margin = ecm_options.fluctuations_safety_margin;
+pp.cell_volume                = ecm_options.cell_volume;
+
 if find(v(ind_scored_enzymes)==0), 
   error('An enzyme catalysing a 0 flux is scored in the cost function. This can lead to problems')
 end

@@ -1,4 +1,4 @@
-function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
+function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables,verbose)
 
 %ECM_SAVE_MODEL_AND_DATA_SBTAB - Write SBtab file containing (model and data) information for Enzyme Cost Minimization
 %
@@ -23,7 +23,7 @@ function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinet
 % save_single_tables     (flag for saving SBtab tables in single files; default 0)
 % write_delta_G0         flag, determining whether standard reaction Gibbs free energies should be included in the file
 
-eval(default('v','[]','r','[]','c_data','[]','u_data','[]','kinetic_data','[]','conc_min','[]','conc_max','[]','enzyme_cost_weights','[]','document_name','[]', 'save_single_tables','0','write_delta_G0','0'));
+eval(default('v','[]','r','[]','c_data','[]','u_data','[]','kinetic_data','[]','conc_min','[]','conc_max','[]','enzyme_cost_weights','[]','document_name','[]', 'save_single_tables','0','write_delta_G0','0','verbose','0'));
 
 % -------------------------------------------------------
 % prepare data
@@ -44,15 +44,19 @@ sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'
 
 % manually add column 'NameForPlots' in table 'Reaction'
 reaction_table = sbtab_document.tables.Reaction;
-gene_names     = sbtab_table_get_column(reaction_table,'Gene');
-reaction_table = sbtab_table_add_column(reaction_table,'NameForPlots',lower(gene_names));
-sbtab_document.tables.Reaction  = reaction_table;
+if ~sbtab_table_has_column(reaction_table,'NameForPlots'),
+  gene_names     = sbtab_table_get_column(reaction_table,'Gene');
+  reaction_table = sbtab_table_add_column(reaction_table,'NameForPlots',lower(gene_names));
+  sbtab_document.tables.Reaction  = reaction_table;
+end
 
 % manually add column 'NameForPlots' in table 'Compound'
 compound_table = sbtab_document.tables.Compound;
-compound_names = sbtab_table_get_column(compound_table,'Name');
-compound_table = sbtab_table_add_column(compound_table,'NameForPlots',compound_names);
-sbtab_document.tables.Compound  = compound_table;
+if ~sbtab_table_has_column(compound_table,'NameForPlots'),
+  compound_names = sbtab_table_get_column(compound_table,'Name');
+  compound_table = sbtab_table_add_column(compound_table,'NameForPlots',compound_names);
+  sbtab_document.tables.Compound  = compound_table;
+end
 
 if save_single_tables,
   sbtab_document_save(sbtab_document,filename,0,1);
@@ -143,7 +147,7 @@ end
 if isfield(network,'graphics_par'),
   x = network.graphics_par.x(1,:)';
   y = network.graphics_par.x(2,:)';
-  position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Position', 'TableType','Position'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
+  position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Layout', 'TableType','Layout'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
   if isfield(network.graphics_par,'metinvisible'),
     position_table = sbtab_table_add_column(position_table,'IsInvisible',[column(network.graphics_par.metinvisible); column(network.graphics_par.actinvisible)],1);
   end
@@ -176,4 +180,4 @@ if exist('concentration_table','var'),
   sbtab_document_save_to_one(sbtab_document_validation_data,[filename, '_ECM_ValidationData.tsv']);
 end
 
-display(sprintf('Wrote model files (sbtab format) with basename\n%s', filename))
+if verbose, display(sprintf('Wrote model files (sbtab format) with basename\n%s', filename)); end

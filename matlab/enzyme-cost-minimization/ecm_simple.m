@@ -81,11 +81,13 @@ switch options.actions,
                               'activation constant', 'inhibitory constant',...
                               'equilibrium constant','substrate catalytic rate constant', ...
                               'product catalytic rate constant'};
-          use_kegg_ids  = 1;
-          organism_long = [];
+          options.use_sbml_ids  = 0;
+          options.use_kegg_ids  = 1;
+          options.verbose       = 0;
           sbtab_table_save(my_sbtab.tables.Parameter,struct('filename','/tmp/my_pb_data.tsv'));
-          %% store input rate constants in intermediate file '/tmp/my_pb_data.tsv'
-          my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', 0, options.use_kegg_ids, 0, 1, 'Organism',organism_long);
+          %% If this tmp directory does not exist, please create one anywhere in your system
+          %% It is needed to store input rate constants in an intermediate file '/tmp/my_pb_data.tsv'
+          my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', options);
           
           ecm_options = ecm_default_options(my_network);
           ecm_options.insert_Keq_from_data = 0;
@@ -184,7 +186,9 @@ else
     graphics_options.metabolite_order_file = [];
     graphics_options.reaction_order_file   = [];
     graphics_options.enzyme_colors   = sunrise_colors(length(ecm_options.ind_scored_enzymes));
-    eval(sprintf('mkdir %s',graphics_options.psfile_dir));
+    try
+      mkdir(graphics_options.psfile_dir);
+    end
     ecm_display(ecm_options, graphics_options, my_network,v,c,u,u_cost,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation);
   end  
 end

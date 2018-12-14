@@ -19,7 +19,7 @@ function [r, r_orig, kinetic_data, r_samples, pb_options, parameter_prior, r_mea
 %   kinetic_data    Kinetic_data used (for details, see parameter_balancing_kinetic.m)
 %   parameter_prior Prior distributions used
 
-pb_options = join_struct(parameter_balancing_default_options,pb_options);
+pb_options = join_struct(parameter_balancing_options,pb_options);
 
 % extra options used only in this function  
 pb_options_default.flag_given_kinetics = 0;

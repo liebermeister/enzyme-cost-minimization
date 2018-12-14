@@ -1,5 +1,5 @@
-!!SBtab !Organism='Saccharomyces cerevisiae'
-!Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!ProteinSize
+!!SBtab QuantityType='protein chain length' Organism='Saccharomyces cerevisiae'
+!Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!Value
 YIL147C	Sln1	K11231	1220
 YDL235C	Ypd1	K11232	167
 YLR006C	Ssk1	K11233	712

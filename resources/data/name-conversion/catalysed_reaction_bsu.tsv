@@ -1,4 +1,4 @@
-!!SBtab TableType='Reaction' !Organism='Bacillus subtilis'			
+!!SBtab TableType='Reaction' Organism='Bacillus subtilis'			
 !Reaction	!Reaction:Identifiers:kegg.reaction	!Enzyme	!Gene
 AAD		AAD	-
 ACC		ACC	-

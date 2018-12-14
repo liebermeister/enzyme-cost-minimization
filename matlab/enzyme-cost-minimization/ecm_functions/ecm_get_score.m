@@ -1,6 +1,6 @@
 % ECM_GET_SCORE - Helper function
 % 
-% function [u_cost, u_preemptive] = ecm_get_score(ecm_score,x,pp)
+% function [u_cost, u, u_preemptive] = ecm_get_score(ecm_score,x,pp)
 %
 % Possible cost functions: 
 %  Max-min driving force
@@ -92,6 +92,13 @@ end
 
 u(pp.v==0) = 0;
 
+% Safety margin, to counter fluctuations in protein levels
+
+if pp.fluctuations_safety_margin,
+  u = u + pp.fluctuations_safety_margin / sqrt(pp.cell_volume * 6.02214086 * 10^23) * sqrt(u);
+end
+
+
 % Support for multiple conditions
 % Assume that all reaction vectors are actually a concatenation of several (condition-specific) vectors
 
@@ -110,3 +117,4 @@ if pp.multiple_conditions,
 else
   u_preemptive = [];
 end
+

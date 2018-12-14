@@ -65,7 +65,7 @@ ecm_options.conc_max = conc_max;
 ind_conc_fix = find(ecm_options.conc_min == ecm_options.conc_max);
 met_fix      = network.metabolites(ind_conc_fix);
 conc_fix     = ecm_options.conc_min(ind_conc_fix);
-if prod(size(met_fix))==0, met_fix=[]; conc_fix=[]; end
+if prod(size(met_fix))==0, met_fix={}; conc_fix=[]; end
 
 ind_met_fix = label_names(met_fix, network.metabolites);
 
@@ -84,8 +84,11 @@ ecm_options.ind_met_fix = ind_met_fix;
 
 % -------------------------------------------
 % set enzyme cost weights
-
 if isempty(ecm_options.use_cost_weights),
+  if ecm_options.verbose,
+    display('Using predefined enzyme cost weights');
+  end
+else  
   switch ecm_options.use_cost_weights,
     case 'none',
       ecm_options.enzyme_cost_weights = ones(length(ecm_options.ind_scored_enzymes),1);
@@ -96,12 +99,8 @@ if isempty(ecm_options.use_cost_weights),
     case 'aa_composition',
       ecm_options.enzyme_cost_weights = network.akashi_protein_cost(ecm_options.ind_scored_enzymes);
   end
-  % scale to median = 1
+  %% scale to median = 1
   ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ecm_options.enzyme_cost_weights);
-else
-  if ecm_options.verbose,
-    display('Using predefined enzyme cost weights');
-  end
 end
 
 % -----------------------------

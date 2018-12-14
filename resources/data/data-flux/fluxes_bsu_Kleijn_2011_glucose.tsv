@@ -1,5 +1,5 @@
-!!SBtab !Organism="Bacillus subtilis"
-!Reaction	Substrate name	Product name	Gene	Comment	!Flux:Value
+!!SBtab TableType='Quantity' QuantityType='flux' Organism='Bacillus subtilis'
+!Reaction	Substrate name	Product name	!Gene	!Comment	!Value
 PTS_RPTSsy	D-glucose (ext)	D-glucose 6-phosphate (cyt)	uptake	glucose uptake	7.63
 	carbondioxide (ext)	carbondioxide (cyt)	uptake	CO2 uptake	13.46
 PGI_R02740	D-glucose 6-phosphate (cyt)	D-fructose 6-phosphate (cyt)	pgi net	P-glucoisomerase	5.60

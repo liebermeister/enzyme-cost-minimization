@@ -1,5 +1,5 @@
-!!SBtab !Organism='Bacillus subtilis'
-!Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!ProteinSize
+!!SBtab QuantityType='protein chain length' Organism='Bacillus subtilis'
+!Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!Value
 BSU24280	IspA	K13789	319
 BSU22740	HepT	K00805	348
 BSU22760	HepS	K00805	251
