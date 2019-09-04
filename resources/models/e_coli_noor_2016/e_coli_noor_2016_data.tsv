@@ -1,4 +1,4 @@
-!!SBtab TableName='Parameter' TableType='Quantity' Document='E. coli central carbon metabolism - unbalanced kinetic data' SBtabVersion='1.0'						
+!!SBtab TableID='Parameter' TableType='Quantity' Document='E. coli central carbon metabolism - unbalanced kinetic data' SBtabVersion='1.0'						
 !QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound
 equilibrium constant	PTS_RPTSsy		57262184	dimensionless	RPTSsy	
 equilibrium constant	PGI_R02740		0.36350845	dimensionless	R02740	
@@ -297,7 +297,7 @@ protein molecular mass	SDH_R02164		792299	Da	R02164
 protein molecular mass	FUM_R01082		60000	Da	R01082	
 protein molecular mass	MDH_R00342		32337	Da	R00342	
 protein molecular mass	PPC_R00345		198120	Da	R00345	
-!!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableName='Concentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'						
+!!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableID='Concentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'						
 !QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound
 concentration		_S__Malate	1.6853424			C00149
 concentration		Acetyl_CoA	606			C00024
@@ -340,7 +340,7 @@ concentration		_2_Phospho_D_glycerate	NaN			C00631
 concentration		Succinate	1.1853254			C00042
 concentration		Sedoheptulose_7_phosphate	NaN			C05382
 %						
-!!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableName='EnzymeConcentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'						
+!!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableID='EnzymeConcentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'						
 !QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound
 concentration of enzyme	PTS_RPTSsy		0.022041994		RPTSsy	
 concentration of enzyme	PGI_R02740		0.0076401396		R02740	

@@ -1,4 +1,4 @@
-!!SBtab TableName='Reaction' TableType='Reaction' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
+!!SBtab TableID='Reaction' TableType='Reaction' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
 !ID	!ReactionFormula	!Identifiers:kegg.reaction	!IsReversible	!Gene	!KineticLaw:Name	!KineticLaw:Formula	!NameForPlots	
 PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	RPTSsy	True	PTS	Common saturable (CM)	u_R1 * ( kC_R1 * sqrt( kEQ_R1  * kM_R1_D_Glucose * kM_R1_Phosphoenolpyruvate / kM_R1_Pyruvate / kM_R1_D_Glucose_6_phosphate ) * ( D_Glucose / kM_R1_D_Glucose ) * ( Phosphoenolpyruvate / kM_R1_Phosphoenolpyruvate ) - kC_R1 / sqrt( kEQ_R1  * kM_R1_D_Glucose * kM_R1_Phosphoenolpyruvate / kM_R1_Pyruvate / kM_R1_D_Glucose_6_phosphate ) * ( Pyruvate / kM_R1_Pyruvate ) * ( D_Glucose_6_phosphate / kM_R1_D_Glucose_6_phosphate ) ) / ( ( 1 + D_Glucose / kM_R1_D_Glucose ) * ( 1 + Phosphoenolpyruvate / kM_R1_Phosphoenolpyruvate ) + ( 1 + Pyruvate / kM_R1_Pyruvate ) * ( 1 + D_Glucose_6_phosphate / kM_R1_D_Glucose_6_phosphate ) - 1 )	
 PGI_R02740	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate	R02740	True	PGI	Common saturable (CM)	u_R2 * ( kC_R2 * sqrt( kEQ_R2  * kM_R2_D_Glucose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) * ( D_Glucose_6_phosphate / kM_R2_D_Glucose_6_phosphate ) - kC_R2 / sqrt( kEQ_R2  * kM_R2_D_Glucose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) * ( D_Fructose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) ) / ( ( 1 + D_Glucose_6_phosphate / kM_R2_D_Glucose_6_phosphate ) + ( 1 + D_Fructose_6_phosphate / kM_R2_D_Fructose_6_phosphate ) - 1 )	
@@ -31,7 +31,7 @@ FUM_R01082	Fumarate <=> _S__Malate	R01082	True	FUM	Common saturable (CM)	u_R28 *
 MDH_R00342	_S__Malate + NADplus <=> NADH + Oxaloacetate	R00342	True	MDH	Common saturable (CM)	u_R29 * ( kC_R29 * sqrt( kEQ_R29  * kM_R29__S__Malate * kM_R29_NADplus / kM_R29_NADH / kM_R29_Oxaloacetate ) * ( _S__Malate / kM_R29__S__Malate ) * ( NADplus / kM_R29_NADplus ) - kC_R29 / sqrt( kEQ_R29  * kM_R29__S__Malate * kM_R29_NADplus / kM_R29_NADH / kM_R29_Oxaloacetate ) * ( NADH / kM_R29_NADH ) * ( Oxaloacetate / kM_R29_Oxaloacetate ) ) / ( ( 1 + _S__Malate / kM_R29__S__Malate ) * ( 1 + NADplus / kM_R29_NADplus ) + ( 1 + NADH / kM_R29_NADH ) * ( 1 + Oxaloacetate / kM_R29_Oxaloacetate ) - 1 )	
 PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate	R00345	True	PPC	Common saturable (CM)	u_R30 * ( kC_R30 * sqrt( kEQ_R30  * kM_R30_Orthophosphate * kM_R30_Oxaloacetate / kM_R30_CO2 / kM_R30_Phosphoenolpyruvate ) * ( Orthophosphate / kM_R30_Orthophosphate ) * ( Oxaloacetate / kM_R30_Oxaloacetate ) - kC_R30 / sqrt( kEQ_R30  * kM_R30_Orthophosphate * kM_R30_Oxaloacetate / kM_R30_CO2 / kM_R30_Phosphoenolpyruvate ) * ( CO2 / kM_R30_CO2 ) * ( Phosphoenolpyruvate / kM_R30_Phosphoenolpyruvate ) ) / ( ( 1 + Orthophosphate / kM_R30_Orthophosphate ) * ( 1 + Oxaloacetate / kM_R30_Oxaloacetate ) + ( 1 + CO2 / kM_R30_CO2 ) * ( 1 + Phosphoenolpyruvate / kM_R30_Phosphoenolpyruvate ) - 1 )	
 %							
-!!SBtab TableName='Compound' TableType='Compound' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
+!!SBtab TableID='Compound' TableType='Compound' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
 !ID	!Name	!Identifiers:kegg.compound	!IsConstant	!NameForPlots				
 _S__Malate	(S)-Malate	C00149	False				
 Acetyl_CoA	Acetyl-CoA	C00024	False				
@@ -74,7 +74,7 @@ _2_Phospho_D_glycerate	2-Phospho-D-glycerate	C00631	False
 Succinate	Succinate	C00042	False				
 Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate	C05382	False				
 %							
-!!SBtab TableName='Parameter' TableType='Quantity' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
+!!SBtab TableID='Parameter' TableType='Quantity' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
 !QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
 equilibrium constant	PTS_RPTSsy		52122111	dimensionless	RPTSsy		kEQ_R1
 equilibrium constant	PGI_R02740		0.3654504	dimensionless	R02740		kEQ_R2
@@ -374,7 +374,7 @@ molecular mass		_2_Phospho_D_glycerate	186	Da		C00631
 molecular mass		Succinate	118	Da		C00042
 molecular mass		Sedoheptulose_7_phosphate	290	Da		C05382
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='Layout' TableType='Position' SBtabVersion='1.0'							
+!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableID='Layout' TableType='Position' SBtabVersion='1.0'							
 !Element	!PositionX	!PositionY					
 _S__Malate	0.32772	0.095058					
 Acetyl_CoA	0.359426	0.22902					
@@ -447,7 +447,7 @@ FUM_R01082	0.340351	0.035483
 MDH_R00342	0.33416	0.140744					
 PPC_R00345	0.40095304	0.50690003					
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='Flux' TableType='Quantity' Unit='mM/s' SBtabVersion='1.0'							
+!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableID='Flux' TableType='Quantity' Unit='mM/s' SBtabVersion='1.0'							
 !QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value				
 flux	PTS_RPTSsy	RPTSsy	0.5691				
 flux	PGI_R02740	R02740	0.385				
@@ -480,7 +480,7 @@ flux	FUM_R01082	R01082	0.0924
 flux	MDH_R00342	R00342	0.0602				
 flux	PPC_R00345	R00345	-0.2114				
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='EnzymeCostWeight' TableType='Quantity' Unit='ArbitraryUnits' SBtabVersion='1.0'							
+!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableID='EnzymeCostWeight' TableType='Quantity' Unit='ArbitraryUnits' SBtabVersion='1.0'							
 !QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value				
 enzyme cost weight	PTS_RPTSsy	RPTSsy	1.2491113				
 enzyme cost weight	PGI_R02740	R02740	1.2955694				
@@ -513,7 +513,7 @@ enzyme cost weight	FUM_R01082	R01082	1.2217818
 enzyme cost weight	MDH_R00342	R00342	0.64118123				
 enzyme cost weight	PPC_R00345	R00345	1.9865788				
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='ConcentrationConstraint' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
+!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableID='ConcentrationConstraint' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
 !QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max			
 concentration	_S__Malate	C00149	0.001	10			
 concentration	Acetyl_CoA	C00024	0.001	10			
@@ -556,7 +556,7 @@ concentration	_2_Phospho_D_glycerate	C00631	0.001	10
 concentration	Succinate	C00042	0.001	10			
 concentration	Sedoheptulose_7_phosphate	C05382	0.001	10			
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='Concentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
+!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableID='Concentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
 !QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Value				
 concentration	_S__Malate	C00149	1.6853424				
 concentration	Acetyl_CoA	C00024	0.606				
@@ -599,7 +599,7 @@ concentration	_2_Phospho_D_glycerate	C00631	NaN
 concentration	Succinate	C00042	1.1853254				
 concentration	Sedoheptulose_7_phosphate	C05382	NaN				
 %							
-!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='EnzymeConcentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
+!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableID='EnzymeConcentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
 !QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value				
 concentration of enzyme	PTS_RPTSsy	RPTSsy	0.022041994				
 concentration of enzyme	PGI_R02740	R02740	0.0076401396				

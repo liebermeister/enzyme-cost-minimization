@@ -1,4 +1,4 @@
-!!SBtab TableName='Flux' TableType='Quantity' Organism='Escherichia coli' Reference='Haverkorn et al., 2011'
+!!SBtab TableID='Flux' TableType='Quantity' Organism='Escherichia coli' Reference='Haverkorn et al., 2011'
 !QuantityType	!Reaction	!Gene	!Reaction:Name	!Value	Quantile95	!Unit
 yield	BiomassYield		biomass yield	0.4	nan	g/g
 growth rate	GrowthRate		growth rate	0.61	nan	h-1

@@ -1,4 +1,5 @@
-!!SBtab TableName='Flux' TableType='Quantity' Unit='mmol/gDW/h' Organism='Escherichia coli'
+!!SBtab TableID='Flux' TableType='Quantity' Unit='mmol/gDW/h' Organism='Escherichia coli'
+
 !QuantityType	!Reaction	!Value	!Std	!Reaction:Identifiers:kegg.reaction
 flux	HXK_R01786	8.7	0.4	R01786
 flux	PTS_RPTSsy	8.7	0.4	RPTSsy

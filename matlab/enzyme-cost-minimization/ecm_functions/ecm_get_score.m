@@ -1,6 +1,6 @@
 % ECM_GET_SCORE - Helper function
 % 
-% function [u_cost, u, u_preemptive] = ecm_get_score(ecm_score,x,pp)
+% function [u_cost, u, u_preemptive] = ecm_get_score(ecm_score,x,pp,no_warnings)
 %
 % Possible cost functions: 
 %  Max-min driving force
@@ -49,8 +49,10 @@
 %   metenzmass-3sp
 %   metenzmass-4cm
 
-function [u_cost, u, u_preemptive] = ecm_get_score(ecm_score,x,pp)
+function [u_cost, u, u_preemptive] = ecm_get_score(ecm_score,x,pp,no_warnings)
 
+  eval(default('no_warnings','0'));
+  
 switch ecm_score,
   case 'mdf',            [u_cost, u] = ecm_mdf(x,pp);      % only max Delta G counts  
   case 'emc1',           [u_cost, u] = ecm_emc1(x,pp);     % sum values
@@ -60,7 +62,7 @@ switch ecm_score,
   case 'emc3sp',         [u_cost, u] = ecm_emc3sp(x,pp);
   case 'emc4dm',         [u_cost, u] = ecm_emc4dm(x,pp);
   case 'emc4sm',         [u_cost, u] = ecm_emc4sm(x,pp);
-  case 'emc4cm',         [u_cost, u] = ecm_emc4cm(x,pp);
+  case 'emc4cm',         [u_cost, u] = ecm_emc4cm(x,pp,no_warnings);
   case 'emc4geom',       [u_cost, u] = ecm_emc4geom(x,pp);  
   case 'max-1',          [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc1');   % max values
   case 'max-2s',         [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc2s');

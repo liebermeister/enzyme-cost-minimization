@@ -6,13 +6,15 @@ Wolfram Liebermeister (2015)
 Dependencies: 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
 
- o Metabolic Network Toolbox (https://github.com/liebermeister/mnt)
+  o Matlab utility functions    (https://github.com/liebermeister/matlab-utils)
 
- o SBMLtoolbox               (http://sbml.org/Software/SBMLToolbox)
+  o Metabolic Network Toolbox (https://github.com/liebermeister/mnt)
 
- o SBtab toolbox             (https://github.com/liebermeister/sbtab-matlab)
+  o SBMLtoolbox               (http://sbml.org/Software/SBMLToolbox)
 
- o DERIVESTsuite             (http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation)
+  o SBtab toolbox             (https://github.com/liebermeister/sbtab-matlab)
+
+  o DERIVESTsuite             (http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation)
 
 Please make sure that these matlab packages are installed in your system and that all these directories and subdirectories are included in your matlab path.
 

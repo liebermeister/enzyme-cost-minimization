@@ -11,7 +11,7 @@ INSTALLATION
   1. Unpack the files
   2. Include the directory 'matlab/enzyme-cost-minimization' into your MATLAB path
   3. Make sure that the following MATLAB toolboxes are installed:
-      o Metabolic Network Toolbox  (https://github.com/liebermeister/mnt)
+      o Metabolic Network Toolbox  (https://github.com/liebermeister/metabolic-network-toolbox)
       o SBML Toolbox               (http://sbml.org/Software/SBMLToolbox)
       o SBtab toolbox              (https://github.com/liebermeister/sbtab-matlab)
       o efmtool Toolbox            (http://www.csb.ethz.ch/tools/efmtool)
