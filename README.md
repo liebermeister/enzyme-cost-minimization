@@ -1,9 +1,8 @@
 Enzyme Cost Minimization
 ==========================================
 
-Wolfram Liebermeister (2015)
+##Dependencies: 
 
-Dependencies: 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
 
   o Matlab utility functions    (https://github.com/liebermeister/matlab-utils)
@@ -25,4 +24,8 @@ Please note that the following packages are required by some functions in the Me
   o efmtool        (http://www.csb.ethz.ch/tools/efmtool)
 
 
-Contact: <wolfram.liebermeister@gmail.com>
+## License
+This package is released under the [GNU General Public License](LICENSE).
+
+## Contact
+Please contact [Wolfram Liebermeister](wolfram.liebermeister@gmail.com) with any questions or comments.
