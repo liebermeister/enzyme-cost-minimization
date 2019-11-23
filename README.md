@@ -1,7 +1,10 @@
 Enzyme Cost Minimization
 ==========================================
 
-##Dependencies: 
+Enzyme cost minimization is a method for predicting optimal metabolite and enzyme concentrations in metabolic systems. For a description and
+further references, please see the [ECM website](https://www.metabolic-economics.de/enzyme-cost-minimization/).
+
+## Dependencies: 
 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
 
