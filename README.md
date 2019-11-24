@@ -6,6 +6,10 @@ further references, please see the [ECM website](https://www.metabolic-economics
 
 This repository contains Matlab code only. Python users, please consider Elad Noor's ECM implementation at [gitlab](https://gitlab.com/elad.noor/enzyme-cost-minimization).
 
+If you use enzyme cost minimization in your work, please cite our article
+
+Noor E., Flamholz A., Bar-Even A., Davidi D., Milo R., Liebermeister W. (2016), The protein cost of metabolic fluxes: prediction from enzymatic rate laws and cost minimization, [PLoS Comp. Biol. 12 (10): e1005167](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010)
+
 ## Dependencies: 
 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
