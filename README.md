@@ -3,7 +3,7 @@ Enzyme Cost Minimization
 
 [Enzyme cost minimization](https://www.metabolic-economics.de/enzyme-cost-minimization/) (ECM) is a method for predicting optimal metabolite and enzyme concentrations in metabolic systems.
 
-This repository contains Matlab code only. Python users, please consider Elad Noor's ECM implementation at [gitlab](https://gitlab.com/elad.noor/enzyme-cost-minimization).
+This repository contains Matlab code for ECM. However, Elad Noor also provides an [ECM implementation in python](https://gitlab.com/elad.noor/enzyme-cost-minimization).
 
 If you use enzyme cost minimization in your work, please cite our article *Noor et al. (2016)* (reference below). 
 
