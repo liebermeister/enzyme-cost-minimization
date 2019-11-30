@@ -41,6 +41,6 @@ Please contact [Wolfram Liebermeister](wolfram.liebermeister@gmail.com) with any
 
 
 ## References
-1. [https://www.metabolic-economics.de/enzyme-cost-minimization/](https://www.metabolic-economics.de/enzyme-cost-minimization/)
-2. E. Noor, A. Flamholz, A. Bar-Even, D. Davidi, R. Milo, W. Liebermeister (2016), *The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization*, PLOS Comp. Biol., [DOI: 10.1371/journal.pcbi.1005167](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5094713/)
-3. Flamholz, E. Noor, A. Bar-Even, R. Milo (2012) *eQuilibrator - the biochemical thermodynamics calculator*, Nucleic Acids Res, [DOI: 10.1093/nar/gkr874](http://bioinformatics.oxfordjournals.org/content/28/15/2037.long)
+1. E. Noor, A. Flamholz, A. Bar-Even, D. Davidi, R. Milo, W. Liebermeister (2016), *The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization*, PLOS Comp. Biol., [DOI: 10.1371/journal.pcbi.1005167](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5094713/)
+2. M.T. Wortel, E. Noor, M. Ferris, F.J. Bruggeman, W. Liebermeister (2018),
+*Metabolic enzyme cost explains variable trade-offs between microbial growth rate and yield*, [PLoS Computational Biology 14(2): e1006010](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010)
