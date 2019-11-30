@@ -40,4 +40,4 @@ Please contact [Wolfram Liebermeister](wolfram.liebermeister@gmail.com) with any
 ## References
 1. E. Noor, A. Flamholz, A. Bar-Even, D. Davidi, R. Milo, W. Liebermeister (2016), [*The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization*](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010), PLOS Comp. Biol., [DOI: 10.1371/journal.pcbi.1005167](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5094713/)
 2. M.T. Wortel, E. Noor, M. Ferris, F.J. Bruggeman, W. Liebermeister (2018),
-*Metabolic enzyme cost explains variable trade-offs between microbial growth rate and yield*, [PLoS Computational Biology 14(2): e1006010](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010)
+[*Metabolic enzyme cost explains variable trade-offs between microbial growth rate and yield*](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010), PLoS Computational Biology 14(2): e1006010
