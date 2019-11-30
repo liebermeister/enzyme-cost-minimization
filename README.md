@@ -5,9 +5,7 @@ Enzyme Cost Minimization
 
 This repository contains Matlab code only. Python users, please consider Elad Noor's ECM implementation at [gitlab](https://gitlab.com/elad.noor/enzyme-cost-minimization).
 
-If you use enzyme cost minimization in your work, please cite our article
-
-Noor E., Flamholz A., Bar-Even A., Davidi D., Milo R., Liebermeister W. (2016), The protein cost of metabolic fluxes: prediction from enzymatic rate laws and cost minimization, [PLoS Comp. Biol. 12 (10): e1005167](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010)
+If you use enzyme cost minimization in your work, please cite our article *Noor et al. (2016)* (reference below). 
 
 ## Dependencies: 
 
@@ -40,6 +38,6 @@ Please contact [Wolfram Liebermeister](wolfram.liebermeister@gmail.com) with any
 
 
 ## References
-1. E. Noor, A. Flamholz, A. Bar-Even, D. Davidi, R. Milo, W. Liebermeister (2016), *The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization*, PLOS Comp. Biol., [DOI: 10.1371/journal.pcbi.1005167](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5094713/)
+1. E. Noor, A. Flamholz, A. Bar-Even, D. Davidi, R. Milo, W. Liebermeister (2016), [*The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization*](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010), PLOS Comp. Biol., [DOI: 10.1371/journal.pcbi.1005167](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5094713/)
 2. M.T. Wortel, E. Noor, M. Ferris, F.J. Bruggeman, W. Liebermeister (2018),
 *Metabolic enzyme cost explains variable trade-offs between microbial growth rate and yield*, [PLoS Computational Biology 14(2): e1006010](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006010)
