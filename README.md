@@ -38,3 +38,9 @@ This package is released under the [GNU General Public License](LICENSE).
 
 ## Contact
 Please contact [Wolfram Liebermeister](wolfram.liebermeister@gmail.com) with any questions or comments.
+
+
+## References
+1. [https://www.metabolic-economics.de/enzyme-cost-minimization/](https://www.metabolic-economics.de/enzyme-cost-minimization/)
+2. E. Noor, A. Flamholz, A. Bar-Even, D. Davidi, R. Milo, W. Liebermeister (2016), *The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization*, PLOS Comp. Biol., [DOI: 10.1371/journal.pcbi.1005167](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5094713/)
+3. Flamholz, E. Noor, A. Bar-Even, R. Milo (2012) *eQuilibrator - the biochemical thermodynamics calculator*, Nucleic Acids Res, [DOI: 10.1093/nar/gkr874](http://bioinformatics.oxfordjournals.org/content/28/15/2037.long)

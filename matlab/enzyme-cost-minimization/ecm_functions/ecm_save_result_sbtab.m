@@ -1,6 +1,6 @@
 %ECM_SAVE_RESULT_SBTAB - Save ECM results in SBtab format
 % 
-%ecm_save_result_sbtab(filename,network,c,u,A_forward,options,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation,v)
+%ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation,v)
 %
 % Model document [filename 'ModelState.tsv']: 
 %   Metabolic network (compounds and reactions) and kinetic rate laws (parameters and formulae)
@@ -25,6 +25,7 @@
 %   .write_concentrations  = 0       flag: show metabolite concentrations (first state) in model parameter table?
 %   .write_enzyme_concentrations = 0 flag: show enzyme concentrations (first state) in model parameter table?
 %   .modular_rate_law_kinetics = 0   flag: show kinetic rate law formulae in table
+
 function ecm_save_result_sbtab(filename,network,c,u,A_forward,options,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation,v)
 
 eval(default('options','struct','c_min', '[]', 'c_max', '[]', 'u_min', '[]', 'u_max', '[]', 'u_capacity', '[]', 'eta_energetic', '[]', 'eta_saturation', '[]','v','[]'));
@@ -34,17 +35,21 @@ if strcmp(filename(end-3:end),'.tsv'),
 end
   
 options_default.flag_one_file = 1;
-options_default.r             = struct;
+if isfield(network,'kinetics'),
+  options_default.r = network.kinetics;
+else
+  options_default.r = struct;
+end
 options_default.document_name = 'Model';
 options_default.save_tolerance_ranges = 0;
-options_default.sbtab_attributes = struct('Document', options.document_name,'DocumentName','ECM metabolic state');
+options_default.sbtab_attributes = struct('Document', options_default.document_name,'DocumentName','ECM metabolic state');
 options_default.filename_model_state  = 'ModelState';
 options_default.filename_state_runs   = 'StateRuns';
 options_default.write_concentrations = 0;
 options_default.write_enzyme_concentrations = 0;
 options_default.modular_rate_law_kinetics = 0;
 
-options                       = join_struct(options_default, options);
+options = join_struct(options_default, options);
 
 [network.metabolites,network.actions] = network_adjust_names_for_sbml_export(network.metabolites,network.actions);
 
@@ -86,8 +91,8 @@ end
 my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name);
 
 % try to insert results from enzyme prediction with common modular rate law
-[nm,nr] = size(network.N);
-network.kinetics      = options.r;
+[nm,nr]          = size(network.N);
+network.kinetics = options.r;
 
 if isfield(c,'emc4cm'),
   network.kinetics.type = 'cs';
@@ -108,7 +113,7 @@ sbtab_document.attributes = join_struct(sbtab_document.attributes,options.sbtab_
 
 if strcmp(filename(end), filesep),
   sbtab_document_save_to_one(sbtab_document,[filename options.filename_model_state '.tsv'],1);
-else        
+else
   sbtab_document_save_to_one(sbtab_document,[filename '_' options.filename_model_state '.tsv'],1);
 end
 

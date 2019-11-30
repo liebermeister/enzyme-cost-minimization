@@ -14,28 +14,39 @@
 % To see the workflow in more detail, have a look at demo_ecm_ecoli_noor_2016.m
 % --------------------------------------------------------------------------------------------------
 
-display(sprintf('\nThis demo script reads an existing model+data file, determines balanced model parameters, and performs ECM for a number of enzyme cost scores. Graphics are generated, and the results are saved to files.\n'))
+display(sprintf('\n---------------------------------------------------------------------------'));
+display(sprintf('Enzyme cost minimization demo'));
+display(sprintf('---------------------------------------------------------------------------\n'));
+display(sprintf(' This script calls the wrapper function "ecm_simple".'));
+display(sprintf(' It reads a model+data file and determines balanced model parameters.'));
+display(sprintf(' Then it performs ECM for a number of enzyme cost scores.'))
+display(sprintf(' Graphics are generated, and the results are saved to files.\n'))
 
-data_dir             = [ecm_BASEDIR filesep 'demo' filesep 'data' filesep];
-result_dir           = [ecm_BASEDIR filesep 'demo' filesep 'results' filesep];
-model_data_file      = [data_dir 'ecoli_noor_2016_ECM_Model.tsv'];
-validation_data_file = [data_dir 'ecoli_noor_2016_ECM_ValidationData.tsv'];
-
+filenames = ecm_filenames();
 
 % --------------------------------------------------------
 % Run Parameter Balancing with standard settings
+% --------------------------------------------------------
 
-options = struct('actions', 'parameter balancing','verbose',1);
-[report, errors] = ecm_simple(model_data_file, validation_data_file, result_dir, options);
+% Note that ecm_simple has its owon little options data structure 
+% (different from "ecm_options" used generally in this toolbox
+
+% set verbose = 1 to see more output
+
+options = struct('actions', 'parameter balancing', 'verbose', 0);
+
+ecm_simple(filenames.demo.model_data_file, filenames.demo.validation_data_file, filenames.demo.result_dir, options);
 
 
 % --------------------------------------------------------
 % Run Enzyme Cost Minimization with standard settings
+% --------------------------------------------------------
 
-options = struct('actions', 'ecm', 'generate_report',1,'verbose',1);
+% set verbose = 1 to see more output
+
+options = struct('actions', 'ecm', 'generate_report', 1, 'verbose', 0);
 options.replace_cofactors = {'ATP','ADP','Orthophosphate','NADH', 'NAD+', 'NADPH','NADP+','Ubiquinone', 'Ubiquinol'};
-
 options.fluctuations_safety_margin = 3; % safety margin (# std dev) to counter protein number fluctuations
 options.cell_volume                = 1.1*10^-18;  % in m^3, default value for E coli (needed for safety margin) 
 
-[report, errors] = ecm_simple(model_data_file, validation_data_file, result_dir, options);
+ecm_simple(filenames.demo.model_data_file, filenames.demo.validation_data_file, filenames.demo.result_dir, options);

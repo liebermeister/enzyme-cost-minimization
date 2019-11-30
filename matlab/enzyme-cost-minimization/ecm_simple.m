@@ -57,21 +57,21 @@ switch options.actions,
       %end
 
       if isempty(errors),
-        try
+        %try
          errors = network_sbtab_check_for_errors(my_sbtab);
-        catch err
-          report = sprintf('An error occurred while converting SBtab file to model // No result file saved');
-          errors  = sprintf('An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong', err.identifier);
-        end
+        %catch err
+         % report = sprintf('An error occurred while converting SBtab file to model // No result file saved');
+         % errors  = sprintf('An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong', err.identifier);
+        %end
       end
       
       if isempty(errors),
-        try
+        %try
          my_network = sbtab_to_network(my_sbtab,struct('load_quantity_table',0));
-        catch err
-          report = sprintf('An error occurred while converting SBtab file to model // No result file saved');
-          errors  = sprintf('An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong.', err.identifier);
-        end
+        %catch err
+        %  report = sprintf('An error occurred while converting SBtab file to model // No result file saved');
+        %  errors  = sprintf('An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong.', err.identifier);
+        %end
       end
 
       if isempty(errors),
@@ -87,7 +87,7 @@ switch options.actions,
           sbtab_table_save(my_sbtab.tables.Parameter,struct('filename','/tmp/my_pb_data.tsv'));
           %% If this tmp directory does not exist, please create one anywhere in your system
           %% It is needed to store input rate constants in an intermediate file '/tmp/my_pb_data.tsv'
-          my_kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', options);
+          my_kinetic_data = kinetic_data_load(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', options);
           
           ecm_options = ecm_default_options(my_network);
           ecm_options.insert_Keq_from_data = 0;
@@ -186,9 +186,9 @@ else
     graphics_options.metabolite_order_file = [];
     graphics_options.reaction_order_file   = [];
     graphics_options.enzyme_colors   = sunrise_colors(length(ecm_options.ind_scored_enzymes));
-    try
-      mkdir(graphics_options.psfile_dir);
-    end
+    warning('off','all');
+    [~] = mkdir(graphics_options.psfile_dir);
+    warning('on','all');
     ecm_display(ecm_options, graphics_options, my_network,v,c,u,u_cost,up,A_forward,r,kinetic_data,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation);
   end  
 end

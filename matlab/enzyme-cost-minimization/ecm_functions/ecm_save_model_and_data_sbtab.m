@@ -2,6 +2,8 @@ function ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinet
 
 %ECM_SAVE_MODEL_AND_DATA_SBTAB - Write SBtab file containing (model and data) information for Enzyme Cost Minimization
 %
+%The data refer to a single metabolic state; to save data for several metabolic states, please use ecm_save_result_sbtab
+% 
 %ecm_save_model_and_data_sbtab(filename,network,v,r,c_data,u_data, kinetic_data, conc_min, conc_max, met_fix, conc_fix, enzyme_cost_weights, document_name, save_single_tables)
 %
 %For loading an SBtab file, see 'help load_model_and_data_sbtab'
@@ -45,7 +47,11 @@ sbtab_document = network_to_sbtab(network, struct('use_sbml_ids',0,'verbose',0,'
 % manually add column 'NameForPlots' in table 'Reaction'
 reaction_table = sbtab_document.tables.Reaction;
 if ~sbtab_table_has_column(reaction_table,'NameForPlots'),
-  gene_names     = sbtab_table_get_column(reaction_table,'Gene');
+  if sbtab_table_has_column(reaction_table,'Gene'),
+    gene_names     = sbtab_table_get_column(reaction_table,'Gene');
+  else
+    gene_names     = sbtab_table_get_column(reaction_table,'ID');
+  end
   reaction_table = sbtab_table_add_column(reaction_table,'NameForPlots',lower(gene_names));
   sbtab_document.tables.Reaction  = reaction_table;
 end
@@ -64,7 +70,7 @@ end
   
 % flux table
 if length(v),      
-  flux_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Flux', 'TableType','Quantity','Unit','mM/s'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'flux'},nr,1),network.actions,network.reaction_KEGGID,v});
+  flux_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Flux', 'TableType','Quantity','TableID','Quantity','Unit','mM/s'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'flux'},nr,1),network.actions,network.reaction_KEGGID,v});
   if save_single_tables,
     sbtab_table_save(flux_table, struct('filename',[ filename '_Flux.tsv'])); 
   end
@@ -101,7 +107,8 @@ end
 
 % metabolite concentration table
 if length(c_data), 
-  concentration_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationData', 'TableType','Quantity','Unit','mM'),...
+  concentration_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationData', ...
+                                                    'TableType','Quantity','TableID','Quantity','Unit','mM'),...
                                               {'QuantityType','Compound','Compound:Identifiers:kegg.compound','Value'},...
                                               {repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, c_data(:,1)});
   if save_single_tables,
@@ -112,7 +119,8 @@ end
 % enzyme concentration table
 if length(u_data),
   if sum(isfinite(u_data(:,1))),
-  enzyme_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeData','TableType','Quantity','Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID, u_data(:,1)});
+  enzyme_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeData','TableType','Quantity','TableID','Quantity',...
+                                              'Unit','mM'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'concentration of enzyme'},nr,1),network.actions, network.reaction_KEGGID, u_data(:,1)});
   if save_single_tables,
     sbtab_table_save(enzyme_table, struct('filename',[ filename '_EnzymeConcentration.tsv']));
   end
@@ -127,7 +135,7 @@ end
 
 % metabolite constraint table
 if length(conc_min),
-  constraint_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationConstraint', 'TableType','Quantity','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','Concentration:Min','Concentration:Max'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
+  constraint_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','ConcentrationConstraint', 'TableType','Quantity','TableID','Quantity','Unit','mM'),{'QuantityType','Compound','Compound:Identifiers:kegg.compound','Concentration:Min','Concentration:Max'},{repmat({'concentration'},nm,1),network.metabolites, network.metabolite_KEGGID, conc_min, conc_max});
   if save_single_tables,
     sbtab_table_save(constraint_table, struct('filename',[ filename '_ConcentrationConstraint.tsv']));
   end
@@ -136,7 +144,7 @@ end
 
 % enzyme cost weight table
 if length(enzyme_cost_weights),
-  enzyme_cost_weight_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeCostWeight','TableType','Quantity','Unit','ArbitraryUnits'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme cost weight'},nr,1),network.actions, network.reaction_KEGGID, enzyme_cost_weights(:,1)});
+  enzyme_cost_weight_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','EnzymeCostWeight','TableType','Quantity','TableID','Quantity','Unit','ArbitraryUnits'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme cost weight'},nr,1),network.actions, network.reaction_KEGGID, enzyme_cost_weights(:,1)});
   if save_single_tables,
     sbtab_table_save(enzyme_cost_weight_table, struct('filename',[ filename '_EnzymeCostWeight.tsv']));  
   end
@@ -147,7 +155,7 @@ end
 if isfield(network,'graphics_par'),
   x = network.graphics_par.x(1,:)';
   y = network.graphics_par.x(2,:)';
-  position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Layout', 'TableType','Layout'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
+  position_table = sbtab_table_construct(struct('DocumentName',document_name,'TableName','Layout', 'TableType','Layout','TableID','Layout'),{'Element','PositionX','PositionY'},{[network.metabolites; network.actions],x,y});
   if isfield(network.graphics_par,'metinvisible'),
     position_table = sbtab_table_add_column(position_table,'IsInvisible',[column(network.graphics_par.metinvisible); column(network.graphics_par.actinvisible)],1);
   end
