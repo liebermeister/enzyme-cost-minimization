@@ -1,4 +1,4 @@
-function ecm_options_save(filename,ecm_options)
+function ecm_options_save(filename,ecm_options,verbose)
 
 % ECM_OPTIONS_SAVE - Save options struct to JSON file
 %
@@ -7,6 +7,8 @@ function ecm_options_save(filename,ecm_options)
 % remove all fields that are structs (because they cannot be exported)
 % remove all fields that are strings containing "/" characters, such as filenames (because they cannot be exported)
 
+  eval(default('verbose','1'));
+  
 fn = fieldnames(ecm_options);
 for it = 1:length(fn),
   if isstruct(ecm_options.(fn{it})), 
@@ -21,3 +23,7 @@ end
 fileID = fopen(filename,'w');
 
 fprintf(fileID,jsonencode(ecm_options));
+
+if verbose,
+  display(sprintf('Writing file %s',filename));
+end

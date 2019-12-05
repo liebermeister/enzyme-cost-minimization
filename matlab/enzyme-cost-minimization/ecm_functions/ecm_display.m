@@ -342,8 +342,13 @@ if graphics_options.few_graphics ==0,
     methods = [methods,{'data'}];
   end
   
-  h = bar(flipud(ug)','stacked');
-  colormap(flipud(graphics_options.enzyme_colors)); 
+  h = bar(flipud(ug)','stacked'); 
+  my_colormap = flipud(graphics_options.enzyme_colors);
+  for it = 1:length(h)
+    h(it).FaceColor = 'Flat';
+    h(it).CData = my_colormap(it,:);
+  end
+
   axis([0,3+length(ecm_options.ecm_scores), 0, 1.02]); 
   legend(fliplr(h),gene_names(ind_enzymes_scored),'Fontsize',8,'Location','East')
   set(gca,'FontSize',12);
@@ -777,15 +782,17 @@ set(gca,'Ytick',0:6,'YTicklabel',{'0.00001','0.0001','0.001','0.01','0.1','1','1
 subplot('Position',[0.15,0.1,0.8,0.65]); set(gca, 'Fontsize',12); 
 hold on;
 M = [5+log10(my_u_capacity), -log10(my_eta_energetic), -log10(my_eta_saturation)];
-h = bar(M,'stacked'); colormap([0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2;]);
+h = bar(M,'stacked'); 
+my_colormap = [0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2;]
+for it = 1:length(h)
+  h(it).FaceColor = 'Flat';
+  h(it).CData = my_colormap(it,:);
+end
 hold on; 
 h(4) = plot(5+log10(my_u_data),'.','Color',[1 0.7 0],'Markersize',20);
 for itt = 1:length(my_v),
   my_xticklabel(itt,-0.5,strrep(network.genes(ecm_options.ind_scored_enzymes(itt)),'_','-')',12,graphics_options.enzyme_colors(itt,:))
 end
-%fill([0.1,length(my_v)+0.9,length(my_v)+0.9,0.1],[0.01,0.01,.5,.5],'w','EdgeColor','w')
-%plot([0,length(my_v)+1],[.5,.5],'k--')
-%text(21,0.3,'Arbitrary baseline capacity');
 axis([0,length(my_u_capacity)+1,0,4.1])
 ylabel('Enzyme demand [uM]'); set(gca,'Ytick',0:4,'YTicklabel',{'0.01','0.1','1','10','100'});
 

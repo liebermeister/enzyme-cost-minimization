@@ -47,36 +47,17 @@ switch options.actions,
       options.generate_report  = 0;
       options.use_kegg_ids = [1];
       report               = '';
-      errors               = '';
 
-      %try
-        my_sbtab = sbtab_document_load_from_one(model_data_file);
-      %catch err
-      %  report = sprintf('An error occurred while parsing the SBtab file // No result file saved');
-      %    errors  = sprintf('An error occurred while parsing the SBtab file: %s- Probably the input file is incomplete or syntactically wrong', err.identifier);
-      %end
+      my_sbtab = sbtab_document_load_from_one(model_data_file);
 
-      if isempty(errors),
-        %try
-         errors = network_sbtab_check_for_errors(my_sbtab);
-        %catch err
-         % report = sprintf('An error occurred while converting SBtab file to model // No result file saved');
-         % errors  = sprintf('An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong', err.identifier);
-        %end
-      end
+      errors = network_sbtab_check_for_errors(my_sbtab);
       
       if isempty(errors),
-        %try
-         my_network = sbtab_to_network(my_sbtab,struct('load_quantity_table',0));
-        %catch err
-        %  report = sprintf('An error occurred while converting SBtab file to model // No result file saved');
-        %  errors  = sprintf('An error occurred while converting SBtab file to model: %s- Probably the input file is incomplete or syntactically wrong.', err.identifier);
-        %end
+        my_network = sbtab_to_network(my_sbtab,struct('load_quantity_table',0));
       end
 
       if isempty(errors),
-        %try
-          import_quantity_list = {'standard Gibbs energy of reaction', ...
+        import_quantity_list = {'standard Gibbs energy of reaction', ...
                               'standard chemical potential','Michaelis constant',...
                               'activation constant', 'inhibitory constant',...
                               'equilibrium constant','substrate catalytic rate constant', ...
@@ -84,10 +65,10 @@ switch options.actions,
           options.use_sbml_ids  = 0;
           options.use_kegg_ids  = 1;
           options.verbose       = 0;
-          sbtab_table_save(my_sbtab.tables.Parameter,struct('filename','/tmp/my_pb_data.tsv'));
+          sbtab_table_save(my_sbtab.tables.Parameter,struct('filename',[tempdir 'my_pb_data.tsv']));
           %% If this tmp directory does not exist, please create one anywhere in your system
           %% It is needed to store input rate constants in an intermediate file '/tmp/my_pb_data.tsv'
-          my_kinetic_data = kinetic_data_load(import_quantity_list, [], my_network, '/tmp/my_pb_data.tsv', options);
+          my_kinetic_data = kinetic_data_load(import_quantity_list, [], my_network, [tempdir 'my_pb_data.tsv'], options);
           
           ecm_options = ecm_default_options(my_network);
           ecm_options.insert_Keq_from_data = 0;
@@ -101,10 +82,6 @@ switch options.actions,
           my_network.kinetics.type = 'cs';
           network_to_sbtab(my_network,struct('filename',outfile,'write_concentrations',0,'save_in_one_file',1,'write_enzyme_concentrations',0));
           report = sprintf('Parameter balancing finished // Results saved to file %s', outfile);
-        %catch err
-        %  report = sprintf('An error occurred during parameter balancing // No result file saved');
-        %  errors  = [ 'An error occurred during parameter balancing: ' err.identifier];
-        %end
       end
 
       
@@ -119,10 +96,6 @@ switch options.actions,
 
     %% Load model and data from input file
     [my_network, v, c_data, u_data, conc_min, conc_max, met_fix, conc_fix, my_positions,enzyme_cost_weights, errors] = load_model_and_data_sbtab(model_data_file,validation_data_file);
-    % if length(errors),
-    %   report = sprintf('An error occurred while parsing the SBtab file // No result file saved');
-    %   errors = sprintf('An error occurred while parsing the SBtab file: %s', error);
-    % end
     errors = '';
     
     if isempty(errors),
@@ -150,22 +123,18 @@ switch options.actions,
       
       %% Run ECM      
 
-      %try
       [c,u,u_cost,up,A_forward,mca_info,c_min,c_max,u_min,u_max, r, u_capacity, eta_energetic, eta_saturation] = ecm_enzyme_cost_minimization(my_network, my_network.kinetics, v, ecm_options);
 
-      ecm_save_result_sbtab(outfile, my_network, c, u, A_forward, struct('flag_one_file',1,'r',my_network.kinetics),c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation);
+      my_options =  struct('flag_one_file',1,'r',my_network.kinetics, 'filename_model_state', 'ModelState', 'filename_state_runs', 'StateRuns');
+      ecm_save_result_sbtab(outfile, my_network, c, u, A_forward, my_options,c_min,c_max,u_min,u_max,u_capacity,eta_energetic,eta_saturation);
         
       report = sprintf('ECM finished // Results saved to file %s', outfile);
       errors = '';
-      %catch err
-      %  display('error!');
-      %  report = sprintf('An error occurred during ECM // No result file saved');
-      %  errors  = [ 'An error occurred during ECM: ' err.identifier];
-      %end
     
     end
   
 end
+
 
 % ----------------------------------------------------------
 % Errors and graphics
@@ -182,7 +151,7 @@ else
     ecm_options.model_id            = 'MODEL';  % used in file names
     graphics_options.print_graphics = 1;
     graphics_options.few_graphics   = 1;
-    graphics_options.psfile_dir     = [outdir filesep 'ecm_result_Graphics' filesep ];
+    graphics_options.psfile_dir     = [outdir filesep 'ecm_result_graphics' filesep ];
     graphics_options.metabolite_order_file = [];
     graphics_options.reaction_order_file   = [];
     graphics_options.enzyme_colors   = sunrise_colors(length(ecm_options.ind_scored_enzymes));

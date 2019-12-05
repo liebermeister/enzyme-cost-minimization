@@ -7,7 +7,7 @@ This repository contains Matlab code for ECM. However, Elad Noor also provides a
 
 If you use enzyme cost minimization in your work, please cite our article *Noor et al. (2016)* (reference below). 
 
-## Dependencies: 
+## Dependencies
 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
 

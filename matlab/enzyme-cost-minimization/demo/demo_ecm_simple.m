@@ -18,11 +18,17 @@ display(sprintf('\n-------------------------------------------------------------
 display(sprintf('Enzyme cost minimization demo'));
 display(sprintf('---------------------------------------------------------------------------\n'));
 display(sprintf(' This script calls the wrapper function "ecm_simple".'));
-display(sprintf(' It reads a model+data file and determines balanced model parameters.'));
+display(sprintf(' It reads a prepared model and data file and determines balanced model parameters.'));
 display(sprintf(' Then it performs ECM for a number of enzyme cost scores.'))
 display(sprintf(' Graphics are generated, and the results are saved to files.\n'))
 
-filenames = ecm_filenames();
+
+% --------------------------------------------------------
+% Set some filenames for this demo script
+% --------------------------------------------------------
+
+filenames = filenames_demo_ecm_simple;
+
 
 % --------------------------------------------------------
 % Run Parameter Balancing with standard settings
@@ -35,18 +41,19 @@ filenames = ecm_filenames();
 
 options = struct('actions', 'parameter balancing', 'verbose', 0);
 
-ecm_simple(filenames.demo.model_data_file, filenames.demo.validation_data_file, filenames.demo.result_dir, options);
+ecm_simple(filenames.model_data_file, filenames.validation_data_file, filenames.result_dir, options);
 
 
 % --------------------------------------------------------
 % Run Enzyme Cost Minimization with standard settings
 % --------------------------------------------------------
 
-% set verbose = 1 to see more output
+% set options.verbose = 1 to see more output
 
-options = struct('actions', 'ecm', 'generate_report', 1, 'verbose', 0);
-options.replace_cofactors = {'ATP','ADP','Orthophosphate','NADH', 'NAD+', 'NADPH','NADP+','Ubiquinone', 'Ubiquinol'};
-options.fluctuations_safety_margin = 3; % safety margin (# std dev) to counter protein number fluctuations
+options                            = struct('actions', 'ecm', 'generate_report', 1, 'verbose', 0);
+options.replace_cofactors          = {'ATP','ADP','Orthophosphate','NADH', 'NAD+', 'NADPH','NADP+','Ubiquinone', 'Ubiquinol'};
+options.fluctuations_safety_margin = 3;           % safety margin (# std dev) to counter protein number fluctuations
 options.cell_volume                = 1.1*10^-18;  % in m^3, default value for E coli (needed for safety margin) 
+options.verbose                    = 0;
 
-ecm_simple(filenames.demo.model_data_file, filenames.demo.validation_data_file, filenames.demo.result_dir, options);
+ecm_simple(filenames.model_data_file, filenames.validation_data_file, filenames.result_dir, options);
