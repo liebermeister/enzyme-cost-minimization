@@ -25,8 +25,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %   u.[SCORE]         1st column: result from optimising the score [SCORE]
 %                     other columns: possible sampled solutions
 %
-%   up                enzyme levels (only scored enzymes as defined by 
-%                                    ecm_scores.ind_scored_enzymes)
+%   up                enzyme levels (only "scored" enzymes, given by ecm_scores.ind_scored_enzymes)
 %   up.[SCORE]        1st column: result from optimising the score [SCORE]
 %                     other columns: possible sampled solutions
 %
@@ -91,6 +90,8 @@ opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off'
 
 % for MATLAB 2016
 %opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
+
+network.N(network_find_water(network),:) = 0;
 
 network.kinetics = set_kinetics(network,'cs',r);
 
@@ -208,11 +209,13 @@ pp.u_data                = u_data;
 pp.u_std                 = u_std;
 if isfield(network,'metabolite_mass'),
   pp.metabolite_mass       = network.metabolite_mass;
+  pp.metabolite_mass(isnan(pp.metabolite_mass)) = nanmean(pp.metabolite_mass);
 else
   pp.metabolite_mass       = ones(size(network.metabolites));
 end
 if isfield(network,'enzyme_mass'),
   pp.enzyme_mass       = network.enzyme_mass;
+  pp.enzyme_mass(isnan(pp.enzyme_mass)) = nanmean(pp.enzyme_mass);
 else
   pp.enzyme_mass       = ones(size(network.actions));
 end

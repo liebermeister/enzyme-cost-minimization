@@ -67,6 +67,7 @@ function ecm_options = ecm_default_options(network, model_name)
 %   ecm_options.ecm_scores                  (string cell array) list of ecm scores to be used (default 'emc3sp'); see 'help ecm_scores'
 %   ecm_options.lambda_regularisation       (float)        coefficient for metabolite concentration regularisation term (default 10^-3)
 %   ecm_options.lambda_reg_factor           (float)        regularisation factor for metabolite concentration regularisation term (default 10^-3)
+%                                                          (parameter for choosing ecm_options.lambda_regularisation automatically, in ecm_update_options; set to [] in order to not use it)
 %   ecm_options.use_linear_cost_constraints (Boolean)      tighter constraints derived upper bound on enzyme cost 
 %   ecm_options.fluctuations_safety_margin  (float)        safety margin (# std dev) to counter protein number fluctuations, default 0
 %   ecm_options.cell_volume                 (float)        default value for E coli (needed for safety margin), in m^3, default 1.1*10^-18

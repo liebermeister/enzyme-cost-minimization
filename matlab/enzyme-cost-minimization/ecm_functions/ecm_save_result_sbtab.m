@@ -54,6 +54,7 @@ if strcmp(filename(end-3:end),'.tsv'),
   filename(1:end-4);
 end
   
+options_default.omit_kegg_ids = 1;
 options_default.flag_one_file = 1;
 if isfield(network,'kinetics'),
   options_default.r = network.kinetics;
@@ -80,6 +81,8 @@ options = join_struct(options_default, options);
 if ~isfield(network,'metabolite_KEGGID'),
   if isfield(network,'Identifiers_kegg_compound'),
     network.metabolite_KEGGID = network.Identifiers_kegg_compound;
+  else
+    network.metabolite_KEGGID = [];
   end
 end
 
@@ -91,13 +94,20 @@ end
 
 if ~isfield(network,'reaction_KEGGID'),
   if isfield(network,'Identifiers_kegg_reaction'),
-    network.reaction_KEGGID = network.Identifiers_kegg_compound;    
+    network.reaction_KEGGID = network.Identifiers_kegg_reaction;    
+  else
+    network.reaction_KEGGID = [];
   end
 end
 
 if isfield(network,'reaction_KEGGID'),
   reaction_KEGGID = network.reaction_KEGGID;
 else
+  reaction_KEGGID = [];
+end
+
+if options.omit_kegg_ids,
+  metabolite_KEGGID = [];
   reaction_KEGGID = [];
 end
 
@@ -110,7 +120,7 @@ end
 %formulae = network_print_formulae(network);
 
 % don't show metabolite and enzyme levels in parameter table 
-my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name);
+my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1);
 
 % try to insert results from enzyme prediction with common modular rate law
 [nm,nr]          = size(network.N);
@@ -232,11 +242,20 @@ end
 
 if length(u_capacity),
 
-  u_capacity_table = sbtab_table_construct(struct('TableName','Enzyme capacities','TableID','EnzymeCapacity','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme capacity'},nr,1),network.actions, network.reaction_KEGGID,u_capacity});
+  u_capacity_table = sbtab_table_construct(struct('TableName','Enzyme capacities','TableID','EnzymeCapacity','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction','Value'},{repmat({'enzyme capacity'},nr,1),network.actions, u_capacity});
+  
+  if length(reaction_KEGGID),
+    u_capacity_table = sbtab_table_add_column(u_capacity_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
+  end
   
   fn = fieldnames(eta_energetic); 
   
-  eta_energetic_table = sbtab_table_construct(struct('TableName','Energetic efficiencies','TableID','EnergeticEfficiency','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'energetic efficiency'},nr,1),network.actions, network.reaction_KEGGID});
+  eta_energetic_table = sbtab_table_construct(struct('TableName','Energetic efficiencies','TableID','EnergeticEfficiency','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'energetic efficiency'},nr,1),network.actions});
+  
+  if length(reaction_KEGGID),
+    eta_energetic_table = sbtab_table_add_column(eta_energetic_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
+  end
+
   
   for it = 1:length(fn),
     if options.use_measurement_table,
@@ -248,8 +267,12 @@ if length(u_capacity),
   
   fn = fieldnames(eta_saturation); 
   
-  eta_saturation_table = sbtab_table_construct(struct('TableName','Saturation efficiencies','TableID','SaturationEfficiency','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction'},{repmat({'saturation efficiency'},nr,1),network.actions, network.reaction_KEGGID});
+  eta_saturation_table = sbtab_table_construct(struct('TableName','Saturation efficiencies','TableID','SaturationEfficiency','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'saturation efficiency'},nr,1),network.actions});
   
+  if length(reaction_KEGGID),
+    eta_saturation_table = sbtab_table_add_column(eta_saturation_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
+  end
+
   for it = 1:length(fn),
     if options.use_measurement_table,
       eta_saturation_table = sbtab_table_add_column(eta_saturation_table, ['>' fn{it}], eta_saturation.(fn{it})(:,1),1);
@@ -261,6 +284,11 @@ if length(u_capacity),
 end
 
 if length(v),
+  
+  if ~isstruct(v),
+    % if v is just a vector
+    v = struct('data',v);
+  end
   fn = fieldnames(v); 
   v_table = sbtab_table_construct(struct('TableName','Metabolic fluxes','TableID','MetabolicFlux','TableType','QuantityMatrix','Unit','mM/s'),{'QuantityType','Reaction'},{repmat({'rate of reaction'},nr,1),network.actions});
   

@@ -1,5 +1,7 @@
 % ---------------------------------------------------------------------------------------
 % Enzyme cost minimization demo script
+% For E coli model (Noor 2016) as implemented in the python version of ECM
+%                              (available in the equilibrator python repository)  
 % ---------------------------------------------------------------------------------------
 
 
@@ -7,17 +9,19 @@
 % Set location of your ECM Model file; you can choose a different location.
 % (by default, matlab will search the files on the matlab search path)
 
-data_dir                 = [ecm_BASEDIR filesep 'demo' filesep 'data'];
-filename_model           = [data_dir filesep 'ecoli_noor_2016_ECM_Model.tsv'];
-filename_validation_data = [data_dir filesep 'ecoli_noor_2016_ECM_ValidationData.tsv'];
+data_dir                 = [ecm_RESOURCEDIR filesep 'models' filesep 'e_coli_noor_2016' filesep equilibrator-example' ];
+filename_model           = [data_dir filesep 'e_coli_noor_2016_ecm.tsv'];
+filename_validation_data = [data_dir filesep 'e_coli_noor_2016_reference.tsv'];
 
 
 % ---------------------------------------------------------------------------------------
 % Load model and data from the ECM Model file and translate them into matlab data structures 
 % (see documentation of the Metabolic Network Toolbox for details)
 
-[network,v,c_data,u_data, conc_min, conc_max, met_fix, conc_fix,positions, enzyme_cost_weights, warnings] = load_model_and_data_sbtab(filename_model, filename_validation_data);
+display(sprintf('Reading model and data file %s', filename_model));
+display(sprintf('Reading validation data file %s', filename_validation_data));
 
+[network, v, c_data, u_data] = load_model_and_data_sbtab(filename_model, filename_validation_data);
 
 % ---------------------------------------------------------------------------------------
 % Define default options for ECM; to change the options, refer to the documentation
@@ -40,13 +44,13 @@ ecm_options            = ecm_update_options(network, ecm_options);
 
 document_name = 'E. coli central carbon metabolism - ECM result';
 
-outfile_name          = [tempdir 'demo_ecm_ecoli_noor_2016'];
-outfile_options_json  = [tempdir 'demo_ecm_ecoli_noor_2016_options.json'];
-outfile_options_sbtab = [tempdir 'demo_ecm_ecoli_noor_2016_options.tsv' ];
+outfile_name          = [tempdir 'demo_ecoli_equilibrator'];
+outfile_options_json  = [tempdir 'demo_ecoli_equilibrator_options.json'];
+outfile_options_sbtab = [tempdir 'demo_ecoli_equilibrator_options.tsv' ];
 
 options = struct('r', network.kinetics, 'method', 'emc4cm', 'document_name', document_name, 'save_tolerance_ranges', 1);
 
-ecm_save_result_sbtab(outfile_name, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation);
+ecm_save_result_sbtab(outfile_name, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation, v);
 
 % Write ECM options to JSON file
 % ecm_options_save(outfile_options_json,ecm_options);

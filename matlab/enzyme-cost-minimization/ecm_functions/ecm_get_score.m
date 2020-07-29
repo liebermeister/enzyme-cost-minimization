@@ -18,76 +18,104 @@
 %   emc4geom      
 %   
 %  Maximal cost among enzymes
-%   max-1
-%   max-2s        
-%   max-2sp
-%   max-3s        
-%   max-3sp        
-%   max-4cm 
+%   max_1
+%   max_2s        
+%   max_2sp
+%   max_3s        
+%   max_3sp        
+%   max_4cm 
 %   
 %  Optimal fit (sum of squared residuals) for metabolite and  enzymes data
-%   fitting-1     
-%   fitting-2s    
-%   fitting-2sp   
-%   fitting-3s    
-%   fitting-3sp   
-%   fitting-4cm   
+%   fitting_1     
+%   fitting_2s    
+%   fitting_2sp   
+%   fitting_3s    
+%   fitting_3sp   
+%   fitting_4cm   
+%   
+%  Sum of enzyme concentrations with safety tolerance for enzyme expression
+%   robust_enzconc_1  
+%   robust_enzconc_2s 
+%   robust_enzconc_2sp
+%   robust_enzconc_3s 
+%   robust_enzconc_3sp
+%   robust_enzconc_4cm
 %   
 %  Sum of metabolite and enzyme concentrations
-%   metenzconc-1  
-%   metenzconc-2s 
-%   metenzconc-2sp
-%   metenzconc-3s 
-%   metenzconc-3sp
-%   metenzconc-4cm
+%   metenzconc_1  
+%   metenzconc_2s 
+%   metenzconc_2sp
+%   metenzconc_3s 
+%   metenzconc_3sp
+%   metenzconc_4cm
+%   
+%  Sum of metabolite and enzyme concentrations with safety tolerance for enzyme expression
+%   robust_metenzconc_1  
+%   robust_metenzconc_2s 
+%   robust_metenzconc_2sp
+%   robust_metenzconc_3s 
+%   robust_metenzconc_3sp
+%   robust_metenzconc_4cm
 %   
 %  Sum of mass-weighted metabolite and enzyme concentrations
-%   metenzmass-1  
-%   metenzmass-2s 
-%   metenzmass-2sp
-%   metenzmass-3s 
-%   metenzmass-3sp
-%   metenzmass-4cm
+%   metenzmass_1  
+%   metenzmass_2s 
+%   metenzmass_2sp
+%   metenzmass_3s 
+%   metenzmass_3sp
+%   metenzmass_4cm
 
 function [u_cost, u, u_preemptive] = ecm_get_score(ecm_score,x,pp,no_warnings)
 
   eval(default('no_warnings','0'));
   
 switch ecm_score,
-  case 'mdf',            [u_cost, u] = ecm_mdf(x,pp);      % only max Delta G counts  
-  case 'emc1',           [u_cost, u] = ecm_emc1(x,pp);     % sum values
-  case 'emc2s',          [u_cost, u] = ecm_emc2s(x,pp);
-  case 'emc2sp',         [u_cost, u] = ecm_emc2sp(x,pp);
-  case 'emc3s',          [u_cost, u] = ecm_emc3s(x,pp);
-  case 'emc3sp',         [u_cost, u] = ecm_emc3sp(x,pp);
-  case 'emc4dm',         [u_cost, u] = ecm_emc4dm(x,pp);
-  case 'emc4sm',         [u_cost, u] = ecm_emc4sm(x,pp);
-  case 'emc4cm',         [u_cost, u] = ecm_emc4cm(x,pp,no_warnings);
-  case 'emc4geom',       [u_cost, u] = ecm_emc4geom(x,pp);  
-  case 'max-1',          [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc1');   % max values
-  case 'max-2s',         [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc2s');
-  case 'max-2sp',        [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc2sp');
-  case 'max-3s',         [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc3s');
-  case 'max-3sp',        [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc3sp');
-  case 'max-4cm',        [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc4cm');
-  case 'fitting-1',      [u_cost, u] = ecm_fitting(x,pp,'emc1');
-  case 'fitting-2s',     [u_cost, u] = ecm_fitting(x,pp,'emc2s');
-  case 'fitting-2sp',    [u_cost, u] = ecm_fitting(x,pp,'emc2sp');
-  case 'fitting-3s',     [u_cost, u] = ecm_fitting(x,pp,'emc3s');
-  case 'fitting-3sp',    [u_cost, u] = ecm_fitting(x,pp,'emc3sp');
-  case 'fitting-4cm',    [u_cost, u] = ecm_fitting(x,pp,'emc4cm');
-  case 'metenzconc-1',   [u_cost, u] = ecm_metenz_conc(x,pp,'emc1');
-  case 'metenzconc-2s',  [u_cost, u] = ecm_metenz_conc(x,pp,'emc2s');
-  case 'metenzconc-2sp', [u_cost, u] = ecm_metenz_conc(x,pp,'emc2sp');
-  case 'metenzconc-3s',  [u_cost, u] = ecm_metenz_conc(x,pp,'emc3s');
-  case 'metenzconc-3sp', [u_cost, u] = ecm_metenz_conc(x,pp,'emc3sp');
-  case 'metenzconc-4cm', [u_cost, u] = ecm_metenz_conc(x,pp,'emc4cm');
-  case 'metenzmass-1',   [u_cost, u] = ecm_metenz_mass(x,pp,'emc1');
-  case 'metenzmass-2s',  [u_cost, u] = ecm_metenz_mass(x,pp,'emc2s');
-  case 'metenzmass-2sp', [u_cost, u] = ecm_metenz_mass(x,pp,'emc2sp');
-  case 'metenzmass-3s',  [u_cost, u] = ecm_metenz_mass(x,pp,'emc3s');
-  case 'metenzmass-3sp', [u_cost, u] = ecm_metenz_mass(x,pp,'emc3sp');
-  case 'metenzmass-4cm', [u_cost, u] = ecm_metenz_mass(x,pp,'emc4cm');
+  case 'mdf',                   [u_cost, u] = ecm_mdf(x,pp);      % only max Delta G counts  
+  case 'emc1',                  [u_cost, u] = ecm_emc1(x,pp);     % sum values
+  case 'emc2s',                 [u_cost, u] = ecm_emc2s(x,pp);
+  case 'emc2sp',                [u_cost, u] = ecm_emc2sp(x,pp);
+  case 'emc3s',                 [u_cost, u] = ecm_emc3s(x,pp);
+  case 'emc3sp',                [u_cost, u] = ecm_emc3sp(x,pp);
+  case 'emc4dm',                [u_cost, u] = ecm_emc4dm(x,pp);
+  case 'emc4sm',                [u_cost, u] = ecm_emc4sm(x,pp);
+  case 'emc4cm',                [u_cost, u] = ecm_emc4cm(x,pp,no_warnings);
+  case 'emc4geom',              [u_cost, u] = ecm_emc4geom(x,pp);  
+  case 'max_1',                 [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc1');   % max values
+  case 'max_2s',                [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc2s');
+  case 'max_2sp',               [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc2sp');
+  case 'max_3s',                [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc3s');
+  case 'max_3sp',               [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc3sp');
+  case 'max_4cm',               [u_cost, u] = ecm_max_enzyme_cost(x,pp,'emc4cm');
+  case 'fitting_1',             [u_cost, u] = ecm_fitting(x,pp,'emc1');
+  case 'fitting_2s',            [u_cost, u] = ecm_fitting(x,pp,'emc2s');
+  case 'fitting_2sp',           [u_cost, u] = ecm_fitting(x,pp,'emc2sp');
+  case 'fitting_3s',            [u_cost, u] = ecm_fitting(x,pp,'emc3s');
+  case 'fitting_3sp',           [u_cost, u] = ecm_fitting(x,pp,'emc3sp');
+  case 'fitting_4cm',           [u_cost, u] = ecm_fitting(x,pp,'emc4cm');
+  case 'metenzconc_1',          [u_cost, u] = ecm_metenz_conc(x,pp,'emc1');
+  case 'metenzconc_2s',         [u_cost, u] = ecm_metenz_conc(x,pp,'emc2s');
+  case 'metenzconc_2sp',        [u_cost, u] = ecm_metenz_conc(x,pp,'emc2sp');
+  case 'metenzconc_3s',         [u_cost, u] = ecm_metenz_conc(x,pp,'emc3s');
+  case 'metenzconc_3sp',        [u_cost, u] = ecm_metenz_conc(x,pp,'emc3sp');
+  case 'metenzconc_4cm',        [u_cost, u] = ecm_metenz_conc(x,pp,'emc4cm');
+  case 'robust_enzconc_1',      [u_cost, u] = ecm_robust_enz(x,pp,'emc1');
+  case 'robust_enzconc_2s',     [u_cost, u] = ecm_robust_enz(x,pp,'emc2s');
+  case 'robust_enzconc_2sp',    [u_cost, u] = ecm_robust_enz(x,pp,'emc2sp');
+  case 'robust_enzconc_3s',     [u_cost, u] = ecm_robust_enz(x,pp,'emc3s');
+  case 'robust_enzconc_3sp',    [u_cost, u] = ecm_robust_enz(x,pp,'emc3sp');
+  case 'robust_enzconc_4cm',    [u_cost, u] = ecm_robust_enz(x,pp,'emc4cm');
+  case 'robust_metenzconc_1',   [u_cost, u] = ecm_robust_metenz(x,pp,'emc1');
+  case 'robust_metenzconc_2s',  [u_cost, u] = ecm_robust_metenz(x,pp,'emc2s');
+  case 'robust_metenzconc_2sp', [u_cost, u] = ecm_robust_metenz(x,pp,'emc2sp');
+  case 'robust_metenzconc_3s',  [u_cost, u] = ecm_robust_metenz(x,pp,'emc3s');
+  case 'robust_metenzconc_3sp', [u_cost, u] = ecm_robust_metenz(x,pp,'emc3sp');
+  case 'robust_metenzconc_4cm', [u_cost, u] = ecm_robust_metenz(x,pp,'emc4cm');
+  case 'metenzmass_1',          [u_cost, u] = ecm_metenz_mass(x,pp,'emc1');
+  case 'metenzmass_2s',         [u_cost, u] = ecm_metenz_mass(x,pp,'emc2s');
+  case 'metenzmass_2sp',        [u_cost, u] = ecm_metenz_mass(x,pp,'emc2sp');
+  case 'metenzmass_3s',         [u_cost, u] = ecm_metenz_mass(x,pp,'emc3s');
+  case 'metenzmass_3sp',        [u_cost, u] = ecm_metenz_mass(x,pp,'emc3sp');
+  case 'metenzmass_4cm',        [u_cost, u] = ecm_metenz_mass(x,pp,'emc4cm');
   
   otherwise,             error('Unknown ecm_score');
 end

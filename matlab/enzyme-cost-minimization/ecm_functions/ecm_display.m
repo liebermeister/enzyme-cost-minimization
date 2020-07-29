@@ -783,7 +783,7 @@ subplot('Position',[0.15,0.1,0.8,0.65]); set(gca, 'Fontsize',12);
 hold on;
 M = [5+log10(my_u_capacity), -log10(my_eta_energetic), -log10(my_eta_saturation)];
 h = bar(M,'stacked'); 
-my_colormap = [0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2;]
+my_colormap = [0.35 0.35 0.9; 0.8 0.2 0.7; 1 0.3 0.2];
 for it = 1:length(h)
   h(it).FaceColor = 'Flat';
   h(it).CData = my_colormap(it,:);

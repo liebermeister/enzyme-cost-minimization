@@ -53,7 +53,7 @@ network.Identifiers_kegg_reaction = network.reaction_KEGGID;
 conc_min  = 1000 * cell_string2num(network.Concentration_Min);
 conc_max  = 1000 * cell_string2num(network.Concentration_Max);
 
-ind_water = find(strcmp('C00001',network.metabolite_KEGGID));
+ind_water = network_find_water(network);
 conc_min(ind_water) = 1;
 conc_max(ind_water) = 1;
 

@@ -106,11 +106,13 @@ end
 % -----------------------------
 % adapt lambda_regularistion to typical magnitude of enzyme cost
 
-median_cost =  nanmedian(ecm_options.enzyme_cost_weights);
+median_cost = nanmedian(ecm_options.enzyme_cost_weights);
 
 if isnan(median_cost), median_cost = 1; end 
 
-ecm_options.lambda_regularisation = ecm_options.lambda_reg_factor * median_cost;
+if length(ecm_options.lambda_reg_factor),
+  ecm_options.lambda_regularisation = ecm_options.lambda_reg_factor * median_cost;
+end
 
 % Adapt print_graphics
 

@@ -1,8 +1,9 @@
-function [u_cost, u, w] = ecm_metenz_conc(x,pp,ecm_score)
+function [u_cost, u, w] = ecm_robust_enz(x,pp,ecm_score)
 
-% [u_cost, u] = ecm_metenz_conc(x,pp)
-% sum of total metabolite and enzyme levels, assuming [ecm_score] formula for enzyme demand
-
+% [u_cost, u] = ecm_robust_enz(x,pp)
+%
+% same as ecm_robust_metenz(x,pp), just without the metabolite cost term
+  
 delta_G_by_RT = pp.N_forward' * x - pp.log_Keq_forward;
 
 switch ecm_score,
@@ -19,4 +20,12 @@ if sum(delta_G_by_RT>0),
   warning('Unfeasible metabolite profile');
 end
 
-u_cost = sum(exp(x)) + sum(u);
+% n_sigma = number of standard deviations (of the enzyme expression Poisson distribution)
+% to be added as a safety tolerance
+n_sigma = 3; 
+cn      = cell_numbers;
+
+% add safety tolerance
+u = u + n_sigma/sqrt(cn.avogadro_constant * cn.ecoli_cell_volume_m3) * sqrt(u);
+
+u_cost = sum(u);
