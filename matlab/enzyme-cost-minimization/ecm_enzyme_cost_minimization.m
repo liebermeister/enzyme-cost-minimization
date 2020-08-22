@@ -45,7 +45,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %   u_min             minimal possible enzyme values (for tolerance calculations)
 %   u_max             maximal possible enzyme values (for tolerance calculations)
 %   r                 kinetics used
-%   u_capacity        enzyme capacities
+%   u_capacity        enzyme capacities (= abs(v)/kcat_forward)
 %   eta_energetic     energy efficiency factors
 %   eta_saturation    saturation efficiency factors
 %   multi             results from optimisation runs with multiple starting points
@@ -82,19 +82,16 @@ end
 % Enzyme cost minimization
 % --------------------------------------------------------------------------------------
 
-% for MATLAB 2009
-%opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
+% * the last time I checked (with 2020), interior-point worked best *
 
-% for MATLAB 2011
-opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','sqp');
-
-% for MATLAB 2016
+%opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'Display','off','TolX',10^-10,'Algorithm','sqp');
 %opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
+opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','interior-point');
+%'Display','iter',
 
 network.N(network_find_water(network),:) = 0;
 
 network.kinetics = set_kinetics(network,'cs',r);
-
 
 % --------------------------------------------------------------------------------------
 % initialise 
@@ -102,8 +99,11 @@ network.kinetics = set_kinetics(network,'cs',r);
 ecm_options.enzyme_cost_weights  = ecm_options.enzyme_cost_weights(find(v(ecm_options.ind_scored_enzymes)~=0));
 ecm_options.ind_scored_enzymes   = ecm_options.ind_scored_enzymes(find(v(ecm_options.ind_scored_enzymes)~=0));
 
-[Mplus, Mminus, Wplus, Wminus, nm, nr] = make_structure_matrices(network.N,network.regulation_matrix,find(network.external));
+if ecm_options.ignore_regulation,
+  network.regulation_matrix = 0*network.regulation_matrix;
+end
 
+[Mplus, Mminus, Wplus, Wminus, nm, nr] = make_structure_matrices(network.N,network.regulation_matrix,find(network.external));
 
 c_data                = ecm_options.c_data             ;
 u_data                = ecm_options.u_data             ;  
@@ -134,7 +134,7 @@ if find(v(ind_scored_enzymes)==0),
   error('An enzyme catalysing a 0 flux is scored in the cost function. This can lead to problems')
 end
 ind_not_scored        = setdiff(1:nr,ind_scored_enzymes);
-multiple_conditions   = ecm_options.multiple_conditions;
+multiple_conditions_anticipate = ecm_options.multiple_conditions_anticipate;
 multiple_conditions_n = ecm_options.multiple_conditions_n;
 
 conc_min(isnan(conc_min)) = conc_min_default;
@@ -202,7 +202,7 @@ pp.kmprod_forward        = kmprod_forward     ;
 pp.ind_scored_enzymes    = ind_scored_enzymes ;
 pp.enzyme_cost_weights   = enzyme_cost_weights;
 pp.ind_not_scored        = ind_not_scored     ;
-pp.multiple_conditions   = multiple_conditions;
+pp.multiple_conditions_anticipate   = multiple_conditions_anticipate;
 pp.multiple_conditions_n = multiple_conditions_n;
 [pp.ln_c_data, pp.ln_c_std] = lognormal_normal2log(c_data, c_std,'arithmetic'); 
 pp.u_data                = u_data;
@@ -221,7 +221,11 @@ else
 end
 
 if multiple_conditions_n < 2, 
-  pp.multiple_conditions = 0;
+  pp.multiple_conditions_anticipate = 0;
+end
+
+if pp.multiple_conditions_anticipate,
+  display(sprintf('  Running multi-condition optimisation with %d conditions', pp.multiple_conditions_n));
 end
 
 % --------------------------------------------------------------------------------------
@@ -312,11 +316,11 @@ A_forward_init(ind_not_scored) = nan;
 A_forward.initial = A_forward_init;
 
 if find([A_forward.initial<0] .* [v~=0]),
-  error('There is a thermodynamically infeasible reaction already in the starting point');
+  error('There is a thermodynamically infeasible reaction in the starting point');
 end
 
 if find([A_forward.initial<0.01] .* [v~=0]),
-  display('  WARNING: There is a thermodynamically problematic reaction (below 0.01 kJ/mol) already in the starting point');
+  display('  WARNING: There is a thermodynamically poor reaction (below 0.01 kJ/mol) in the starting point');
 end
 
 display(sprintf('Running ECM'));
@@ -333,7 +337,6 @@ for it_method = 1:length(ecm_scores),
   up.(ecm_score)        = my_up;
   u_cost.(ecm_score)    = my_u_cost;
   A_forward.(ecm_score) = my_A_forward;
-  
   mca_info.(ecm_score).x_gradient = my_grad;
   
   if ecm_options.compute_hessian,  
@@ -375,8 +378,7 @@ for it_method = 1:length(ecm_scores),
     display(sprintf('   %s',ecm_score));
   end
 
-  %% run more optimisations starting from extreme points
-
+  %% run more optimisations starting from extreme points  
   if ecm_options.multiple_starting_points,
   
     display(sprintf('     Running optimisation with %d extreme starting points',size(X_extreme,2)));
@@ -525,7 +527,7 @@ end
 % ------------------------------------------------------
 % postprocessing in case of multiple conditions: turn result (metabolite and enzyme) vectors into matrices
 %  ecm_options.multiple_conditions_n   -> number of conditions
-%  ecm_options.multiple_conditions ==1 -> find a single enzyme profile for all conditions
+%  ecm_options.multiple_conditions_anticipate ==1 -> find a single enzyme profile for all conditions
 
 if isfield(ecm_options,'multiple_conditions_n'),
 
@@ -545,13 +547,11 @@ if isfield(ecm_options,'multiple_conditions_n'),
     end
   end
 
-  if ecm_options.multiple_conditions ==0,
-    fn = fieldnames(up); 
-    for it = 1:length(fn),
-      if length(up.(fn{it})),
-        up.(fn{it}) = reshape(up.(fn{it}),nr/n_cond,n_cond);
-      end
-    end    
+  fn = fieldnames(up); 
+  for it = 1:length(fn),
+    if length(up.(fn{it})),
+      up.(fn{it}) = reshape(up.(fn{it}),nr/n_cond,n_cond);
+    end
   end
 
   fn = fieldnames(A_forward); 

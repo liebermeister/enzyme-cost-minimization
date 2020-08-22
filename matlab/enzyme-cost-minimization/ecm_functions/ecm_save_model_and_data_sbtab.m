@@ -144,7 +144,7 @@ end
 
 % enzyme cost weight table
 if length(enzyme_cost_weights),
-  enzyme_cost_weight_table = sbtab_table_construct(struct('TableName','EnzymeCostWeight','TableType','Quantity','TableID','Quantity','Unit','ArbitraryUnits'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme cost weight'},nr,1),network.actions, network.reaction_KEGGID, enzyme_cost_weights(:,1)});
+  enzyme_cost_weight_table = sbtab_table_construct(struct('TableName','EnzymeCostWeight','TableType','Quantity','TableID','Quantity','Unit','arbitrary unit'),{'QuantityType','Reaction','Reaction:Identifiers:kegg.reaction','Value'},{repmat({'enzyme cost weight'},nr,1),network.actions, network.reaction_KEGGID, enzyme_cost_weights(:,1)});
   if save_single_tables,
     sbtab_table_save(enzyme_cost_weight_table, struct('filename',[ filename '_EnzymeCostWeight.tsv']));  
   end

@@ -23,15 +23,17 @@ if my_exitflag < 1, my_exitflag
   error('optimisation unsuccessful'); end 
 
 my_c         = exp(my_x);
-my_A_forward = RT * [pp.log_Keq_forward - pp.N_forward' * log(my_c)]; my_A_forward(pp.ind_not_scored) = nan;
+my_A_forward = RT * [pp.log_Keq_forward - pp.N_forward' * log(my_c)]; 
+my_A_forward(pp.ind_not_scored) = nan;
 
 %% compute resulting enzyme profile
 
 [my_u_cost, my_u, my_u_preemptive] = ecm_get_score(ecm_score, my_x, pp);
 
 my_up                    = my_u;
-my_up(pp.ind_not_scored) = nan;
 
-if pp.multiple_conditions, 
+if pp.multiple_conditions_anticipate, 
   my_up = my_u_preemptive; 
 end
+
+my_up(pp.ind_not_scored) = nan;

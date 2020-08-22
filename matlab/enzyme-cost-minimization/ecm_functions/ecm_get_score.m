@@ -128,23 +128,25 @@ if pp.fluctuations_safety_margin,
   u = u + pp.fluctuations_safety_margin / sqrt(pp.cell_volume * 6.02214086 * 10^23) * sqrt(u);
 end
 
-
-% Support for multiple conditions
+% Enzyme cost functions for multiple conditions
 % Assume that all reaction vectors are actually a concatenation of several (condition-specific) vectors
 
-if pp.multiple_conditions,
-  display(sprintf('  Running multi-condition optimisation with %d conditions',pp.multiple_conditions_n));
+if pp.multiple_conditions_anticipate,
+  %% Recompute enzyme values and total cost
+  nu             = length(u) / pp.multiple_conditions_n;
+  u_matrix       = reshape(u,nu,pp.multiple_conditions_n);
+  u_preemptive   = repmat(nanmax(u_matrix,[],2),pp.multiple_conditions_n,1);
   switch ecm_score,
     case {'emc1', 'emc2s', 'emc2sp', 'emc3s',  'emc3sp', 'emc4dm', 'emc4sm', 'emc4cm', 'emc4geom'},
-      %% Recompute enzyme values and total cost
-      nu                 = length(u) / pp.multiple_conditions_n;
-      u_preemptive       = nanmax(reshape(u,nu,pp.multiple_conditions_n),[],2);
-      ind_scored_enzymes = pp.ind_scored_enzymes(find(pp.ind_scored_enzymes <= nu));
-      u_cost             = sum( pp.enzyme_cost_weights(ind_scored_enzymes) .* u_preemptive(ind_scored_enzymes) );
+      %for simple cost functions: sum over weighted enzyme concentrations
+      u_cost = nansum(pp.enzyme_cost_weights .* u_preemptive(pp.ind_scored_enzymes));
     otherwise, 
-      error('With this cost score, multiple conditions are not supported '); 
+      %more complicated: sum over weighted enzyme concentrations
+      %plus other terms -> adjust the original cost! substract the enzyme cost and add the
+      enz_cost_old = nansum(pp.enzyme_cost_weights .* u(pp.ind_scored_enzymes) );
+      enz_cost_new = nansum(pp.enzyme_cost_weights .* u_preemptive(pp.ind_scored_enzymes) );
+      u_cost       = u_cost - enz_cost_old + enz_cost_new;
   end
 else
   u_preemptive = [];
 end
-

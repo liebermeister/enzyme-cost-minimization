@@ -242,7 +242,7 @@ end
 
 if length(u_capacity),
 
-  u_capacity_table = sbtab_table_construct(struct('TableName','Enzyme capacities','TableID','EnzymeCapacity','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction','Value'},{repmat({'enzyme capacity'},nr,1),network.actions, u_capacity});
+  u_capacity_table = sbtab_table_construct(struct('TableName','Enzyme capacities','TableID','EnzymeCapacity','TableType','QuantityMatrix','Unit','mM'),{'QuantityType','Reaction','Value'},{repmat({'enzyme capacity'},nr,1),network.actions, u_capacity});
   
   if length(reaction_KEGGID),
     u_capacity_table = sbtab_table_add_column(u_capacity_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
@@ -250,7 +250,7 @@ if length(u_capacity),
   
   fn = fieldnames(eta_energetic); 
   
-  eta_energetic_table = sbtab_table_construct(struct('TableName','Energetic efficiencies','TableID','EnergeticEfficiency','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'energetic efficiency'},nr,1),network.actions});
+  eta_energetic_table = sbtab_table_construct(struct('TableName','Energetic efficiencies','TableID','EnergeticEfficiency','TableType','QuantityMatrix','Unit','dimensionless'),{'QuantityType','Reaction'},{repmat({'energetic efficiency'},nr,1),network.actions});
   
   if length(reaction_KEGGID),
     eta_energetic_table = sbtab_table_add_column(eta_energetic_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
@@ -267,7 +267,7 @@ if length(u_capacity),
   
   fn = fieldnames(eta_saturation); 
   
-  eta_saturation_table = sbtab_table_construct(struct('TableName','Saturation efficiencies','TableID','SaturationEfficiency','TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'saturation efficiency'},nr,1),network.actions});
+  eta_saturation_table = sbtab_table_construct(struct('TableName','Saturation efficiencies','TableID','SaturationEfficiency','TableType','QuantityMatrix','Unit','dimensionless'),{'QuantityType','Reaction'},{repmat({'saturation efficiency'},nr,1),network.actions});
   
   if length(reaction_KEGGID),
     eta_saturation_table = sbtab_table_add_column(eta_saturation_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
