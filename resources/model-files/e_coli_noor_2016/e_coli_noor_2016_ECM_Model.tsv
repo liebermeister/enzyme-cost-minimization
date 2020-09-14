@@ -456,7 +456,7 @@ PPC_R00345	0.40095304	0.4069
 !!SBtab TableID='Flux' TableType='Quantity' Unit='mM/s'							
 !QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value				
 rate of reaction	PTS_RPTSsy	RPTSsy	0.5691				
-rate of reaction	PGI_R02740	R02740	385				
+rate of reaction	PGI_R02740	R02740	0.385				
 rate of reaction	PFK_R04779	R04779	0.4417				
 rate of reaction	ALD_R01070	R01070	0.44702				
 rate of reaction	TIM_R01015	R01015	0.4445				
@@ -475,10 +475,10 @@ rate of reaction	TXT_R01641	R01641	0.0448
 rate of reaction	TAL_R08575	R08575	0.0448				
 rate of reaction	TXT_R01067	R01067	0.0273				
 rate of reaction	FBP_R00762	R00762	0				
-rate of reaction	CSN_R00351	R00351	154				
-rate of reaction	ACN_R01325	R01325	154				
-rate of reaction	ACN_R01900	R01900	154				
-rate of reaction	ICD_R00709	R00709	154				
+rate of reaction	CSN_R00351	R00351	0.154				
+rate of reaction	ACN_R01325	R01325	0.154				
+rate of reaction	ACN_R01900	R01900	0.154				
+rate of reaction	ICD_R00709	R00709	0.154				
 rate of reaction	KGD_R08549	R08549	0.0924				
 rate of reaction	SCS_R00405	R00405	0.1673				
 rate of reaction	SDH_R02164	R02164	0.0924				
