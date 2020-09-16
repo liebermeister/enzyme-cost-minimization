@@ -6,12 +6,12 @@
 % sets default parameters, and calls functions for Parameter Balancing or Enzyme Cost Minimization.
 
 % Use the prepared model and data files 
-%   enzyme-cost-minimization/matlab/enzyme-cost-minimization/demo/data/ecoli_noor_2016_ECM_Model.tsv
-%   enzyme-cost-minimization/matlab/enzyme-cost-minimization/demo/data/ecoli_noor_2016_ECM_ValidationData.tsv
+%   enzyme-cost-minimization/matlab/enzyme-cost-minimization/demo/data/e_coli_noor_2016_ECM_Model.tsv
+%   enzyme-cost-minimization/matlab/enzyme-cost-minimization/demo/data/e_coli_noor_2016_ECM_ValidationData.tsv
 
 % Results are written to subdirectory "enzyme-cost-minimization/matlab/enzyme-cost-minimization/demo/results"
 %
-% To see the workflow in more detail, have a look at demo_ecm_ecoli_noor_2016.m
+% To see the workflow in more detail, have a look at demo_ecm_e_coli_noor_2016.m
 % --------------------------------------------------------------------------------------------------
 
 display(sprintf('\n---------------------------------------------------------------------------'));

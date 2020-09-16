@@ -5,13 +5,13 @@ function [r, r_orig, kinetic_data, r_samples, pb_options, parameter_prior, r_mea
 % [r, r_orig, kinetic_data, r_samples, pb_options, parameter_prior, r_std] = ecm_parameter_balancing(network, pb_options, kinetic_data);
 %
 % Input
-%   network         Metabolic network data structure
-%   kinetic_data    Kinetic_data used
-%   pb_options         Parameter balancing options used
+%   network         Metabolic network data structure (struct) (see Metabolic network toolbox) 
+%   kinetic_data    Kinetic_data used (struct)
+%   pb_options      Parameter balancing options used (struct)
 %
 % Output
-%   r               Kinetic constants (posterior mode values, respecting the linear constraints)
-%   r_orig          Original kinetic constants (used as input in parameter balancing)
+%   r               Kinetic constants struct (posterior mode values, respecting the linear constraints)
+%   r_orig          Original kinetic constants struct (used as input in parameter balancing)
 %   r_mean          Kinetic constants (posterior means, ignoring the  linear constraints)
 %   r_std           Kinetic constants (posterior standard deviations, ignoring the  linear constraints)
 %   r_samples       Kinetic constants sampled from the posterior

@@ -10,7 +10,7 @@
 data_dir                 = [ecm_RESOURCEDIR filesep 'model-files' filesep 'e_coli_noor_2016'];
 filename_model           = [data_dir filesep 'e_coli_noor_2016_ECM_Model.tsv'];
 filename_validation_data = [data_dir filesep 'e_coli_noor_2016_ECM_ValidationData.tsv'];
-
+result_dir               = tempdir; 
 
 % ---------------------------------------------------------------------------------------
 % Load model and data from the ECM Model file and translate them into matlab data structures 
@@ -43,9 +43,9 @@ ecm_options            = ecm_update_options(network, ecm_options);
 
 document_name = 'E. coli central carbon metabolism - ECM result';
 
-outfile_name          = [tempdir 'demo_ecm_e_coli_noor_2016'];
-outfile_options_json  = [tempdir 'demo_ecm_e_coli_noor_2016_options.json'];
-outfile_options_sbtab = [tempdir 'demo_ecm_e_coli_noor_2016_options.tsv' ];
+outfile_name          = [result_dir 'demo_ecm_e_coli_noor_2016'];
+outfile_options_json  = [result_dir 'demo_ecm_e_coli_noor_2016_options.json'];
+outfile_options_sbtab = [result_dir 'demo_ecm_e_coli_noor_2016_options.tsv' ];
 
 options = struct('r', network.kinetics, 'method', 'emc4cm', 'document_name', document_name, 'save_tolerance_ranges', 1);
 

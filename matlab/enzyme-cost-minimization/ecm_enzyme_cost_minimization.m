@@ -1,17 +1,17 @@
 function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation, multi] = ecm_enzyme_cost_minimization(network,r,v,ecm_options)
 
-% ECM_ENZYME_COST_MINIMIZATION - Compute optimal flux-specific enzyme costs for given flux distribution
+% ECM_ENZYME_COST_MINIMIZATION - Compute optimal enzyme and metabolite profiles for a given flux distribution
 %
 % [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, u_capacity, eta_energetic, eta_saturation, multi] = ecm_enzyme_cost_minimization(network, e, v, ecm_options)
 %
 % Input 
-%   network       metabolic network structure (as in Metabolic Network Toolbox)
-%   r             Kinetic constants (from parameter balancing)
-%   v             flux mode
-%   ecm_options   options struct (for fields and default values, see 'ecm_default_options')
+%   network           metabolic network data structure (see Metabolic Network Toolbox)
+%   r                 kinetic constants data structure (from parameter balancing)
+%   v                 flux vector
+%   ecm_options       options data structure (for fields and default values, see 'ecm_default_options')
 %
 % Output
-%   c                 metabolite concentrations
+%   c                 metabolite concentration vector
 %   c.data            data vector (if provided)
 %   c.std             data standard deviations vector (if provided)
 %   c.fixed           fixed concentration vector

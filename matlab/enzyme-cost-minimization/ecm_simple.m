@@ -1,10 +1,13 @@
 function [report, errors] = ecm_simple(model_data_file, validation_data_file, outdir, options)
 
-% ECM_SIMPLE - Run Parameter Balancing or Enzyme Cost Minimisation on a single SBtab Model+Data file
+% ECM_SIMPLE - Wrapper function for 'ecm_parameter_balancing' and 'ecm_enzyme_cost_minimization'
 %
 % [report, errors] = ecm_simple(model_data_file, validation_data_file, outdir, options)
 %
-% This function reads an SBtab file (Model+Data), performs Parameter Balancing or ECM, and saves the results to an SBtab file in [outdir]
+% Run Parameter Balancing or Enzyme Cost Minimisation on a single SBtab Model+Data file
+%
+% This function reads an SBtab file (Model+Data), performs Parameter Balancing or ECM,
+% and saves the results to an SBtab file in [outdir]
 %
 % Options:
 %   options.actions      string {'ecm','parameter_balancing'} - default: 'ecm'
@@ -19,8 +22,6 @@ function [report, errors] = ecm_simple(model_data_file, validation_data_file, ou
 % 'ecm':
 %    run an ECM using standard settings, 
 %    input file: prepared model with data ("..ECM__Model.tsv")
-%
-% The function can be called via the python script 'ecm.py'
 
 eval(default('options','struct'));
 
