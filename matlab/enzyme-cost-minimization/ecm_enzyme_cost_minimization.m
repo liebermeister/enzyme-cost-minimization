@@ -91,7 +91,13 @@ opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off'
 
 network.N(network_find_water(network),:) = 0;
 
-network.kinetics = set_kinetics(network,'cs',r);
+if isempty(r),
+  r = network.kinetics;
+end
+
+if ~isempty(r),
+  network.kinetics = set_kinetics(network,'cs',r);
+end
 
 % --------------------------------------------------------------------------------------
 % initialise 
@@ -148,9 +154,6 @@ c.data      = c_data;
 u.data      = u_data;
 u_cost.data = nansum(u.data);
 
-if isempty(r),
-  r = network.kinetics;
-end
 
 % --------------------------------------------------------------------------------------
 % adjust some network- and kinetics-related variables
@@ -521,7 +524,14 @@ for it_method = 1:length(ecm_options.ecm_scores),
   
   eta_energetic.(this_ecm_score)  = my_eta_energetic ;
   eta_saturation.(this_ecm_score) = my_eta_saturation;
-  
+
+  switch this_ecm_score,
+    %% if applicable, use function by Hannes Löwe which prevents
+    %% negative values (unfixed bug in code above)  
+    case {'emc3','emc4cm'},
+     [u_capacity, eta_energetic.(this_ecm_score),  eta_saturation.(this_ecm_score)] = calculate_rev_sat_HL('cs', network.N, network.regulation_matrix, find(network.external), u.(this_ecm_score), c.(this_ecm_score), network.kinetics.KA, network.kinetics.KI, network.kinetics.KM, network.kinetics.KV, network.kinetics.Keq, network.kinetics.h, Mplus, Mminus, Wplus, Wminus, nm, nr);
+  end
+      
 end
 
 % ------------------------------------------------------
@@ -560,11 +570,6 @@ if isfield(ecm_options,'multiple_conditions_n'),
       A_forward.(fn{it}) = reshape(A_forward.(fn{it}),nr/n_cond,n_cond);
     end
   end
-
-  %fn = fieldnames(mca_info); 
-  %for it = 1:length(fn),
-  %  mca_info.(fn{it}).gradient = reshape(mca_info.(fn{it}).gradient,nr/n_cond,n_cond);
-  %end
 
   u_capacity = reshape(u_capacity,nr/n_cond,n_cond);
   fn = fieldnames(eta_energetic); 

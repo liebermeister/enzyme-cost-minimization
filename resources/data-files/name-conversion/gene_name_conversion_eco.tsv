@@ -1,4 +1,4 @@
-!!SBtab TableType='Enzyme' !Organism='Escherichia coli'		
+!!SBtab TableType='Enzyme' TableID='GeneConversion' !Organism='Escherichia coli'		
 !Enzyme	!Gene	!EnzymeReaction
 AAD	-	AAD
 ACC	-	ACC

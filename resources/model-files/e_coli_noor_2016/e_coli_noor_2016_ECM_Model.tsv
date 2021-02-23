@@ -1,9 +1,4 @@
 !!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
-							
-!!SBtab TableID='Config' TableType='Config'							
-!Option	!Value	!Comment                					
-algorithm	ECM     						
-							
 !!SBtab TableID='Reaction' TableType='Reaction'							
 !ID	!ReactionFormula	!Identifiers:kegg.reaction	!IsReversible	!Gene	!KineticLaw:Name	!KineticLaw:Formula	
 PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	RPTSsy	True	PTS	Common saturable (CM)	u_R1 * ( kC_R1 * sqrt( kEQ_R1  * kM_R1_D_Glucose * kM_R1_Phosphoenolpyruvate / kM_R1_Pyruvate / kM_R1_D_Glucose_6_phosphate ) * ( D_Glucose / kM_R1_D_Glucose ) * ( Phosphoenolpyruvate / kM_R1_Phosphoenolpyruvate ) - kC_R1 / sqrt( kEQ_R1  * kM_R1_D_Glucose * kM_R1_Phosphoenolpyruvate / kM_R1_Pyruvate / kM_R1_D_Glucose_6_phosphate ) * ( Pyruvate / kM_R1_Pyruvate ) * ( D_Glucose_6_phosphate / kM_R1_D_Glucose_6_phosphate ) ) / ( ( 1 + D_Glucose / kM_R1_D_Glucose ) * ( 1 + Phosphoenolpyruvate / kM_R1_Phosphoenolpyruvate ) + ( 1 + Pyruvate / kM_R1_Pyruvate ) * ( 1 + D_Glucose_6_phosphate / kM_R1_D_Glucose_6_phosphate ) - 1 )	
@@ -380,7 +375,7 @@ molecular mass		_2_Phospho_D_glycerate	186	Da		C00631
 molecular mass		Succinate	118	Da		C00042	
 molecular mass		Sedoheptulose_7_phosphate	290	Da		C05382	
 							
-!!SBtab TableID='Layout' TableType='Position'							
+!!SBtab TableID='Position' TableType='Position'							
 !Element	!PositionX	!PositionY	!HideInPlot				
 _S__Malate	0.3277	0.09506	0				
 Acetyl_CoA	0.3594	229	0				
@@ -453,7 +448,7 @@ FUM_R01082	0.340351	0.035483
 MDH_R00342	0.33416	0.140744					
 PPC_R00345	0.40095304	0.4069					
 							
-!!SBtab TableID='Flux' TableType='Quantity' Unit='mM/s'							
+!!SBtab TableID='FluxData' TableType='Quantity' Unit='mM/s'							
 !QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value				
 rate of reaction	PTS_RPTSsy	RPTSsy	0.5691				
 rate of reaction	PGI_R02740	R02740	0.385				

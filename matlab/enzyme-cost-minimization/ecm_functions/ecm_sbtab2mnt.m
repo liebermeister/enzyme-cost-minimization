@@ -50,8 +50,8 @@ network.Identifiers_kegg_reaction = network.reaction_KEGGID;
 % -----------------------------------------------------------
 % convert from M to mM
 
-conc_min  = 1000 * cell_string2num(network.Concentration_Min);
-conc_max  = 1000 * cell_string2num(network.Concentration_Max);
+conc_min  = 1000 * cell_string2num(network.Min);
+conc_max  = 1000 * cell_string2num(network.Max);
 
 ind_water = network_find_water(network);
 conc_min(ind_water) = 1;
@@ -74,4 +74,6 @@ import_quantity_list = {'standard Gibbs energy of reaction', 'standard chemical 
                     'equilibrium constant','substrate catalytic rate constant', ...
                     'product catalytic rate constant'};
 
-kinetic_data = data_integration_load_kinetic_data(import_quantity_list, [], network, kinetic_data_file_names, 0, use_kegg_ids,1,0,'Organism',organism_long,reaction_column_name,compound_column_name);
+opt = struct('use_sbml_ids',0,'use_kegg_ids',use_kegg_ids, 'flag_invent_std',1,'verbose',0, 'reaction_column_name', reaction_column_name, 'compound_column_name', compound_column_name);
+
+kinetic_data = kinetic_data_load(import_quantity_list, [], network, kinetic_data_file_names, opt);

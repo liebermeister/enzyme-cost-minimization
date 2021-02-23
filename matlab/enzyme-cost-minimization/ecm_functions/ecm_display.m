@@ -227,7 +227,7 @@ figure(18); clf; hold on;
 set(gcf,'Position',[100 300 1000 500])
 xtick = 0:length(ind_show_met)-1;
 h     = [];
-my_ecm_scores = [{'initial'},ecm_options.ecm_scores];
+my_ecm_scores = [{'initial'};column(ecm_options.ecm_scores)];
 for it = 1:length(my_ecm_scores),
   ecm_score = my_ecm_scores{it};
   h(it)     = plot(xtick,c.(ecm_score)(ind_show_met,1) * exp(0.03*it),'-','MarkerSize',20); %  * exp(0.001*it)
@@ -238,9 +238,9 @@ plot(xtick,c.fixed(ind_show_met),'r.','MarkerSize',30);
 if length(c.data),
   n_c_data_sets = size(c.data,2);
   plot(repmat(column(xtick),n_c_data_sets,1),reshape(c.data(ind_show_met,:),n_c_data_sets * length(ind_show_met),1),'k.','MarkerSize',20); 
-  methods = [my_ecm_scores,{'fixed','data'}];
+  methods = [my_ecm_scores;{'fixed';'data'}];
 else
-  methods = [my_ecm_scores,{'fixed'}];
+  methods = [my_ecm_scores;{'fixed'}];
 end
 
 metnames_show = strrep(network.metabolites(ind_show_met),'D-','');
@@ -264,7 +264,7 @@ set(gcf,'Position',[200 400 1000 500])
 xtick = 0:length(network.actions);
 h = [];
 
-my_ecm_scores = [{'initial'},ecm_options.ecm_scores];
+my_ecm_scores = [{'initial'};ecm_options.ecm_scores];
 
 for it = 1:length(my_ecm_scores),
   ecm_score = my_ecm_scores{it};
@@ -339,7 +339,7 @@ if graphics_options.few_graphics ==0,
   if length(u.data),
     ug_data = u.data(ecm_options.ind_scored_enzymes) / nansum(u.data(ecm_options.ind_scored_enzymes));
     ug      = [ug, ug_data];
-    methods = [methods,{'data'}];
+    methods = [methods;{'data'}];
   end
   
   h = bar(flipud(ug)','stacked'); 
@@ -597,9 +597,9 @@ if graphics_options.show_metabolite_graphics,
   if length(c.data),
     n_c_data_sets = size(c.data,2);
     plot(repmat(column(xtick),n_c_data_sets,1),reshape(c.data(ind_show_met,:),n_c_data_sets * length(ind_show_met),1),'k.','MarkerSize',20); 
-    methods = {this_ecm_score,'fixed','data'};
+    methods = {this_ecm_score;'fixed';'data'};
   else
-    methods = {this_ecm_score,'fixed'};
+    methods = {this_ecm_score;'fixed'};
   end
   metnames_show = strrep(metnames_show,'D-','');
   text(xtick + 0.2,c.(this_ecm_score)(ind_show_met),metnames_show,'FontSize',10);

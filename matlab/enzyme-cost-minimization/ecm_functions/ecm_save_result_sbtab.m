@@ -122,6 +122,10 @@ end
 % don't show metabolite and enzyme levels in parameter table 
 my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1);
 
+if length(c_min)
+  my_opt = join_struct(my_opt,struct('c_min',c_min,'c_max',c_max));
+end
+  
 % try to insert results from enzyme prediction with common modular rate law
 [nm,nr]          = size(network.N);
 network.kinetics = options.r;
@@ -333,6 +337,9 @@ switch options.flag_one_file,
 
   case 1,
     sbtab_document = sbtab_document_construct(options.sbtab_attributes);
+    if length(v),
+      sbtab_document = sbtab_document_add_table(sbtab_document,'MetabolicFlux',v_table);
+    end
     sbtab_document = sbtab_document_add_table(sbtab_document,'Concentration',c_table);
     sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',u_table);
     sbtab_document = sbtab_document_add_table(sbtab_document,'ReactionAffinity',A_forward_table);
@@ -340,9 +347,6 @@ switch options.flag_one_file,
       sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeCapacity',u_capacity_table);
       sbtab_document = sbtab_document_add_table(sbtab_document,'EnergeticEfficiency',eta_energetic_table);
       sbtab_document = sbtab_document_add_table(sbtab_document,'SaturationEfficiency',eta_saturation_table);
-    end
-    if length(v),
-      sbtab_document = sbtab_document_add_table(sbtab_document,'MetabolicFlux',v_table);
     end
     if options.use_measurement_table,
       sbtab_document = sbtab_document_add_table(sbtab_document,'MetabolicStates',sample_table);

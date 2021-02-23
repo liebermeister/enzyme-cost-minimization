@@ -1,4 +1,4 @@
-!!SBtab QuantityType='protein chain length' Organism='Escherichia coli'
+!!SBtab TableID='ProteinChainLength' TableType='Quantity' Organism='Escherichia coli'
 !Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!Value
 b0882	ClpA	K03694	758
 b2592	ClpB	K03695	823

@@ -7,7 +7,6 @@ function ecm_options = ecm_update_options(network, ecm_options);
 % Update ECM options for a given network:
 %  - adapt metabolite constraints
 %  - insert protein cost weights
-%  - adjust Keq values
 
 display('Updating the parameters for ECM');
 
@@ -51,7 +50,7 @@ end
 if length(ecm_options.fix_metabolites),
   display('  o Fixing some metabolite concentrations');
   for it = 1:length(ecm_options.fix_metabolites),
-    ll = label_names(ecm_options.fix_metabolites(it),network.metabolites);
+    ll = label_names(ecm_options.fix_metabolites(it),network.metabolite_names);
     conc_min(ll) = ecm_options.fix_metabolite_values(it);    
     conc_max(ll) = ecm_options.fix_metabolite_values(it);
   end
@@ -63,11 +62,11 @@ ecm_options.conc_min = conc_min;
 ecm_options.conc_max = conc_max;
 
 ind_conc_fix = find(ecm_options.conc_min == ecm_options.conc_max);
-met_fix      = network.metabolites(ind_conc_fix);
+met_fix      = network.metabolite_names(ind_conc_fix);
 conc_fix     = ecm_options.conc_min(ind_conc_fix);
 if prod(size(met_fix))==0, met_fix={}; conc_fix=[]; end
 
-ind_met_fix = label_names(met_fix, network.metabolites);
+ind_met_fix = label_names(met_fix, network.metabolite_names);
 
 if setdiff(find(network.external),ind_met_fix),
   display('  o Some external metabolites in network will not be treated as fixed');
@@ -80,28 +79,6 @@ ecm_options.conc_max    = conc_max;
 ecm_options.conc_fix    = conc_fix;
 ecm_options.met_fix     = met_fix;
 ecm_options.ind_met_fix = ind_met_fix;
-
-
-% -------------------------------------------
-% set enzyme cost weights
-if isempty(ecm_options.use_cost_weights),
-  if ecm_options.verbose,
-    display('Using predefined enzyme cost weights');
-  end
-else  
-  switch ecm_options.use_cost_weights,
-    case 'none',
-      ecm_options.enzyme_cost_weights = ones(length(ecm_options.ind_scored_enzymes),1);
-    case 'protein_size',
-      ecm_options.enzyme_cost_weights = network.enzyme_size(ecm_options.ind_scored_enzymes);
-    case 'protein_mass',
-      ecm_options.enzyme_cost_weights = network.enzyme_mass(ecm_options.ind_scored_enzymes);
-    case 'aa_composition',
-      ecm_options.enzyme_cost_weights = network.akashi_protein_cost(ecm_options.ind_scored_enzymes);
-  end
-  %% scale to median = 1
-  ecm_options.enzyme_cost_weights = ecm_options.enzyme_cost_weights / nanmedian(ecm_options.enzyme_cost_weights);
-end
 
 % -----------------------------
 % adapt lambda_regularistion to typical magnitude of enzyme cost
@@ -128,3 +105,5 @@ end
 if ~isfield(ecm_options,'N_cat_sites_in_complex'),
   ecm_options.N_cat_sites_in_complex = ones(size(ecm_options.enzyme_cost_weights));
 end
+
+ecm_options.ecm_scores = column(ecm_options.ecm_scores);

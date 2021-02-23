@@ -55,7 +55,7 @@ ecm_save_result_sbtab(outfile_name, network, c, u, A_forward, options, c_min, c_
 % ecm_options_save(outfile_options_json,ecm_options);
 
 % Write ECM options to SBtab file
-options_to_sbtab(ecm_options,struct('filename',outfile_options_sbtab,'TableName','Options for ECM','TableID','OptionsECM','Method','enzyme-cost-minimization'));
+options_to_sbtab(ecm_options,struct('filename',outfile_options_sbtab,'TableName','Options for ECM','TableID','ConfigureECM','Method','enzyme-cost-minimization'));
 
 
 % ---------------------------------------------------------------------------------------
