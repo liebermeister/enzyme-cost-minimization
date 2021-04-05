@@ -11,7 +11,7 @@ If you use ECM in your work, please cite our article *Noor et al. (2016)* (refer
 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
 - [SBML toolbox](http://sbml.org/Software/SBMLToolbox) (optional - needed only if SBML files are used)
-- [DERIVESTsuite] (http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation) (needed only if the option ecm_options.compute_hessian is set)
+- [DERIVESTsuite](http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation) (needed only if the option ecm_options.compute_hessian is set)
 - Clone the following [GitHub](https://github.com/liebermeister) repositories
     - [`matlab-utils`](https://github.com/liebermeister/matlab-utils) - utility functions
     - [`metabolic-network-toolbox`](https://github.com/liebermeister/metabolic-network-toolbox) - metabolic network toolbox
@@ -19,8 +19,8 @@ For some of the MATLAB functions, the following MATLAB toolboxes must be install
 -  Make sure all the directories and subdirectories are included in your Matlab path
 
 The following packages are optional dependencies of the Metabolic Networks Toolbox, but they are not used in Enzyme Cost Minimization
-- [Tensor toolbox] (http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.5.html)
-- [efmtool]        (http://www.csb.ethz.ch/tools/efmtool)
+- [Tensor toolbox](http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.5.html)
+- [efmtool](http://www.csb.ethz.ch/tools/efmtool)
 
 ## License
 This package is released under the [GNU General Public License](LICENSE).
