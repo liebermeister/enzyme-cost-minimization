@@ -5,14 +5,14 @@ function [u_cap,eta_sat,eta_rev] = calculate_rev_sat_HL(kinetic_law, N, W, ind_e
 c(find(c<10^-14)) = 10^-14;
 
 %% Global variables to speed up this function; see ecm_one_run.m and convex_parameter_estimation.m
-global global_structure_matrices 
+% global global_structure_matrices 
+% 
+% if exist('global_structure_matrices','var'),
+%   global Mplus Mminus Wplus Wminus nm nr ind_M ind_Wp ind_Wm
+% end
 
-if exist('global_structure_matrices','var'),
-  global Mplus Mminus Wplus Wminus nm nr ind_M ind_Wp ind_Wm
-end
-
-if isempty(Mplus),
-  [Mplus, Mminus, Wplus, Wminus, nm, nr, N_int,ind_M,ind_Wp,ind_Wm] = make_structure_matrices(N,W,ind_ext,h);
+if isempty(Mplus) + ~exist('ind_M'),
+  [Mplus, Mminus, Wplus, Wminus, nm, nr, N_int, ind_M, ind_Wp, ind_Wm] = make_structure_matrices(N,W,ind_ext,h);
 end
 
 [log_alpha_A, log_beta_A] = k_to_log_alpha(KA,c);

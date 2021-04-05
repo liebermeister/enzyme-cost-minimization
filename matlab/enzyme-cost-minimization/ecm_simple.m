@@ -58,7 +58,7 @@ switch options.actions,
       end
 
       if isempty(errors),
-        import_quantity_list = {'standard Gibbs energy of reaction', ...
+        import_quantity_list = {'standard Gibbs free energy of reaction', ...
                               'standard chemical potential','Michaelis constant',...
                               'activation constant', 'inhibitory constant',...
                               'equilibrium constant','substrate catalytic rate constant', ...
@@ -107,14 +107,14 @@ switch options.actions,
       %% ECM standard options
 
       ecm_options                      = ecm_default_options(my_network);
-      ecm_options.initial_choice       = 'polytope_center';
-      ecm_options.conc_min             = conc_min; 
-      ecm_options.conc_max             = conc_max;
+      % ecm_options.initial_choice       = 'polytope_center';
+      % ecm_options.conc_min             = conc_min; 
+      % ecm_options.conc_max             = conc_max;
       ecm_options.ecm_scores           = {'emc1', 'emc2s', 'emc2sp', 'emc3s', 'emc3sp', 'emc4cm'};
       ecm_options.c_data               = c_data;
       ecm_options.u_data               = u_data;
-      ecm_options.Keq_upper            = 100000000;
-      ecm_options.insert_Keq_from_data = 1;
+      ecm_options.Keq_upper            = 10^20;
+      ecm_options.insert_Keq_from_data = 0;
       ecm_options.replace_cofactors    = options.replace_cofactors;
       ecm_options.compute_tolerance    = 0;
       ecm_options.cost_tolerance_factor  = 1.01;  

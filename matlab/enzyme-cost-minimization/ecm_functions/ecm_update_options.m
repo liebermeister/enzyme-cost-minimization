@@ -61,6 +61,9 @@ end
 ecm_options.conc_min = conc_min;
 ecm_options.conc_max = conc_max;
 
+if ~isfield(network,'metabolite_names'),
+  network.metabolite_names = network.metabolites;
+end
 ind_conc_fix = find(ecm_options.conc_min == ecm_options.conc_max);
 met_fix      = network.metabolite_names(ind_conc_fix);
 conc_fix     = ecm_options.conc_min(ind_conc_fix);

@@ -1,5 +1,5 @@
 !!!SBtab Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'		
-!!SBtab TableID='Concentration' TableType='Quantity' Unit='mM'		
+!!SBtab TableID='MetaboliteConcentrationData' TableType='Quantity' Unit='mM'		
 !QuantityType	!Compound	!Value
 concentration	mal	1.685342446
 concentration	acecoa	0.606
@@ -42,7 +42,7 @@ concentration	2pg
 concentration	suc	1.185325381
 concentration	s7p	
 		
-!!SBtab TableID='EnzymeConcentration' TableType='Quantity' Unit='mM'		
+!!SBtab TableID='EnzymeConcentrationData' TableType='Quantity' Unit='mM'		
 !QuantityType	!Reaction	!Value
 concentration of enzyme	pts	0.022041994
 concentration of enzyme	pgi	0.0076401396

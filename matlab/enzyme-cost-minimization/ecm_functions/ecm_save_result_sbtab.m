@@ -1,6 +1,6 @@
 %ECM_SAVE_RESULT_SBTAB - Save ECM result in SBtab format
 % 
-% ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation, v)
+% ecm_save_result_sbtab(filename, network, c, u, DeltaG, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation, v)
 %
 % The function arguments are the result of an ECM calculation, which may refer to several metabolic states
 % To save data files for a single metabolic state, see  'help ecm_save_model_and_data_sbtab'
@@ -22,7 +22,7 @@
 % network                (struct describing model, see mnt toolbox)
 % c                      (struct) containing concentration vectors
 % u                      (struct) containing enzyme concentration vectors
-% A_forward              (struct) containing reaction affinity vectors
+% DeltaG                 (struct) containing reaction Delta G vectors
 % options                (struct) options, see below
 % c_min                  (nm x 1 vector of minimal concentrations)
 % c_max                  (nm x 1 vector of maximal concentrations)
@@ -46,7 +46,7 @@
 %   .modular_rate_law_kinetics   = 0   flag: show kinetic rate law formulae in table
 %   .use_measurement_table       = 0;
 
-function ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation,v)
+function ecm_save_result_sbtab(filename, network, c, u, DeltaG, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation,v)
 
 eval(default('options','struct','c_min', '[]', 'c_max', '[]', 'u_min', '[]', 'u_max', '[]', 'u_capacity', '[]', 'eta_energetic', '[]', 'eta_saturation', '[]','v','[]'));
 
@@ -225,19 +225,19 @@ end
 % -----------------------------------------------
 % predicted reaction driving forces
 
-fn = fieldnames(A_forward); 
+fn = fieldnames(DeltaG); 
 
-A_forward_table = sbtab_table_construct(struct('TableName','Gibbs free energies of reaction','TableID','ReactionGibbsFreeEnergy', 'TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'Gibbs energy of reaction'},nr,1),network.actions});
+DeltaG_table = sbtab_table_construct(struct('TableName','Gibbs free energies of reaction','TableID','ReactionGibbsFreeEnergy', 'TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'Gibbs energy of reaction'},nr,1),network.actions});
 
 if length(reaction_KEGGID),
-  A_forward_table = sbtab_table_add_column(A_forward_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
+  DeltaG_table = sbtab_table_add_column(DeltaG_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
 end
 
 for it = 1:length(fn),
   if options.use_measurement_table,
-    A_forward_table = sbtab_table_add_column(A_forward_table, ['>' fn{it}], A_forward.(fn{it})(:,1),1);
+    DeltaG_table = sbtab_table_add_column(DeltaG_table, ['>' fn{it}], DeltaG.(fn{it})(:,1),1);
   else
-    A_forward_table = sbtab_table_add_column(A_forward_table, fn{it}, A_forward.(fn{it})(:,1),0);
+    DeltaG_table = sbtab_table_add_column(DeltaG_table, fn{it}, DeltaG.(fn{it})(:,1),0);
   end
 end
 
@@ -325,7 +325,7 @@ switch options.flag_one_file,
     %display(sprintf('Writing model files (SBtab format) with basename\n%s', filename))
     sbtab_table_save(c_table, struct('filename',[ filename '_Concentration.tsv']));
     sbtab_table_save(u_table, struct('filename',[ filename '_EnzymeConcentration.tsv']));
-    sbtab_table_save(A_forward_table, struct('filename',[ filename '_ReactionGibbsFreeEnergy.tsv']));
+    sbtab_table_save(DeltaG_table, struct('filename',[ filename '_ReactionGibbsFreeEnergy.tsv']));
     if length(u_capacity),
       sbtab_table_save(u_capacity_table, struct('filename',[ filename '_EnzymeCapacity.tsv']));
       sbtab_table_save(eta_energetic_table, struct('filename',[ filename '_EnergeticEfficiency.tsv']));
@@ -342,7 +342,7 @@ switch options.flag_one_file,
     end
     sbtab_document = sbtab_document_add_table(sbtab_document,'Concentration',c_table);
     sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',u_table);
-    sbtab_document = sbtab_document_add_table(sbtab_document,'ReactionAffinity',A_forward_table);
+    sbtab_document = sbtab_document_add_table(sbtab_document,'GibbsFreeEnergyOfReaction',DeltaG_table);
     if length(u_capacity),
       sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeCapacity',u_capacity_table);
       sbtab_document = sbtab_document_add_table(sbtab_document,'EnergeticEfficiency',eta_energetic_table);

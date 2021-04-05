@@ -9,7 +9,7 @@
 % Set location of your ECM Model file; you can choose a different location.
 % (by default, matlab will search the files on the matlab search path)
 
-data_dir                 = [ecm_RESOURCEDIR filesep 'model-files' filesep 'e_coli_noor_2016' filesep 'equilibrator-example' ];
+data_dir                 = [ecm_RESOURCEDIR 'model-files' filesep 'e_coli_noor_2016' filesep 'equilibrator-example' ];
 filename_model           = [data_dir filesep 'e_coli_noor_2016_ecm.tsv'];
 filename_validation_data = [data_dir filesep 'e_coli_noor_2016_reference.tsv'];
 result_dir               = tempdir;
