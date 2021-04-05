@@ -10,24 +10,17 @@ If you use ECM in your work, please cite our article *Noor et al. (2016)* (refer
 ## Matlab dependencies
 
 For some of the MATLAB functions, the following MATLAB toolboxes must be installed
+- [SBML toolbox](http://sbml.org/Software/SBMLToolbox) (optional - needed only if SBML files are used)
+- [DERIVESTsuite] (http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation) (needed only if the option ecm_options.compute_hessian is set)
+- Clone the following [GitHub](https://github.com/liebermeister) repositories
+    - [`matlab-utils`](https://github.com/liebermeister/matlab-utils) - utility functions
+    - [`metabolic-network-toolbox`](https://github.com/liebermeister/metabolic-network-toolbox) - metabolic network toolbox
+    - [`sbtab-matlab`](https://github.com/liebermeister/sbtab-matlab) - SBtab toolbox
+-  Make sure all the directories and subdirectories are included in your Matlab path
 
-  o Matlab utility functions  (https://github.com/liebermeister/matlab-utils)
-
-  o Metabolic Network Toolbox (https://github.com/liebermeister/metabolic-network-toolbox)
-
-  o SBMLtoolbox               (http://sbml.org/Software/SBMLToolbox)
-
-  o SBtab toolbox             (https://github.com/liebermeister/sbtab-matlab)
-
-  o DERIVESTsuite             (http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation)
-
-Please make sure that these matlab packages are installed in your system and that all these directories and subdirectories are included in your matlab path.
-
-Please note that the following packages are required by some functions in the Metabolic Networks Toolbox, but they are not required for Enzyme Cost Minimization
-
-  o Tensor toolbox (http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.5.html)
-
-  o efmtool        (http://www.csb.ethz.ch/tools/efmtool)
+The following packages are optional dependencies of the Metabolic Networks Toolbox, but they are not used in Enzyme Cost Minimization
+- [Tensor toolbox] (http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.5.html)
+- [efmtool]        (http://www.csb.ethz.ch/tools/efmtool)
 
 ## License
 This package is released under the [GNU General Public License](LICENSE).
