@@ -11,8 +11,8 @@ For some of the MATLAB functions, the following MATLAB toolboxes must be install
 - [SBML toolbox](http://sbml.org/Software/SBMLToolbox) (optional - needed only if SBML files are used)
 - [DERIVESTsuite](http://www.mathworks.com/matlabcentral/fileexchange/13490-adaptive-robust-numerical-differentiation) (needed only if the option ecm_options.compute_hessian is set)
 - Clone the following [GitHub](https://github.com/liebermeister) repositories
-    - [`matlab-utils`](https://github.com/liebermeister/matlab-utils) - utility functions
-    - [`metabolic-network-toolbox`](https://github.com/liebermeister/metabolic-network-toolbox) - metabolic network toolbox
+    - [`matlab-utils`](https://github.com/liebermeister/matlab-utils) - Utility functions
+    - [`metabolic-network-toolbox`](https://github.com/liebermeister/metabolic-network-toolbox) - Metabolic Network Toolbox
     - [`sbtab-matlab`](https://github.com/liebermeister/sbtab-matlab) - SBtab toolbox
 -  Make sure all the directories and subdirectories are included in your Matlab path
 
