@@ -66,7 +66,7 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %    ecm_options.lambda_regularisation
 %    ecm_options.ecm_scores         
 %    ecm_options.initial_choice
-%    ecm_options.x_start
+%    ecm_options.x_start (if ecm_options.initial_choice is set to 'given_x_start')
 %    ecm_options.multiple_starting_points   flag
 %    ecm_options.compute_hessian
 %    ecm_options.compute_elasticities
@@ -86,8 +86,7 @@ end
 
 %opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'Display','off','TolX',10^-10,'Algorithm','sqp');
 %opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','active-set');
-opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','interior-point');
-%'Display','iter',
+opt = optimset('MaxFunEvals',10^15,'MaxIter',10^15,'TolX',10^-10,'Display','off','Algorithm','interior-point'); %'Display','iter',
 
 network.N(network_find_water(network),:) = 0;
 
@@ -235,22 +234,38 @@ end
 % find feasible initial solution (as a test for feasibility) and extreme metabolite profiles
 
 % minimal reaction GFE of 10^-10 RT kJ/mol is required;
-Theta_min = 10^-10 * double(v~=0);  
+% Theta_ffwd_min = 10^-10 * double(v~=0);
+
+Theta_ffwd_min = [ecm_options.A_min/RT] * ones(size(v));
+Theta_ffwd_min(v==0) = -10^10;
 
 if ecm_options.use_linear_cost_constraints,
   if isempty(ecm_options.maximal_u_cost),
     ecm_options.maximal_u_cost = 20 * nansum(ecm_options.enzyme_cost_weights .* abs(v(ecm_options.ind_scored_enzymes)) ./ kc_forward(ecm_options.ind_scored_enzymes));
-    display(sprintf('Setting default upper bound %f for enzyme cost. Setting this value manually may speed up the calculation.',ecm_options.maximal_u_cost));
   end
+  display(sprintf('Setting default upper bound %f for enzyme cost. Setting this value manually may speed up the calculation.',ecm_options.maximal_u_cost));
   my_u_max = 10^15 * ones(nr,1); 
   my_u_max(ecm_options.ind_scored_enzymes) = ecm_options.maximal_u_cost ./ ecm_options.enzyme_cost_weights; 
-  new_Theta_min =  abs(v) ./ my_u_max ./ kc_forward;
-  Theta_min(ecm_options.ind_scored_enzymes) = new_Theta_min(ecm_options.ind_scored_enzymes);
+  new_Theta_ffwd_min =  abs(v) ./ my_u_max ./ kc_forward;
+  % bounds are only increased, not lowered:
+  Theta_ffwd_min(ecm_options.ind_scored_enzymes) = max(Theta_ffwd_min(ecm_options.ind_scored_enzymes),new_Theta_ffwd_min(ecm_options.ind_scored_enzymes));
 end
 
+pp.Theta_ffwd_min = Theta_ffwd_min;
+
+x_test = [];
+if isfield(ecm_options,'x_test'),
+  if length(ecm_options.x_test),
+    x_test = ecm_options.x_test;
+  end
+end
+
+ind_v_active = find(v);
 
 try
-  [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - Theta_min, x_min, x_max, 0*x_min);
+  [x_start, x1, x2] = find_polytope_centre_randn([],[], N_forward(:,ind_v_active)', log_Keq_forward(ind_v_active) - Theta_ffwd_min(ind_v_active), x_min, x_max, [], 5, x_test);
+
+  %%[x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - Theta_ffwd_min, x_min, x_max);
 catch
   display(sprintf('*** No M-polytope centre found in search for initial solution - maybe concentration constraints are too tight'));
   display(sprintf('*** Flux distribution is not thermodynamically realisable'));
@@ -259,23 +274,23 @@ catch
   display(sprintf(''));
   if ecm_options.fix_thermodynamics_by_adjusting_Keq,
     %% Enforce sufficiently large driving forces!
-    Theta_min(Theta_min<1) = 1;
+    Theta_ffwd_min(Theta_ffwd_min<1) = 1;
     display(sprintf('*** FROM NOW ON; REQUIRING REACTION AFFINITIES LARGER THAT 1 RT - NOTE THAT THIS MAY CAUSE SOME ARBITRARY ENZYME LEVELS'));
     display(sprintf('*** Running MDF to determine Keq adjustments to make this flux distribution feasible'));
-    x_mdf = fmincon(@(xx) ecm_mdf(xx,pp), zeros(nm,1),[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
-    Theta_mdf = log_Keq_forward-Theta_min-[N_forward' * x_mdf];
-    adjustment_log_Keq_forward = -(Theta_mdf-Theta_min);
-    adjustment_log_Keq_forward(Theta_mdf>=Theta_min) = 0;
+    x_mdf = fmincon(@(xx) ecm_mdf(xx,pp), zeros(nm,1),[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward(:,ind_v_active),log_Keq_forward(ind_v_active), Theta_ffwd_min(ind_v_active)),opt);
+    Theta_mdf = log_Keq_forward-Theta_ffwd_min-[N_forward' * x_mdf];
+    adjustment_log_Keq_forward = -(Theta_mdf-Theta_ffwd_min);
+    adjustment_log_Keq_forward(Theta_mdf>=Theta_ffwd_min) = 0;
     adjustment_log_Keq = sign(v) .* adjustment_log_Keq_forward;
-    display(sprintf('*** Update your Keq vector to fix the problem. The maximal change in |ln Keq| is %f',max(abs(adjustment_log_Keq))));
-    display(sprintf('*** Note that the new Keq values may be unrealistic and violate the Wegscheider conditions)'));
-    display(sprintf('Please press key to continue'));
-    pause
+    display(sprintf('*** (ecm_enzyme_cost_minimization.m): Updating your Keq vector to fix the problem. The maximal change in |ln Keq| is %f',max(abs(adjustment_log_Keq))));
+    display(sprintf('*** Note that the new Keq values may be unrealistic and may violate Wegscheider conditions)'));
+    %display(sprintf('Please press key to continue'));
+    %pause
     log_Keq_forward = log_Keq_forward + adjustment_log_Keq_forward;
     pp.log_Keq_forward = log_Keq_forward;
     r.Keq = r.Keq .* exp(adjustment_log_Keq);
     pp.network.kinetics.Keq = r.Keq;
-    [x_start, x1, x2] = find_polytope_centre([],[], N_forward', log_Keq_forward - Theta_min, x_min, x_max, 0*x_min);
+    [x_start, x1, x2] = find_polytope_centre_randn([],[], N_forward(:,ind_v_active)', log_Keq_forward(ind_v_active) - Theta_ffwd_min(ind_v_active), x_min, x_max, [], 5);
   else
     error('Flux distribution cannot be thermodynamically realised given the Keq values and metabolite bounds')
     c = [];  u = [];  u_cost = [];  up = [];  A_forward = [];
@@ -294,11 +309,11 @@ switch ecm_options.initial_choice,
     display('Choosing polytope center as the starting point'); 
   case 'interval_center',
     display('Choosing point close to center of allowed intervals as starting point'); 
-    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max, 1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
+    x_start = fmincon(@(xx) ecm_regularisation(xx,x_min,x_max, 1), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward(:,ind_v_active),log_Keq_forward(ind_v_active), Theta_ffwd_min(ind_v_active)),opt);
   case 'mdf',
     display('Choosing MDF solution as the starting point'); 
-    x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward,log_Keq_forward, Theta_min),opt);
-    if ecm_mdf(x_start,pp) > 0, error('Thermodynamically infeasible reaction'); end
+    x_start = fmincon(@(xx) ecm_mdf(xx,pp) + ecm_regularisation(xx,x_min,x_max,lambda_regularisation), x_start,[],[],[],[],x_min,x_max,@(xx) ecm_inequalities(xx,N_forward(:,ind_v_active),log_Keq_forward(ind_v_active), Theta_ffwd_min(ind_v_active)),opt);
+    if ecm_mdf(x_start,pp) > 0, error('Thermodynamically infeasible reaction found'); end
   case 'given_x_start',
     display('Using given solution as a starting point');
     x_start = ecm_options.x_start;
@@ -333,7 +348,7 @@ for it_method = 1:length(ecm_scores),
   ecm_score = ecm_scores{it_method};
   display(sprintf('  o %s',ecm_score));
   
-  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, Theta_min,opt);
+  [my_c, my_u, my_up, my_u_cost, my_A_forward, my_x, my_grad] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, opt);
 
   c.(ecm_score)         = my_c;
   u.(ecm_score)         = my_u;
@@ -399,7 +414,7 @@ for it_method = 1:length(ecm_scores),
       A_forward_init(ind_not_scored) = nan;
       A_forward.initial(:,1+itt)     = A_forward_init;
       
-      [my_c, my_u, my_up, my_u_cost, my_A_forward] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, Theta_min,opt);
+      [my_c, my_u, my_up, my_u_cost, my_A_forward] = ecm_one_run(ecm_score,pp,x_min,x_max,x_init,lambda_regularisation, opt);
       
       c.(ecm_score)(:,1+itt)         = my_c;
       u.(ecm_score)(:,1+itt)         = my_u;
@@ -529,7 +544,7 @@ for it_method = 1:length(ecm_options.ecm_scores),
     %% if applicable, use function by Hannes Löwe which prevents
     %% negative values (unfixed bug in code above)  
     case {'emc3','emc4cm'},
-     [u_capacity, eta_energetic.(this_ecm_score),  eta_saturation.(this_ecm_score)] = calculate_rev_sat_HL('cs', network.N, network.regulation_matrix, find(network.external), u.(this_ecm_score), c.(this_ecm_score), network.kinetics.KA, network.kinetics.KI, network.kinetics.KM, network.kinetics.KV, network.kinetics.Keq, network.kinetics.h, Mplus, Mminus, Wplus, Wminus, nm, nr);
+     [u_capacity, eta_saturation.(this_ecm_score), eta_energetic.(this_ecm_score)] = calculate_rev_sat_HL('cs', network.N, network.regulation_matrix, find(network.external), u.(this_ecm_score), c.(this_ecm_score), network.kinetics.KA, network.kinetics.KI, network.kinetics.KM, network.kinetics.KV, network.kinetics.Keq, network.kinetics.h, Mplus, Mminus, Wplus, Wminus, nm, nr);
   end
       
 end
@@ -577,6 +592,5 @@ if isfield(ecm_options,'multiple_conditions_n'),
     eta_energetic.(fn{it})  = reshape(eta_energetic.(fn{it}),nr/n_cond,n_cond);
     eta_saturation.(fn{it}) = reshape(eta_saturation.(fn{it}),nr/n_cond,n_cond);
   end
-
 
 end

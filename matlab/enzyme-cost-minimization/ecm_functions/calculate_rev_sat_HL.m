@@ -53,10 +53,10 @@ eta_rev = zeros(length(v),1);
 eta_sat = zeros(length(v),1);
 u_cap   = zeros(length(v),1);
 
-eta_rev(v>0) = 1 - (Kminus(v>0) .* theta_minus(v>0)./Kplus(v>0)./theta_plus(v>0));
-eta_sat(v>0) = theta_plus(v>0)./D(v>0);
-u_cap(v>0)   = v(v>0)./Kplus(v>0);
+eta_rev(v>0) = 1 - (Kminus(v>0) .* theta_minus(v>0) ./ Kplus(v>0) ./ theta_plus(v>0));
+eta_sat(v>0) = theta_plus(v>0) ./ D(v>0);
+u_cap(v>0)   = v(v>0) ./ Kplus(v>0);
 
-eta_rev(v<0) = 1 - (Kplus(v<0) .* theta_plus(v<0)./theta_minus(v<0))./Kminus(v<0);
-eta_sat(v<0) = theta_minus(v<0)./D(v<0);
-u_cap(v<0)   = -v(v<0)./Kminus(v<0);
+eta_rev(v<0) = 1 - (Kplus(v<0) .* theta_plus(v<0) ./ theta_minus(v<0) ./ Kminus(v<0));
+eta_sat(v<0) = theta_minus(v<0) ./ D(v<0);
+u_cap(v<0)   = -v(v<0) ./ Kminus(v<0);

@@ -9,7 +9,7 @@ equilibrium constant	GAP_R01061		0.00035180468	dimensionless	R01061
 equilibrium constant	PGK_R01512		1883.7137	dimensionless	R01512	
 equilibrium constant	PGM_R01518		0.1881272	dimensionless	R01518	
 equilibrium constant	PGH_R00658		5.202263	dimensionless	R00658	
-equilibrium constant	PYK_R00200		22335814	dimensionless	R00200	
+equilibrium constant	PYK_R00200		22335.814	dimensionless	R00200	
 equilibrium constant	PDH_R00209		1670759.7	dimensionless	R00209	
 equilibrium constant	ZWF_R00835		12.916734	dimensionless	R00835	
 equilibrium constant	GLH_R02035		20744.52	dimensionless	R02035	
@@ -19,12 +19,12 @@ equilibrium constant	RPE_R01529		3.9024941	dimensionless	R01529
 equilibrium constant	TXT_R01641		4.7316932	dimensionless	R01641	
 equilibrium constant	TAL_R08575		1.3194676	dimensionless	R08575	
 equilibrium constant	TXT_R01067		59.621212	dimensionless	R01067	
-equilibrium constant	FBP_R00762		49007074	dimensionless	R00762	
+equilibrium constant	FBP_R00762		49007.074	dimensionless	R00762	
 equilibrium constant	CSN_R00351		5416530.1	dimensionless	R00351	
 equilibrium constant	ACN_R01325		0.034861263	dimensionless	R01325	
 equilibrium constant	ACN_R01900		1.3190957	dimensionless	R01900	
 equilibrium constant	ICD_R00709		100.21644	dimensionless	R00709	
-equilibrium constant	KGD_R08549		92567323	dimensionless	R08549	
+equilibrium constant	KGD_R08549		92567.323	dimensionless	R08549	
 equilibrium constant	SCS_R00405		0.58290232	dimensionless	R00405	
 equilibrium constant	SDH_R02164		6026.7589	dimensionless	R02164	
 equilibrium constant	FUM_R01082		4.0148279	dimensionless	R01082	
@@ -77,11 +77,11 @@ Michaelis constant	PPC_R00345	Orthophosphate	NaN	mM	R00345	C00009
 Michaelis constant	PTS_RPTSsy	Pyruvate	NaN	mM	RPTSsy	C00022
 Michaelis constant	PYK_R00200	Pyruvate	0.31	mM	R00200	C00022
 Michaelis constant	PDH_R00209	Pyruvate	0.01	mM	R00209	C00022
-Michaelis constant	ZWF_R00835	NADPplus	7	mM	R00835	C00006
+Michaelis constant	ZWF_R00835	NADPplus	0.007	mM	R00835	C00006
 Michaelis constant	PGD_R01528	NADPplus	0.016784756	mM	R01528	C00006
-Michaelis constant	ZWF_R00835	NADPH	7	mM	R00835	C00005
+Michaelis constant	ZWF_R00835	NADPH	0.007	mM	R00835	C00005
 Michaelis constant	PGD_R01528	NADPH	0.00066332496	mM	R01528	C00005
-Michaelis constant	GAP_R01061	NADH	59	mM	R01061	C00004
+Michaelis constant	GAP_R01061	NADH	0.059	mM	R01061	C00004
 Michaelis constant	PDH_R00209	NADH	NaN	mM	R00209	C00004
 Michaelis constant	ICD_R00709	NADH	NaN	mM	R00709	C00004
 Michaelis constant	KGD_R08549	NADH	NaN	mM	R08549	C00004
@@ -118,7 +118,7 @@ Michaelis constant	TXT_R01641	D_Xylulose_5_phosphate	0.49	mM	R01641	C00231
 Michaelis constant	TXT_R01067	D_Xylulose_5_phosphate	0.49	mM	R01067	C00231
 Michaelis constant	PTS_RPTSsy	D_Glucose_6_phosphate	NaN	mM	RPTSsy	C00092
 Michaelis constant	PGI_R02740	D_Glucose_6_phosphate	NaN	mM	R02740	C00092
-Michaelis constant	ZWF_R00835	D_Glucose_6_phosphate	174	mM	R00835	C00092
+Michaelis constant	ZWF_R00835	D_Glucose_6_phosphate	0.174	mM	R00835	C00092
 Michaelis constant	GAP_R01061	_3_Phospho_D_glyceroyl_phosphate	0.05	mM	R01061	C00236
 Michaelis constant	PGK_R01512	_3_Phospho_D_glyceroyl_phosphate	0.0018	mM	R01512	C00236
 Michaelis constant	PDH_R00209	CoA	0.0034641016	mM	R00209	C00010
@@ -148,20 +148,20 @@ Michaelis constant	PTS_RPTSsy	Phosphoenolpyruvate	NaN	mM	RPTSsy	C00074
 Michaelis constant	PGH_R00658	Phosphoenolpyruvate	0.3	mM	R00658	C00074
 Michaelis constant	PYK_R00200	Phosphoenolpyruvate	0.31	mM	R00200	C00074
 Michaelis constant	PPC_R00345	Phosphoenolpyruvate	0.38431493	mM	R00345	C00074
-Michaelis constant	CSN_R00351	Citrate	1	mM	R00351	C00158
+Michaelis constant	CSN_R00351	Citrate	0.001	mM	R00351	C00158
 Michaelis constant	ACN_R01325	Citrate	0.73118139	mM	R01325	C00158
 Michaelis constant	KGD_R08549	Succinyl_CoA	0.077459667	mM	R08549	C00091
 Michaelis constant	SCS_R00405	Succinyl_CoA	0.027912311	mM	R00405	C00091
 Michaelis constant	PGK_R01512	_3_Phospho_D_glycerate	0.69	mM	R01512	C00197
 Michaelis constant	PGM_R01518	_3_Phospho_D_glycerate	0.65	mM	R01518	C00197
-Michaelis constant	ZWF_R00835	D_Glucono_1_5_lactone_6_phosphate	174	mM	R00835	C01236
+Michaelis constant	ZWF_R00835	D_Glucono_1_5_lactone_6_phosphate	0.174	mM	R00835	C01236
 Michaelis constant	GLH_R02035	D_Glucono_1_5_lactone_6_phosphate	0.02	mM	R02035	C01236
 Michaelis constant	PGI_R02740	D_Fructose_6_phosphate	NaN	mM	R02740	C00085
 Michaelis constant	PFK_R04779	D_Fructose_6_phosphate	NaN	mM	R04779	C00085
 Michaelis constant	TAL_R08575	D_Fructose_6_phosphate	0.49559808	mM	R08575	C00085
 Michaelis constant	TXT_R01067	D_Fructose_6_phosphate	7	mM	R01067	C00085
 Michaelis constant	FBP_R00762	D_Fructose_6_phosphate	NaN	mM	R00762	C00085
-Michaelis constant	PGM_R01518	_2_Phospho_D_glycerate	41	mM	R01518	C00631
+Michaelis constant	PGM_R01518	_2_Phospho_D_glycerate	0.041	mM	R01518	C00631
 Michaelis constant	PGH_R00658	_2_Phospho_D_glycerate	0.3	mM	R00658	C00631
 Michaelis constant	SCS_R00405	Succinate	2.2969796	mM	R00405	C00042
 Michaelis constant	SDH_R02164	Succinate	0.11895397	mM	R02164	C00042
@@ -207,7 +207,7 @@ product catalytic rate constant	PGK_R01512		833	1/s	R01512
 product catalytic rate constant	PGM_R01518		26.124843	1/s	R01518	
 product catalytic rate constant	PGH_R00658		NaN	1/s	R00658	
 product catalytic rate constant	PYK_R00200		NaN	1/s	R00200	
-product catalytic rate constant	PDH_R00209		77	1/s	R00209	
+product catalytic rate constant	PDH_R00209		0.077	1/s	R00209	
 product catalytic rate constant	ZWF_R00835		571	1/s	R00835	
 product catalytic rate constant	GLH_R02035		NaN	1/s	R02035	
 product catalytic rate constant	PGD_R01528		98	1/s	R01528	
@@ -297,79 +297,3 @@ protein molecular mass	SDH_R02164		792299	Da	R02164
 protein molecular mass	FUM_R01082		60000	Da	R01082	
 protein molecular mass	MDH_R00342		32337	Da	R00342	
 protein molecular mass	PPC_R00345		198120	Da	R00345	
-
-!!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableID='Concentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'						
-!QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound
-concentration		_S__Malate	1.6853424			C00149
-concentration		Acetyl_CoA	0.606			C00024
-concentration		Fumarate	0.54824225			C00122
-concentration		cis_Aconitate	0.0161			C00417
-concentration		_6_Phospho_D_gluconate	0.27853881			C00345
-concentration		Orthophosphate	NaN			C00009
-concentration		Pyruvate	1.4051541			C00022
-concentration		NADPplus	0.011288198			C00006
-concentration		NADPH	0.11389157			C00005
-concentration		NADH	0.02741513			C00004
-concentration		NADplus	2.1128133			C00003
-concentration		ATP	3.4491395			C00002
-concentration		H2O	NaN			C00001
-concentration		_2_Oxoglutarate	0.6369486			C00026
-concentration		Oxaloacetate	NaN			C00036
-concentration		Ubiquinone	NaN			C00399
-concentration		D_Erythrose_4_phosphate	0.026636791			C00279
-concentration		Ubiquinol	NaN			C00390
-concentration		ADP	0.60461237			C00008
-concentration		Isocitrate	0.008160872			C00311
-concentration		D_Ribulose_5_phosphate	0.65875602			C00199
-concentration		D_Xylulose_5_phosphate	0.59461428			C00231
-concentration		D_Glucose_6_phosphate	0.94916067			C00092
-concentration		_3_Phospho_D_glyceroyl_phosphate	0.050794221			C00236
-concentration		CoA	1.37			C00010
-concentration		CO2	NaN			C00011
-concentration		D_Ribose_5_phosphate	0.23022876			C00117
-concentration		Glycerone_phosphate	1.3202889			C00111
-concentration		D_Glucose	17.363			C00031
-concentration		D_Fructose_1_6_bisphosphate	1.1609581			C00354
-concentration		D_Glyceraldehyde_3_phosphate	NaN			C00118
-concentration		Phosphoenolpyruvate	0.35315771			C00074
-concentration		Citrate	0.7028625			C00158
-concentration		Succinyl_CoA	0.233			C00091
-concentration		_3_Phospho_D_glycerate	0.79582005			C00197
-concentration		D_Glucono_1_5_lactone_6_phosphate	NaN			C01236
-concentration		D_Fructose_6_phosphate	0.33596722			C00085
-concentration		_2_Phospho_D_glycerate	NaN			C00631
-concentration		Succinate	1.1853254			C00042
-concentration		Sedoheptulose_7_phosphate	NaN			C05382
-						
-!!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableID='EnzymeConcentration' TableType='Quantity' Unit='mM' SBtabVersion='1.0'						
-!QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound
-concentration of enzyme	PTS_RPTSsy		0.022041994		RPTSsy	
-concentration of enzyme	PGI_R02740		0.0076401396		R02740	
-concentration of enzyme	PFK_R04779		0.0039637064		R04779	
-concentration of enzyme	ALD_R01070		0.036878909		R01070	
-concentration of enzyme	TIM_R01015		0.012351088		R01015	
-concentration of enzyme	GAP_R01061		0.078183154		R01061	
-concentration of enzyme	PGK_R01512		0.066486318		R01512	
-concentration of enzyme	PGM_R01518		0.025035945		R01518	
-concentration of enzyme	PGH_R00658		0.060028482		R00658	
-concentration of enzyme	PYK_R00200		0.017940462		R00200	
-concentration of enzyme	PDH_R00209		0.0096560338		R00209	
-concentration of enzyme	ZWF_R00835		0.002049105		R00835	
-concentration of enzyme	GLH_R02035		0.0029922911		R02035	
-concentration of enzyme	PGD_R01528		0.023413599		R01528	
-concentration of enzyme	RPI_R01056		0.0045797663		R01056	
-concentration of enzyme	RPE_R01529		0.00087012239		R01529	
-concentration of enzyme	TXT_R01641		0.007699919		R01641	
-concentration of enzyme	TAL_R08575		0.020051007		R08575	
-concentration of enzyme	TXT_R01067		0.007699919		R01067	
-concentration of enzyme	FBP_R00762		NaN		R00762	
-concentration of enzyme	CSN_R00351		0.016059072		R00351	
-concentration of enzyme	ACN_R01325		0.0136		R01325	
-concentration of enzyme	ACN_R01900		0.013601474		R01900	
-concentration of enzyme	ICD_R00709		0.055910345		R00709	
-concentration of enzyme	KGD_R08549		0.0028328794		R08549	
-concentration of enzyme	SCS_R00405		0.010316928		R00405	
-concentration of enzyme	SDH_R02164		0.0014280635		R02164	
-concentration of enzyme	FUM_R01082		0.0030969051		R01082	
-concentration of enzyme	MDH_R00342		0.088237717		R00342	
-concentration of enzyme	PPC_R00345		0.0060327379		R00345	

@@ -1,6 +1,6 @@
 %ECM_SAVE_RESULT_SBTAB - Save ECM result in SBtab format
 % 
-% ecm_save_result_sbtab(filename, network, c, u, DeltaG, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation, v)
+% ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation, v)
 %
 % The function arguments are the result of an ECM calculation, which may refer to several metabolic states
 % To save data files for a single metabolic state, see  'help ecm_save_model_and_data_sbtab'
@@ -22,7 +22,7 @@
 % network                (struct describing model, see mnt toolbox)
 % c                      (struct) containing concentration vectors
 % u                      (struct) containing enzyme concentration vectors
-% DeltaG                 (struct) containing reaction Delta G vectors
+% A_forward              (struct) containing reaction affinity (|Delta G| vectors)
 % options                (struct) options, see below
 % c_min                  (nm x 1 vector of minimal concentrations)
 % c_max                  (nm x 1 vector of maximal concentrations)
@@ -41,14 +41,20 @@
 %   .sbtab_attributes            = struct(); additional document attributes to be put in the SBtab document
 %   .filename_model_state        = 'ModelState';
 %   .filename_state_runs         = 'StateRuns';
-%   .write_concentrations        = 0       flag: show metabolite concentrations (first state) in model parameter table?
+%   .write_concentrations        = 0 flag: show metabolite concentrations (first state) in model parameter table?
 %   .write_enzyme_concentrations = 0 flag: show enzyme concentrations (first state) in model parameter table?
 %   .modular_rate_law_kinetics   = 0   flag: show kinetic rate law formulae in table
 %   .use_measurement_table       = 0;
 
-function ecm_save_result_sbtab(filename, network, c, u, DeltaG, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation,v)
+function ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation,v)
 
 eval(default('options','struct','c_min', '[]', 'c_max', '[]', 'u_min', '[]', 'u_max', '[]', 'u_capacity', '[]', 'eta_energetic', '[]', 'eta_saturation', '[]','v','[]'));
+
+fn = fieldnames(A_forward);
+for it = 1:length(fn),
+  DeltaG.(fn{it})      = -A_forward.(fn{it});
+  DeltaG.(fn{it})(v.(fn{it})<0) = A_forward.(fn{it})(v.(fn{it})<0);
+end
 
 if strcmp(filename(end-3:end),'.tsv'), 
   filename(1:end-4);
@@ -120,6 +126,7 @@ end
 %formulae = network_print_formulae(network);
 
 % don't show metabolite and enzyme levels in parameter table 
+
 my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1);
 
 if length(c_min)
@@ -287,14 +294,17 @@ if length(u_capacity),
 
 end
 
-if length(v),
-  
+if length(v),  
   if ~isstruct(v),
+    v_vec = v;
     % if v is just a vector
-    v = struct('data',v);
+    v = struct('data',v_vec);
+    for it = 1:length(fn),
+      v.(fn{it}) = v_vec;
+    end
   end
   fn = fieldnames(v); 
-  v_table = sbtab_table_construct(struct('TableName','Metabolic fluxes','TableID','MetabolicFlux','TableType','QuantityMatrix','Unit','mM/s'),{'QuantityType','Reaction'},{repmat({'rate of reaction'},nr,1),network.actions});
+  v_table = sbtab_table_construct(struct('TableName','Metabolic fluxes','TableID','Flux','TableType','QuantityMatrix','Unit','mM/s'),{'QuantityType','Reaction'},{repmat({'rate of reaction'},nr,1),network.actions});
   
   if length(reaction_KEGGID),
     v_table = sbtab_table_add_column(v_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);
@@ -332,13 +342,13 @@ switch options.flag_one_file,
       sbtab_table_save(eta_saturation_table, struct('filename',[ filename '_SaturationEfficiency.tsv']));
     end
     if length(v),
-      sbtab_table_save(v_table, struct('filename',[ filename '_MetabolicFlux.tsv']));
+      sbtab_table_save(v_table, struct('filename',[ filename '_Flux.tsv']));
     end
 
   case 1,
     sbtab_document = sbtab_document_construct(options.sbtab_attributes);
     if length(v),
-      sbtab_document = sbtab_document_add_table(sbtab_document,'MetabolicFlux',v_table);
+      sbtab_document = sbtab_document_add_table(sbtab_document,'Flux',v_table);
     end
     sbtab_document = sbtab_document_add_table(sbtab_document,'Concentration',c_table);
     sbtab_document = sbtab_document_add_table(sbtab_document,'EnzymeConcentration',u_table);
