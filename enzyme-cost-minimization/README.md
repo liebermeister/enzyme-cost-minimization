@@ -8,4 +8,4 @@ For a workflow description, see
 https://www.metabolic-economics.de/enzyme-cost-minimization/workflow.html
 
 For demo files, see the subdirectory
-matlab/enzyme-cost-minimization/demo/
+enzyme-cost-minimization/demo/
