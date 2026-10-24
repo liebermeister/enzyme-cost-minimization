@@ -4,4 +4,4 @@
 
 function d = ecm_RESOURCEDIR()
 
-d = [ecm_BASEDIR '..' filesep '..' filesep 'resources' filesep];
+d = [ecm_BASEDIR '..' filesep 'resources' filesep];
