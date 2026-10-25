@@ -1,4 +1,4 @@
-!!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'			
+!!!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.2'			
 			
 !!SBtab TableID='MetaboliteConcentrationData' TableType='Quantity' Unit='mM'			
 !QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Value
