@@ -1,4 +1,4 @@
-!!!SBtab Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.2'		
+!!!SBtab Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'		
 !!SBtab TableID='MetaboliteConcentrationData' TableType='Quantity' Unit='mM'		
 !QuantityType	!Compound	!Value
 concentration	mal	1.685342446
