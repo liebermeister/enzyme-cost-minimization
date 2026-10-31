@@ -51,9 +51,25 @@ function ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_mi
 eval(default('options','struct','c_min', '[]', 'c_max', '[]', 'u_min', '[]', 'u_max', '[]', 'u_capacity', '[]', 'eta_energetic', '[]', 'eta_saturation', '[]','v','[]'));
 
 fn = fieldnames(A_forward);
+
 for it = 1:length(fn),
   DeltaG.(fn{it})      = -A_forward.(fn{it});
-  DeltaG.(fn{it})(v.(fn{it})<0) = A_forward.(fn{it})(v.(fn{it})<0);
+  if ~isstruct(v),  
+    DeltaG.(fn{it})(v<0) = A_forward.(fn{it})(v<0);
+  else
+    DeltaG.(fn{it})(v.(fn{it})<0) = A_forward.(fn{it})(v.(fn{it})<0);
+  end    
+end
+
+if length(v),  
+  if ~isstruct(v),
+    v_vec = v;
+    % if v is just a vector
+    v = struct('data',v_vec);
+    for it = 1:length(fn),
+      v.(fn{it}) = v_vec;
+    end
+  end
 end
 
 if strcmp(filename(end-3:end),'.tsv'), 
@@ -294,15 +310,8 @@ if length(u_capacity),
 
 end
 
+
 if length(v),  
-  if ~isstruct(v),
-    v_vec = v;
-    % if v is just a vector
-    v = struct('data',v_vec);
-    for it = 1:length(fn),
-      v.(fn{it}) = v_vec;
-    end
-  end
   fn = fieldnames(v); 
   v_table = sbtab_table_construct(struct('TableName','Metabolic fluxes','TableID','Flux','TableType','QuantityMatrix','Unit','mM/s'),{'QuantityType','Reaction'},{repmat({'rate of reaction'},nr,1),network.actions});
   
