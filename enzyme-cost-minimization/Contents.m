@@ -20,9 +20,9 @@
 %
 % Matlab Toolboxes required
 %
-%   Metabolic Network Toolbox    - Metabolic networks    (https://github.com/wolframliebermeister/mnt)
+%   Metabolic Network Toolbox    - Metabolic networks    (https://github.com/liebermeister/metabolic-network-toolbox)
 %   SBMLtoolbox                  - SBML import / export  (http://sbml.org/Software/SBMLToolbox)
-%   SBtab toolbox                - SBtab format          (https://github.com/wolframliebermeister/sbtab-matlab)
+%   SBtab toolbox                - SBtab format          (https://github.com/liebermeister/sbtab-matlab)
 %   efmtool                      - Elementary flux modes (http://www.csb.ethz.ch/tools/efmtool)
 %
 % (C) 2020 Wolfram Liebermeister  <wolfram.liebermeister@gmail.com>
