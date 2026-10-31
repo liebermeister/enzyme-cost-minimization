@@ -19,7 +19,7 @@ result_dir               = tempdir;
 display(sprintf('Reading model and data file %s', filename_model));
 display(sprintf('Reading validation data file %s', filename_validation_data));
 
-[network,v,c_data,u_data, conc_min, conc_max, met_fix, conc_fix,positions, enzyme_cost_weights, warnings] = load_model_and_data_sbtab(filename_model, filename_validation_data);
+[network,v,c_data,u_data, conc_min, conc_max, met_fix, conc_fix,positions, enzyme_cost_weights, network_for_plots, warnings] = load_model_and_data_sbtab(filename_model, filename_validation_data);
 
 
 % ---------------------------------------------------------------------------------------
