@@ -20,6 +20,10 @@ The following packages are optional dependencies of the Metabolic Networks Toolb
 - [Tensor toolbox](http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.5.html)
 - [efmtool](http://www.csb.ethz.ch/tools/efmtool)
 
+## Version
+
+The version number is given by `ecm_version`; changes are listed in [CHANGELOG.md](CHANGELOG.md).
+
 ## License
 This package is released under the [GNU General Public License](LICENSE).
 
