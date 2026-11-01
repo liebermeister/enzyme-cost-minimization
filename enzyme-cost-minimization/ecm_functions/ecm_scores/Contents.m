@@ -1,1 +1,0 @@
-%Cost scores for Enzyme Cost Minimisation
