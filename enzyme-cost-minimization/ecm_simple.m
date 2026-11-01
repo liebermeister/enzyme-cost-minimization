@@ -1,6 +1,6 @@
 function [report, errors] = ecm_simple(model_data_file, validation_data_file, outdir, options)
 
-% ECM_SIMPLE - Wrapper function for 'ecm_parameter_balancing' and 'ecm_enzyme_cost_minimization'
+% ECM_SIMPLE - Wrapper function for running either 'ecm_parameter_balancing' or 'ecm_enzyme_cost_minimization'
 %
 % [report, errors] = ecm_simple(model_data_file, validation_data_file, outdir, options)
 %
