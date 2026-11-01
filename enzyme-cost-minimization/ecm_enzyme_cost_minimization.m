@@ -73,6 +73,10 @@ function [c, u, u_cost, up, A_forward, mca_info, c_min, c_max, u_min, u_max, r, 
 %    ecm_options.compute_tolerance,
 %    ecm_options.cost_tolerance_factor
 
+if exist('dependencies_check_once','file')
+  dependencies_check_once('ecm_dependencies');
+end
+
 if sum(isnan(v)),
   warning('Flux vector contains nan values; replacing them by zero values');
   v(isnan(v)) = 0;

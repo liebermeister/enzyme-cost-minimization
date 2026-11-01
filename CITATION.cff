@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the article below."
+title: "Enzyme Cost Minimization for Matlab"
+type: software
+authors:
+  - family-names: Liebermeister
+    given-names: Wolfram
+version: 1.0.0
+license: GPL-2.0-or-later
+repository-code: "https://github.com/liebermeister/enzyme-cost-minimization"
+url: "https://www.metabolic-economics.de/enzyme-cost-minimization/"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Noor
+      given-names: Elad
+    - family-names: Flamholz
+      given-names: Avi
+    - family-names: Bar-Even
+      given-names: Arren
+    - family-names: Davidi
+      given-names: Dan
+    - family-names: Milo
+      given-names: Ron
+    - family-names: Liebermeister
+      given-names: Wolfram
+  title: "The Protein Cost of Metabolic Fluxes: Prediction from Enzymatic Rate Laws and Cost Minimization"
+  journal: PLoS Computational Biology
+  year: 2016
+  volume: 12
+  issue: 10
+  start: e1005167
+  doi: "10.1371/journal.pcbi.1005167"

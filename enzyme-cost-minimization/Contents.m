@@ -5,7 +5,7 @@
 % Demo scripts
 %
 %   demo_ecm_simple
-%   demo_ecm_ecoli_noor_2016
+%   demo_ecm_escherichia_coli_noor_2016
 %
 % Main functions 
 %

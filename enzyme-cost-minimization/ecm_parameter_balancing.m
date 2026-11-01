@@ -20,6 +20,10 @@ function [r, r_orig, kinetic_data, r_samples, pb_options, parameter_prior, r_mea
 %                                       for details, see parameter_balancing_kinetic.m)
 %   parameter_prior Prior distributions used
 
+if exist('dependencies_check_once','file')
+  dependencies_check_once('ecm_dependencies');
+end
+
 pb_options = join_struct(parameter_balancing_options,pb_options);
 
 % extra options used only in this function  

@@ -23,6 +23,10 @@ function [report, errors] = ecm_simple(model_data_file, validation_data_file, ou
 %    run an ECM using standard settings, 
 %    input file: prepared model with data ("..ECM__Model.tsv")
 
+if exist('dependencies_check_once','file')
+  dependencies_check_once('ecm_dependencies');
+end
+
 eval(default('options','struct'));
 
 options_default = struct('actions','ecm','generate_report',0,'verbose',0);
