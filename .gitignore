@@ -1,0 +1,15 @@
+# Matlab autosave files
+*.asv
+*.m~
+
+# Emacs and other editors
+*~
+\#*#
+.#*
+
+# Matlab figures and graphics created by demos and tests
+*.eps
+*-eps-converted-to.pdf
+
+# macOS
+.DS_Store
