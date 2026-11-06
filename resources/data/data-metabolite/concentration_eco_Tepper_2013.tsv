@@ -1,4 +1,4 @@
-!!SBtab TableType='Quantity' TableID='MetaboliteConcentrationData' !Organism='Escherichia coli'
+!!SBtab SBtabVersion='1.1' TableType='Quantity' TableID='MetaboliteConcentrationData' !Organism='Escherichia coli'
 !QuantityType	!Unit	!Compound:Name	!Value	Acetate	Glycerol	GlucoseAnaerobic	!Compound:Identifiers:kegg.compound
 %!Condition		Glucose	Acetate	Glycerol	GlucoseAnaerobic	
 concentration	mM	Succinate	0.569	0.923	1.14	17.126113	C00042

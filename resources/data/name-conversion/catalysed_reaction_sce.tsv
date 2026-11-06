@@ -1,4 +1,4 @@
-!!SBtab TableType='Reaction' Organism='Saccharomyces cerevisiae'			
+!!SBtab TableID='Reaction' SBtabVersion='1.1' TableType='Reaction' Organism='Saccharomyces cerevisiae'			
 !Reaction	!Reaction:Identifiers:kegg.reaction	!Enzyme	!Gene
 AAD		AAD	-
 ACC		ACC	-

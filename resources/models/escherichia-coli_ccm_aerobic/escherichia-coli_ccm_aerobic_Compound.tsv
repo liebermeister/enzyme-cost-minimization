@@ -1,4 +1,4 @@
-!!SBtab TableID='Compound' TableType='Compound' Document='Model'			
+!!SBtab SBtabVersion='1.1' TableID='Compound' TableType='Compound' Document='Model'			
 !ID	!Name	!Identifiers:kegg.compound	!IsConstant
 _S__Malate	(S)-Malate	C00149	False
 Acetyl_CoA	Acetyl-CoA	C00024	False

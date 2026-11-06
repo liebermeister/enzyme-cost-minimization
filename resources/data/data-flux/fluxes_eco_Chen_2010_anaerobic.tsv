@@ -1,4 +1,4 @@
-!!SBtab TableType='Quantity' QuantityType='flux' Organism='Escherichia coli'
+!!SBtab TableID='Quantity' SBtabVersion='1.1' TableType='Quantity' QuantityType='flux' Organism='Escherichia coli'
 !Reaction	!Value	!Std
 HXK_R01786	14.9	1.6
 PTS_RPTSsy	14.9	1.6

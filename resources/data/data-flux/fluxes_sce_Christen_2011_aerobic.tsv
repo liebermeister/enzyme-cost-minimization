@@ -1,4 +1,4 @@
-!!SBtab TableType='Quantity' QuantityType='flux' Organism='Saccharomyces cerevisiae'
+!!SBtab TableID='Quantity' SBtabVersion='1.1' TableType='Quantity' QuantityType='flux' Organism='Saccharomyces cerevisiae'
 !Reaction	!Value
 HXK_R01786	15.2
 PGI_R02740	13.1
