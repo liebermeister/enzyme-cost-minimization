@@ -1,0 +1,18 @@
+!!SBtab TableID='enzyme_cost_minimization_Definition' TableType='Definition' SBtabVersion='1.1' TableName='Extension definitions table of enzyme-cost-minimization'
+% Table types and columns used by this package that are not in the SBtab 1.1 definitions table.
+% It extends the default definitions, e.g. sbtab_document_set_definitions(d, 'enzyme-cost-minimization_Definition.tsv')
+% (Matlab) or: sbtab validator FILE -d -y enzyme-cost-minimization_Definition.tsv (Python).
+!Name	!Type	!Parent	!isShortname	!Format	!Description
+Compound:Name	Column	Compound	False	String	Compound name (name conversion tables)
+NameForPlots	Column	Compound	False	String	Short name shown in plots
+Enzyme	Column	Enzyme	True	String	Enzyme ID (name conversion tables)
+EnzymeReaction	Column	Enzyme	False	String	Reaction catalysed by the enzyme (name conversion tables)
+HideInPlot	Column	Position	False	Integer	1: element is hidden in network plots
+Gene:LocusName	Column	Quantity	False	String	Locus name of the gene (protein data)
+Organism:KEGGnumber	Column	Quantity	False	String	KEGG number of the organism
+Pathway	Column	Quantity	False	String	Pathway or functional category (protein data)
+Reference	Column	Quantity	False	String	Literature reference or data source
+Size	Column	Quantity	False	Float	Protein size (number of amino acids; protein data)
+KineticLaw	Column	Reaction	False	String	Kinetic rate law (formula)
+NameForPlots	Column	Reaction	False	String	Short name shown in plots
+Reaction	Column	Reaction	True	String	Reaction ID (name conversion tables)
