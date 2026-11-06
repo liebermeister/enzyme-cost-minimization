@@ -58,7 +58,14 @@ end
 if length(ecm_options.fix_metabolites),
   display('  o Fixing some metabolite concentrations');
   for it = 1:length(ecm_options.fix_metabolites),
-    ll = label_names(ecm_options.fix_metabolites(it),network.metabolite_names);
+    % match metabolites by ID; if not found, by name
+    ll = label_names(ecm_options.fix_metabolites(it),network.metabolites);
+    if ll==0 && isfield(network,'metabolite_names'),
+      ll = label_names(ecm_options.fix_metabolites(it),network.metabolite_names);
+    end
+    if ll==0,
+      error('Metabolite %s (to be fixed) not found in the network', ecm_options.fix_metabolites{it});
+    end
     conc_min(ll) = ecm_options.fix_metabolite_values(it);    
     conc_max(ll) = ecm_options.fix_metabolite_values(it);
   end
