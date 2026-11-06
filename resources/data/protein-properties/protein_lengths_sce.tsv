@@ -1,4 +1,4 @@
-!!SBtab QuantityType='protein chain length' Organism='Saccharomyces cerevisiae'
+!!SBtab TableID='Quantity' SBtabVersion='1.1' TableType='Quantity' QuantityType='protein chain length' Organism='Saccharomyces cerevisiae'
 !Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!Value
 YIL147C	Sln1	K11231	1220
 YDL235C	Ypd1	K11232	167

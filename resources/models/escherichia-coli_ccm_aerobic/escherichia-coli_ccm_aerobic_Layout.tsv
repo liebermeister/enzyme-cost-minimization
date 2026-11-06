@@ -1,4 +1,4 @@
-!!SBtab TableType=Layout
+!!SBtab TableID='Position' SBtabVersion='1.1' TableType='Position' TableType=Layout
 !Element	!PositionX	!PositionY
 C00001	0.448708	0.128361
 C00002	0.056437	0.698009

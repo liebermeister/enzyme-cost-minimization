@@ -1,4 +1,4 @@
-!!SBtab QuantityType='protein chain length' Organism='Bacillus subtilis'
+!!SBtab TableID='Quantity' SBtabVersion='1.1' TableType='Quantity' QuantityType='protein chain length' Organism='Bacillus subtilis'
 !Gene:LocusName	!Gene	!Gene:Identifiers:kegg.orthology	!Value
 BSU24280	IspA	K13789	319
 BSU22740	HepT	K00805	348

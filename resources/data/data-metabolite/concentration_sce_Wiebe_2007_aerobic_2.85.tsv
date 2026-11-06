@@ -1,4 +1,4 @@
-!!SBtab !Organism='Saccharomyces cerevisiae'
+!!SBtab TableID='Quantity' SBtabVersion='1.1' TableType='Quantity' !Organism='Saccharomyces cerevisiae'
 !QuantityType	!Compound:Name	!Compound:Identifiers:kegg.compound	!Value
 concentration	beta-D-Glucose 6-phosphate	C00092	4.0857136
 concentration	D-Fructose 6-phosphate	C00085	0.86428556
