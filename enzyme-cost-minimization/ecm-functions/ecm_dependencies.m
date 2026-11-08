@@ -10,6 +10,10 @@ if ~exist('matlab_utils_installed','file'),
   error('Please install the Matlab utility functions (https://github.com/liebermeister/matlab-utils)');
 end
 
+if exist('matlab_utils_installed','file') && ~exist('load_config_table','file')
+  error('Please update the Matlab utility functions (https://github.com/liebermeister/matlab-utils) - The function load_config_table (used for reading default options) is missing.');
+end
+
 if ~exist('mnt_version','file'),
   error('Please install the Metabolic Network Toolbox (https://github.com/liebermeister/metabolic-network-toolbox)');
 end

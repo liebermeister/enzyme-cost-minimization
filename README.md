@@ -42,7 +42,7 @@ The code was tested with Matlab R2025b on Linux.
 
 | Folder | Contents |
 |---|---|
-| `enzyme-cost-minimization` | main functions `ecm_simple`, `ecm_enzyme_cost_minimization`, `ecm_parameter_balancing` |
+| `enzyme-cost-minimization` | main functions `ecm_simple`, `ecm_enzyme_cost_minimization`, `ecm_parameter_balancing`; default options (SBtab Config file `enzyme-cost-minimization_Config.tsv`, read by `ecm_default_options`), SBtab extension definitions (`enzyme-cost-minimization_Definition.tsv`) and input and output tables (`enzyme-cost-minimization_ToolInputOutput.tsv`) |
 | `enzyme-cost-minimization/ecm-functions` | other ECM functions, with the cost scores in `ecm_scores` |
 | `enzyme-cost-minimization/demo` | demo scripts |
 | `resources` | example models (`resources/models`) and data (`resources/data`) |

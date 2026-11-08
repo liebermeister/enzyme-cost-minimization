@@ -1,0 +1,28 @@
+!!SBtab TableID='ToolInputOutput' TableType='ToolInputOutput' SBtabVersion='1.2' Method='enzyme-cost-minimization' TableName='Input and output tables of Enzyme Cost Minimization (ECM)'
+% Matlab: load_model_and_data_sbtab (model and validation data file), ecm_enzyme_cost_minimization,
+% and ecm_save_result_sbtab; ecm_simple runs the whole workflow.
+% Rows guessed from the Matlab code and the example files of the package.
+!RequiredIn	!RequiredTable	!TableID	!File	!IsOptional	!RequiredColumns	!Comment
+Input	Reaction	Reaction	model file	False	ID, ReactionFormula, Identifiers:kegg.reaction	Model (e.g. [model]_ECM_Model.tsv)
+Input	Compound	Compound	model file	False	ID, Identifiers:kegg.compound	
+Input	Quantity	Parameter	model file	False	QuantityType, Reaction, Compound, Value, Unit	Kinetic constants (balanced)
+Input	Position	Position	model file	True	Element, PositionX, PositionY	Network layout for graphics
+Input	Quantity	FluxData	model file	False	Reaction, Value	Fluxes (mM/s); older TableID: Flux
+Input	Quantity	ConcentrationConstraint	model file	True	Compound, Min, Max	Metabolite concentration bounds (mM)
+Input	Quantity	EnzymeCostWeight	model file	True	Reaction, Value	Enzyme cost weights (default: equal weights)
+Input	Quantity	MetaboliteConcentrationData	validation data file	True	Compound, Value	Metabolite data for comparison (e.g. [model]_ECM_ValidationData.tsv); older TableIDs: ConcentrationData, Concentration
+Input	Quantity	EnzymeConcentrationData	validation data file	True	Reaction, Value	Enzyme data for comparison; older TableIDs: EnzymeData, EnzymeConcentration
+Output	Reaction	Reaction	model state file	False	ID, ReactionFormula	Model with predicted state ([output]_ModelState.tsv)
+Output	Compound	Compound	model state file	False	ID	
+Output	Position	Position	model state file	True	Element, PositionX, PositionY	
+Output	Quantity	Parameter	model state file	False	QuantityType, Reaction, Compound, Value, Unit	
+Output	Quantity	MetaboliteConcentration	model state file	False	QuantityType, Compound, Value, Unit	Predicted metabolite concentrations
+Output	Measurement	MetabolicStates	state runs file	False	ID, Name	Metabolic states ([output]_StateRuns.tsv)
+Output	QuantityMatrix	Flux	state runs file	False	QuantityType, Reaction, [one column per state]	Fluxes (mM/s)
+Output	QuantityMatrix	MetaboliteConcentration	state runs file	False	QuantityType, Compound, [one column per state]	Predicted metabolite concentrations (mM)
+Output	QuantityMatrix	EnzymeConcentration	state runs file	False	QuantityType, Reaction, [one column per state]	Predicted enzyme concentrations (mM)
+Output	QuantityMatrix	ReactionGibbsFreeEnergy	state runs file	False	QuantityType, Reaction, [one column per state]	Reaction Gibbs free energies (kJ/mol)
+Output	QuantityMatrix	EnzymeCapacity	state runs file	True	QuantityType, Reaction, Value	Enzyme capacities (mM)
+Output	QuantityMatrix	EnergeticEfficiency	state runs file	True	QuantityType, Reaction, [one column per state]	Energetic efficiencies
+Output	QuantityMatrix	SaturationEfficiency	state runs file	True	QuantityType, Reaction, [one column per state]	Saturation efficiencies
+Output	Config	ConfigureECM	options file	True	Option, Value	Options used (Method=enzyme-cost-minimization)

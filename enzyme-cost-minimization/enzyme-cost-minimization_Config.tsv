@@ -1,0 +1,63 @@
+!!SBtab TableID='ConfigureECM' TableType='Config' SBtabVersion='1.2' Method='enzyme-cost-minimization' TableName='Default options of Enzyme Cost Minimization (ECM) (Matlab)'
+% Default options of the Matlab implementation, assembled from ecm_default_options.m (enzyme-cost-minimization).
+% Empty values: option is empty by default ([] in Matlab); vector-valued options are
+% described in the column !Description. Flags: 1 (true) or 0 (false).
+% ECM options also contain all options of parameter balancing (see parameter_balancing_options.m),
+% with the defaults of parameter balancing except for the kcat and GFE options listed below.
+!ID	!Value	!Description
+model_name	model	Model name
+model_id	MODEL	Model ID (for file names)
+run_id	RUN	Simulation run ID (for file names)
+c_data		Metabolite concentration data, for comparison (vector, nm x 1)
+u_data		Enzyme concentration data, for comparison (vector, nr x 1)
+kinetic_data		Kinetic data (Matlab struct, see Metabolic Network Toolbox)
+kcat_prior_median	10	Prior median for kcat values (1/s)
+kcat_prior_log10_std	0.2	Prior standard deviation of log10 kcat values
+kcat_upper	10000	Upper bound for kcat values (1/s)
+kcat_lower	0.1	Lower bound for kcat values (1/s)
+kcatr_lower	0.0001	Lower bound for reverse kcat values (1/s)
+GFE_fixed	1	Keep Gibbs free energies of formation fixed during parameter balancing
+fix_metabolites	{}	Metabolites with fixed concentrations (overrides values from the input model)
+fix_metabolite_values		Fixed metabolite concentrations (see fix_metabolites)
+conc_min_default	0.001	Default lower bound for metabolite concentrations (mM)
+conc_max_default	10	Default upper bound for metabolite concentrations (mM)
+conc_min		Lower bounds for metabolite concentrations (vector, nm x 1, mM)
+conc_max		Upper bounds for metabolite concentrations (vector, nm x 1, mM)
+conc_fix		Fixed metabolite concentrations (vector, mM; see met_fix)
+ind_met_fix		Indices of metabolites with fixed concentrations
+met_fix		Metabolites with fixed concentrations
+replace_cofactors	{}	Names of cofactors (bounds set from median concentration data; used in ecm_update_options)
+reaction_column_names		Reaction column names (in data file) for loading kinetic data
+compound_column_names		Compound column names (in data file) for loading kinetic data
+flag_given_kinetics	0	Use given kinetics
+insert_Keq_from_data	0	Insert Keq values from data again after parameter balancing
+ind_scored_enzymes		Indices of reactions whose enzymes are scored (default: all reactions)
+enzyme_cost_weights		Enzyme cost weights (vector; default: ones)
+use_cost_weights	none	Usage of cost weights
+ignore_regulation	0	Disregard enzyme regulation
+initial_choice	polytope_center	Method for computing the initial solution: 'mdf', 'polytope_center', 'interval_center', 'given_x_start'
+x_start		Initial solution vector (for initial_choice='given_x_start')
+fix_thermodynamics_by_adjusting_Keq	1	Enforce thermodynamically feasible fluxes by adjusting Keq values
+multiple_conditions_anticipate	0	Optimize a single enzyme profile for multiple conditions
+multiple_conditions_n	1	Number of experimental conditions
+multiple_starting_points	0	Use multiple starting points
+ecm_scores	["emc3sp"]	ECM scores to be used (list; see 'help ecm_scores')
+lambda_regularisation	0.001	Coefficient of the metabolite concentration regularization term
+lambda_reg_factor	0.01	Factor for choosing lambda_regularisation automatically (in ecm_update_options)
+parameter_prior_file		Parameter prior file (optional)
+use_linear_cost_constraints	1	Tighter constraints derived from an upper bound on enzyme cost
+fluctuations_safety_margin	0	Safety margin (number of standard deviations) against protein number fluctuations
+cell_volume	1.1e-18	Cell volume (m^3; default value for E. coli; needed for the safety margin)
+maximal_u_cost		Maximal enzyme cost (used with use_linear_cost_constraints)
+compute_hessian	0	Compute Hessian matrix
+compute_elasticities	0	Compute elasticities
+compute_tolerance	0	Compute tolerance ranges
+cost_tolerance_factor	1.01	Factor defining the cost tolerance
+tolerance_from_hessian	0	Compute tolerances from the Hessian matrix
+fix_Keq_in_sampling	0	Keep Keq values fixed in sampling
+print_graphics	0	Save graphics to files
+show_graphics	1	Show graphics
+show_metabolites		Metabolites shown in graphics (default: all metabolites)
+metabolite_order_file		File with metabolite order for graphics
+reaction_order_file		File with reaction order for graphics
+verbose	0	Verbose output
