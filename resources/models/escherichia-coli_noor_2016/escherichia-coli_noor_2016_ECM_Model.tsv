@@ -89,14 +89,14 @@ equilibrium constant	PGH_R00658		5.1572892	dimensionless	R00658		kEQ_R9
 equilibrium constant	PYK_R00200		21188.68	dimensionless	R00200		kEQ_R10
 equilibrium constant	PDH_R00209		1549350.7	dimensionless	R00209		kEQ_R11
 equilibrium constant	ZWF_R00835		12.743901	dimensionless	R00835		kEQ_R12
-equilibrium constant	GLH_R02035		19686771	dimensionless	R02035		kEQ_R13
+equilibrium constant	GLH_R02035		19686.771	dimensionless	R02035		kEQ_R13
 equilibrium constant	PGD_R01528		12.168412	dimensionless	R01528		kEQ_R14
 equilibrium constant	RPI_R01056		2.2545738	dimensionless	R01056		kEQ_R15
 equilibrium constant	RPE_R01529		3.874617	dimensionless	R01529		kEQ_R16
 equilibrium constant	TXT_R01641		4.6931297	dimensionless	R01641		kEQ_R17
 equilibrium constant	TAL_R08575		1.3175431	dimensionless	R08575		kEQ_R18
 equilibrium constant	TXT_R01067		58.351652	dimensionless	R01067		kEQ_R19
-equilibrium constant	FBP_R00762		46298203	dimensionless	R00762		kEQ_R20
+equilibrium constant	FBP_R00762		46298.203	dimensionless	R00762		kEQ_R20
 equilibrium constant	CSN_R00351		4991915.4	dimensionless	R00351		kEQ_R21
 equilibrium constant	ACN_R01325		0.035482795	dimensionless	R01325		kEQ_R22
 equilibrium constant	ACN_R01900		1.3171737	dimensionless	R01900		kEQ_R23
@@ -106,7 +106,7 @@ equilibrium constant	SCS_R00405		0.58456115	dimensionless	R00405		kEQ_R26
 equilibrium constant	SDH_R02164		5756.8018	dimensionless	R02164		kEQ_R27
 equilibrium constant	FUM_R01082		3.9855529	dimensionless	R01082		kEQ_R28
 equilibrium constant	MDH_R00342		2.0550821e-05	dimensionless	R00342		kEQ_R29
-equilibrium constant	PPC_R00345		1,00E-06	dimensionless	R00345		kEQ_R30
+equilibrium constant	PPC_R00345		1e-06	dimensionless	R00345		kEQ_R30
 catalytic rate constant geometric mean	PTS_RPTSsy		0.12409807	1/s	RPTSsy		kC_R1
 catalytic rate constant geometric mean	PGI_R02740		17.845376	1/s	R02740		kC_R2
 catalytic rate constant geometric mean	PFK_R04779		12.466487	1/s	R04779		kC_R3
@@ -483,46 +483,46 @@ rate of reaction	PPC_R00345	R00345	-0.2114
 							
 !!SBtab TableID='ConcentrationConstraint' TableType='Quantity' Unit='mM'							
 !QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Min	!Max			
-concentration	_S__Malate	C00149	1	10			
-concentration	Acetyl_CoA	C00024	1	10			
-concentration	Fumarate	C00122	1	10			
-concentration	cis_Aconitate	C00417	1	10			
-concentration	_6_Phospho_D_gluconate	C00345	1	10			
+concentration	_S__Malate	C00149	0.001	10			
+concentration	Acetyl_CoA	C00024	0.001	10			
+concentration	Fumarate	C00122	0.001	10			
+concentration	cis_Aconitate	C00417	0.001	10			
+concentration	_6_Phospho_D_gluconate	C00345	0.001	10			
 concentration	Orthophosphate	C00009	10	10			
-concentration	Pyruvate	C00022	1	10			
+concentration	Pyruvate	C00022	0.001	10			
 concentration	NADPplus	C00006	0.1	0.1			
 concentration	NADPH	C00005	0.11389157	0.11389157			
 concentration	NADH	C00004	0.02741513	0.02741513			
 concentration	NADplus	C00003	1	1			
 concentration	ATP	C00002	3.4491395	3.4491395			
 concentration	H2O	C00001	1	1			
-concentration	_2_Oxoglutarate	C00026	1	10			
-concentration	Oxaloacetate	C00036	1	10			
+concentration	_2_Oxoglutarate	C00026	0.001	10			
+concentration	Oxaloacetate	C00036	0.001	10			
 concentration	Ubiquinone	C00399	0.1	0.1			
-concentration	D_Erythrose_4_phosphate	C00279	1	10			
+concentration	D_Erythrose_4_phosphate	C00279	0.001	10			
 concentration	Ubiquinol	C00390	0.1	0.1			
 concentration	ADP	C00008	0.60461237	0.60461237			
-concentration	Isocitrate	C00311	1	10			
-concentration	D_Ribulose_5_phosphate	C00199	1	10			
-concentration	D_Xylulose_5_phosphate	C00231	1	10			
-concentration	D_Glucose_6_phosphate	C00092	1	10			
-concentration	_3_Phospho_D_glyceroyl_phosphate	C00236	1	10			
+concentration	Isocitrate	C00311	0.001	10			
+concentration	D_Ribulose_5_phosphate	C00199	0.001	10			
+concentration	D_Xylulose_5_phosphate	C00231	0.001	10			
+concentration	D_Glucose_6_phosphate	C00092	0.001	10			
+concentration	_3_Phospho_D_glyceroyl_phosphate	C00236	0.001	10			
 concentration	CoA	C00010	1	1			
 concentration	CO2	C00011	0.01	0.01			
-concentration	D_Ribose_5_phosphate	C00117	1	10			
-concentration	Glycerone_phosphate	C00111	1	10			
+concentration	D_Ribose_5_phosphate	C00117	0.001	10			
+concentration	Glycerone_phosphate	C00111	0.001	10			
 concentration	D_Glucose	C00031	12	12			
-concentration	D_Fructose_1_6_bisphosphate	C00354	1	10			
-concentration	D_Glyceraldehyde_3_phosphate	C00118	1	10			
-concentration	Phosphoenolpyruvate	C00074	1	10			
-concentration	Citrate	C00158	1	10			
-concentration	Succinyl_CoA	C00091	1	10			
-concentration	_3_Phospho_D_glycerate	C00197	1	10			
-concentration	D_Glucono_1_5_lactone_6_phosphate	C01236	1	10			
-concentration	D_Fructose_6_phosphate	C00085	1	10			
-concentration	_2_Phospho_D_glycerate	C00631	1	10			
-concentration	Succinate	C00042	1	10			
-concentration	Sedoheptulose_7_phosphate	C05382	1	10			
+concentration	D_Fructose_1_6_bisphosphate	C00354	0.001	10			
+concentration	D_Glyceraldehyde_3_phosphate	C00118	0.001	10			
+concentration	Phosphoenolpyruvate	C00074	0.001	10			
+concentration	Citrate	C00158	0.001	10			
+concentration	Succinyl_CoA	C00091	0.001	10			
+concentration	_3_Phospho_D_glycerate	C00197	0.001	10			
+concentration	D_Glucono_1_5_lactone_6_phosphate	C01236	0.001	10			
+concentration	D_Fructose_6_phosphate	C00085	0.001	10			
+concentration	_2_Phospho_D_glycerate	C00631	0.001	10			
+concentration	Succinate	C00042	0.001	10			
+concentration	Sedoheptulose_7_phosphate	C05382	0.001	10			
 							
 !!SBtab TableID='EnzymeCostWeight' TableType='Quantity' Unit='ArbitraryUnits'							
 !QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value				
