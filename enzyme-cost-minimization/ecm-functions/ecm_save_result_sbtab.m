@@ -45,6 +45,9 @@
 %   .write_enzyme_concentrations = 0 flag: show enzyme concentrations (first state) in model parameter table?
 %   .modular_rate_law_kinetics   = 0   flag: show kinetic rate law formulae in table
 %   .use_measurement_table       = 0;
+%   .standard_concentration      = '1 mM' (default from enzyme-cost-minimization_Config.tsv); standard concentration ('1 mM' or '1 M') of the equilibrium constants
+%                                  and standard chemical potentials in the output files (converted from 1 mM,
+%                                  used in options.r), declared by the table attribute StandardConcentration
 
 function ecm_save_result_sbtab(filename, network, c, u, A_forward, options, c_min, c_max, u_min, u_max, u_capacity, eta_energetic, eta_saturation,v)
 
@@ -93,6 +96,9 @@ options_default.filename_state_runs   = 'StateRuns';
 options_default.write_concentrations = 0;
 options_default.write_enzyme_concentrations = 0;
 options_default.modular_rate_law_kinetics = 0;
+% default standard concentration for the output: from the ECM Config file
+ecm_config = load_config_table(fullfile(fileparts(fileparts(mfilename('fullpath'))), 'enzyme-cost-minimization_Config.tsv'));
+options_default.standard_concentration = ecm_config.standard_concentration;
 
 options = join_struct(options_default, options);
 
@@ -143,7 +149,7 @@ end
 
 % don't show metabolite and enzyme levels in parameter table 
 
-my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1);
+my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1,'standard_concentration',options.standard_concentration);
 
 if length(c_min)
   my_opt = join_struct(my_opt,struct('c_min',c_min,'c_max',c_max));
@@ -250,7 +256,9 @@ end
 
 fn = fieldnames(DeltaG); 
 
-DeltaG_table = sbtab_table_construct(struct('TableName','Gibbs free energies of reaction','TableID','ReactionGibbsFreeEnergy', 'TableType','QuantityMatrix','Unit','kJ/mol'),{'QuantityType','Reaction'},{repmat({'Gibbs energy of reaction'},nr,1),network.actions});
+% (reaction Gibbs free energies do not depend on the standard concentration; it is declared to state the convention)
+[~, standard_concentration_label] = standard_concentration_in_mM(options.standard_concentration);
+DeltaG_table = sbtab_table_construct(struct('TableName','Gibbs free energies of reaction','TableID','ReactionGibbsFreeEnergy', 'TableType','QuantityMatrix','Unit','kJ/mol','StandardConcentration',standard_concentration_label),{'QuantityType','Reaction'},{repmat({'Gibbs energy of reaction'},nr,1),network.actions});
 
 if length(reaction_KEGGID),
   DeltaG_table = sbtab_table_add_column(DeltaG_table,'Reaction:Identifiers:kegg.reaction',reaction_KEGGID,1);

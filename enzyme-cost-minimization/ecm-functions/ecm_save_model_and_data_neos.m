@@ -149,7 +149,8 @@ table_kcats = sbtab_table_construct(struct('TableName','kcats','TableType','Reac
 % write table keqs.csv
 ind = find(strcmp('equilibrium constant', quantity_type));
 %mytable([reaction(ind), num2cell(value(ind))],'comma',[filename 'keqs.csv']);
-table_keqs = sbtab_table_construct(struct('TableName','keqs','TableType','Reaction','Document',document_name),{'Reaction','Value'},{reaction(ind), num2cell(value(ind))});
+% (the equilibrium constants come from network_to_sbtab with standard concentration 1 mM)
+table_keqs = sbtab_table_construct(struct('TableName','keqs','TableType','Reaction','Document',document_name,'StandardConcentration','1mM'),{'Reaction','Value'},{reaction(ind), num2cell(value(ind))});
 
 % write table kms.csv
 ind = find(strcmp('Michaelis constant', quantity_type));

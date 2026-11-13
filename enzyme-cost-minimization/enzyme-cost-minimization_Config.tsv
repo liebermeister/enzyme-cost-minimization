@@ -60,4 +60,5 @@ show_graphics	1	Show graphics
 show_metabolites		Metabolites shown in graphics (default: all metabolites)
 metabolite_order_file		File with metabolite order for graphics
 reaction_order_file		File with reaction order for graphics
+standard_concentration	1 mM	Standard concentration ('1 mM' or '1 M') of equilibrium constants, standard chemical potentials and standard reaction Gibbs free energies in the result files written by ecm_save_result_sbtab (declared by the table attribute StandardConcentration). Input data are read in the standard concentration they declare.
 verbose	0	Verbose output
