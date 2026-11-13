@@ -149,7 +149,8 @@ end
 
 % don't show metabolite and enzyme levels in parameter table 
 
-my_opt = struct('use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1,'standard_concentration',options.standard_concentration);
+% (modular_rate_law_table = 1: the model file contains the table of kinetic constants 'Parameter')
+my_opt = struct('modular_rate_law_table',1,'use_sbml_ids',0,'verbose',0,'write_concentrations',options.write_concentrations,'write_enzyme_concentrations',options.write_enzyme_concentrations,'modular_rate_law_kinetics',options.modular_rate_law_kinetics,'document_name', options.document_name,'omit_kegg_ids',1,'standard_concentration',options.standard_concentration);
 
 if length(c_min)
   my_opt = join_struct(my_opt,struct('c_min',c_min,'c_max',c_max));
