@@ -74,6 +74,7 @@ end
 c_table = get_first_table(my_sbtab_validation, {'MetaboliteConcentrationData', 'ConcentrationData', 'Concentration'});
 if length(c_table),
   c_data = sbtab_table_get_values_by_id(c_table, compound_id_columns, network.metabolites, 'Value');
+  c_data = sbtab_table_concentration_factor(c_table, 'metabolite concentration table') * c_data; % in mM
 else
   warnings = [warnings, '; Concentration table missing'];
 end
@@ -81,6 +82,7 @@ end
 u_table = get_first_table(my_sbtab_validation, {'EnzymeConcentrationData', 'EnzymeData', 'EnzymeConcentration'});
 if length(u_table),
   u_data = sbtab_table_get_values_by_id(u_table, reaction_id_columns, network.actions, 'Value');
+  u_data = sbtab_table_concentration_factor(u_table, 'enzyme concentration table') * u_data; % in mM
 else
   warnings = [warnings, '; Enzyme concentration table missing'];
 end
@@ -89,6 +91,8 @@ constraint_table = get_first_table(my_sbtab_model, {'ConcentrationConstraint'});
 if length(constraint_table),
   conc_min = sbtab_table_get_values_by_id(constraint_table, compound_id_columns, network.metabolites, 'Min');
   conc_max = sbtab_table_get_values_by_id(constraint_table, compound_id_columns, network.metabolites, 'Max');
+  f = sbtab_table_concentration_factor(constraint_table, 'table ConcentrationConstraint');
+  conc_min = f * conc_min; conc_max = f * conc_max; % in mM
 else
   warnings = [warnings, '; Concentration constraint table missing'];
 end
