@@ -3,3 +3,18 @@ This directory: model and data files adapted to the current version of the SBtab
 Subdirectory original_version: previous version (from article Noor et al. 2016)
 
 Subdirectory equilibrator-example: Model version from equilibrator github repository, equivalent to the present version
+
+## Provenance (reconstructed 2026-11-14)
+
+* `escherichia-coli_noor_2016_ECM_Model.tsv`, `..._ECM_ValidationData.tsv`: balanced model of the ECM study
+  (Noor et al. 2016; balanced kinetic constants, fluxes, concentration bounds, enzyme cost weights; 18 external
+  metabolites). On 2020-07-29 the files were damaged by a spreadsheet save with German locale (Keq of GLH, FBP,
+  PPC; 27 lower concentration bounds; three validation concentrations); repaired on 2026-11-13.
+* `original_version/` and `escherichia-coli_noor_2016_2016_data.tsv`: unbalanced kinetic data of the article
+  (same values as the model in the parameter-balancing package).
+* `equilibrator-example/`: from the equilibrator-pathway repository; same network (H2O written), equilibrium
+  constants from eQuilibrator for 1 M. Converted to 1 mM they agree with `ECM_Model` within a factor of about 3,
+  so the files are similar but not "equivalent".
+* Copies of `ECM_Model`: sbtab-toolkit (`resource-data/model-files/e_coli_noor_2016/version_1.1`, ECM format example),
+  cellular-enzyme-demands (`e_coli_noor_2016`).
+* Full history of all versions: the README of the model collection folder `escherichia-coli-noor-2016` (local model collection of the author).
