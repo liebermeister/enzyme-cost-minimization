@@ -2,4 +2,7 @@
 Prior knowledge and assumptions about biological quantities
 -----------------------------------------------------------
 
-pb_prior.tsv  Prior table for parameter balancing
+pb_prior_2017-10.tsv  Earlier prior table for parameter balancing (version of 2017-10-29)
+
+The current prior table for parameter balancing is mnt_prior.tsv in the Metabolic Network Toolbox
+(file returned by mnt_prior_file); the copy pb_prior.tsv in this folder was removed on 2026-11-17.
