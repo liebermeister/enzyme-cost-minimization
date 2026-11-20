@@ -376,7 +376,7 @@ protein molecular mass	MDH_R00342		32337	Da	R00342
 protein molecular mass	PPC_R00345		198120	Da	R00345	
 						
 !!SBtab TableID='Position' TableType='Position' Document='E. coli central carbon metabolism - unbalanced kinetic data'						
-!Element	!PositionX	!PositionY				
+!Element	!Position:x	!Position:y				
 _S__Malate	0.32772	0.095058				
 Acetyl_CoA	0.359426	0.22902				
 Fumarate	0.362438	-0.001611				
@@ -558,7 +558,7 @@ enzyme cost weight	MDH_R00342	R00342	0.64118123
 enzyme cost weight	PPC_R00345	R00345	1.9865788			
 						
 !!SBtab DocumentName='E. coli central carbon metabolism - unbalanced kinetic data' TableID='Position' TableType='Position'						
-!Element	!PositionX	!PositionY				
+!Element	!Position:x	!Position:y				
 _S__Malate	0.32772	0.095058				
 Acetyl_CoA	0.359426	0.22902				
 Fumarate	0.362438	-0.001611				

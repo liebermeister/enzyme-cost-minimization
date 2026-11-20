@@ -6,7 +6,7 @@
 Input	Reaction	Reaction	model file	False	ID, ReactionFormula, Identifiers:kegg.reaction	Model (e.g. [model]_ECM_Model.tsv)
 Input	Compound	Compound	model file	False	ID, Identifiers:kegg.compound	
 Input	Quantity	Parameter	model file	False	QuantityType, Reaction, Compound, Value, Unit	Kinetic constants (balanced)
-Input	Position	Position	model file	True	Element, PositionX, PositionY	Network layout for graphics
+Input	Position	Position	model file	True	Element, Position:x, Position:y	Network layout for graphics
 Input	Quantity	FluxData	model file	False	Reaction, Value	Fluxes (mM/s); older TableID: Flux
 Input	Quantity	ConcentrationConstraint	model file	True	Compound, Min, Max	Metabolite concentration bounds (mM)
 Input	Quantity	EnzymeCostWeight	model file	True	Reaction, Value	Enzyme cost weights (default: equal weights)
@@ -14,7 +14,7 @@ Input	Quantity	MetaboliteConcentrationData	validation data file	True	Compound, V
 Input	Quantity	EnzymeConcentrationData	validation data file	True	Reaction, Value	Enzyme data for comparison; older TableIDs: EnzymeData, EnzymeConcentration
 Output	Reaction	Reaction	model state file	False	ID, ReactionFormula	Model with predicted state ([output]_ModelState.tsv)
 Output	Compound	Compound	model state file	False	ID	
-Output	Position	Position	model state file	True	Element, PositionX, PositionY	
+Output	Position	Position	model state file	True	Element, Position:x, Position:y	
 Output	Quantity	Parameter	model state file	False	QuantityType, Reaction, Compound, Value, Unit	
 Output	Quantity	MetaboliteConcentration	model state file	False	QuantityType, Compound, Value, Unit	Predicted metabolite concentrations
 Output	Measurement	MetabolicStates	state runs file	False	ID, Name	Metabolic states ([output]_StateRuns.tsv)

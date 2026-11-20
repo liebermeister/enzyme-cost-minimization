@@ -376,7 +376,7 @@ molecular mass		Succinate	118	Da		C00042
 molecular mass		Sedoheptulose_7_phosphate	290	Da		C05382	
 							
 !!SBtab TableID='Position' TableType='Position'							
-!Element	!PositionX	!PositionY	!HideInPlot				
+!Element	!Position:x	!Position:y	!HideInPlot				
 _S__Malate	0.3277	0.09506	0				
 Acetyl_CoA	0.3594	229	0				
 Fumarate	0.3624	-0.001611	0				
